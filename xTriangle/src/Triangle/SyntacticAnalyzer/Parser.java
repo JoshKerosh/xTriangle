@@ -292,7 +292,7 @@ public class Parser {
         }
       }
       break;
-
+      /*
     case Token.BEGIN:
       acceptIt();
       commandAST = parseCommand();
@@ -333,7 +333,7 @@ public class Parser {
         commandAST = new WhileCommand(eAST, cAST, commandPos);
       }
       break;
-
+    */
     case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
@@ -343,8 +343,6 @@ public class Parser {
     finish(commandPos);
     //** eliminar comando vacio
     //commandAST = new EmptyCommand(commandPos);
-    syntacticError("Empty command not allowed",
-    currentToken.spelling);
     break;
 
     default:

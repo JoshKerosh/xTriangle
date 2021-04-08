@@ -340,9 +340,12 @@ public class Parser {
     case Token.IN:
     case Token.EOT:
 
-      finish(commandPos);
-      commandAST = new EmptyCommand(commandPos);
-      break;
+    finish(commandPos);
+    //** eliminar comando vacio
+    //commandAST = new EmptyCommand(commandPos);
+    syntacticError("Empty command not allowed",
+    currentToken.spelling);
+    break;
 
     default:
       syntacticError("\"%\" cannot start a command",

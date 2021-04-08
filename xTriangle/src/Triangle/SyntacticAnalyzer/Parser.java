@@ -343,8 +343,6 @@ public class Parser {
     finish(commandPos);
     //** eliminar comando vacio
     //commandAST = new EmptyCommand(commandPos);
-    syntacticError("Empty command not allowed",
-    currentToken.spelling);
     break;
 
     default:

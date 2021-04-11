@@ -68,46 +68,58 @@ final class Token extends Object {
 
     // reserved words - must be in alphabetical order...
     ARRAY		= 4,
+    CHOOSE  = 5,  //new
     CONST		= 6,
     DO			= 7,
     ELSE		= 8,
-    END			= 9,
-    FUNC		= 10,
-    IF			= 11,
-    IN			= 12,
-    LET			= 13,
-    OF			= 14,
-    PROC		= 15,
-    RECORD		= 16,
-    THEN		= 17,
-    TYPE		= 18,
-    VAR			= 19,
-    WHILE		= 20,
+    ELSEIF  = 9,  //new
+    END			= 10,
+    FOR     = 11, //new
+    FROM    = 12, //new
+    FUNC		= 13,
+    IF			= 14,
+    IN			= 15,
+    LET			= 16,
+    LOOP    = 17, //new
+    NOTHING = 18, //new
+    OF			= 19,
+    PACKAGE = 20, //new
+    PRIVATE = 21, //new
+    PROC		= 22,
+    RECORD  = 23,
+    RECURSIVE = 24, //new
+    THEN		= 25,
+    TO      = 26, //new
+    TYPE		= 27,
+    UNTIL   = 28, //new
+    VAR			= 29,
+    WHEN    = 30, //new
+    WHILE		= 31,
 
     // punctuation...
-    DOT			= 21,
-    COLON		= 22,
-    SEMICOLON	= 23,
-    COMMA		= 24,
-    BECOMES		= 25,
-    IS			= 26,
+    DOT			= 32,
+    COLON		= 33,
+    SEMICOLON	= 34,
+    COMMA		= 35,
+    BECOMES		= 36,
+    IS			= 37,
 
     // brackets...
-    LPAREN		= 27,
-    RPAREN		= 28,
-    LBRACKET	= 29,
-    RBRACKET	= 30,
-    LCURLY		= 31,
-    RCURLY		= 32,
+    LPAREN		= 38,
+    RPAREN		= 39,
+    LBRACKET	= 40,
+    RBRACKET	= 41,
+    LCURLY		= 42,
+    RCURLY		= 43,
 
     // special tokens...
-    EOT			= 33,
-    ERROR		= 34,
+    EOT			= 44,
+    ERROR		= 45,
 
     // new punctuation tokens ...
-    DOLAR = 35,
-    VBAR  = 36,
-    DDOT  = 37;
+    DOLAR = 46,
+    VBAR  = 47,
+    DDOT  = 48;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -115,20 +127,32 @@ final class Token extends Object {
     "<identifier>",
     "<operator>",
     "array",
+    "choose", //new
     "const",
     "do",
     "else",
+    "elseif", //new
     "end",
+    "for",  //new
+    "from", //new
     "func",
     "if",
     "in",
     "let",
+    "loop", //new
+    "nothing",  //new
     "of",
+    "package",  //new
+    "private",  //new
     "proc",
     "record",
+    "recursive",  //new
     "then",
+    "to", //new
     "type",
+    "until",  //new
     "var",
+    "when", //new
     "while",
     ".",
     ":",

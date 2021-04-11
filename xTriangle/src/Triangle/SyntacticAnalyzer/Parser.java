@@ -589,7 +589,8 @@ public class Parser {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// DECLARATIONS
+// Marcos Mendez 2021-04-11
+// DECLARATIONS MODIFIED
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -598,10 +599,10 @@ public class Parser {
 
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
-    declarationAST = parseCompoundDeclaration(); //NEW
+    declarationAST = parseCompoundDeclaration(); //adjusted
     while (currentToken.kind == Token.SEMICOLON) {
       acceptIt();
-      Declaration d2AST = parseCompoundDeclaration(); //NEW
+      Declaration d2AST = parseCompoundDeclaration(); //adjusted
       finish(declarationPos);
       declarationAST = new SequentialDeclaration(declarationAST, d2AST,
         declarationPos);
@@ -968,8 +969,8 @@ public class Parser {
   }
 
 
-//NEW
 ///////////////////////////////////////////////////////////////////////////////
+//
 // Marcos Mendez 2021-04-11
 // COMPOUND-DECLARATION 
 //

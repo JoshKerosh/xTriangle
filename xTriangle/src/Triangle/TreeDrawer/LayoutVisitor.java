@@ -55,14 +55,19 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -543,4 +548,74 @@ public class LayoutVisitor implements Visitor {
     return r;
   }
 
+  
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //ProcFuncs
+  //
+  //////////////////////////
+  @Override
+  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //RecursiveProc
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //RecursiveFunc
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //RecursiveDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //PrivateDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+    return null;
+  }
 }

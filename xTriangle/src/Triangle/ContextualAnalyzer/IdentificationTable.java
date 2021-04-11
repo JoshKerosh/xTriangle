@@ -21,9 +21,19 @@ public final class IdentificationTable {
   private int level;
   private IdEntry latest;
 
+  //local declarations
+  private IdentificationTable currentLocalDeclaration;
+  private boolean retrieveLocally;
+
   public IdentificationTable () {
     level = 0;
     latest = null;
+  }
+
+  private IdentificationTable(int level, IdEntry latest, IdentificationTable currentLocalDeclaration) {
+    this.level = level;
+    this.latest = latest;
+    this.currentLocalDeclaration = currentLocalDeclaration;
   }
 
   // Opens a new level in the identification table, 1 higher than the
@@ -92,17 +102,43 @@ public final class IdentificationTable {
 
     entry = this.latest;
     while (searching) {
-      if (entry == null)
+      if (entry == null){
         searching = false;
+        attr = retrieveLocally ? retrieveLocally(id) : null; //might be a localDeclaration
+      }
       else if (entry.id.equals(id)) {
         present = true;
-        searching = false;
-        attr = entry.attr;
-      } else
+        searching = false; 
+      }else{
         entry = entry.previous;
+      }
     }
 
     return attr;
   }
 
+  /////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //Local declarations  
+  //
+  ////////////////////
+
+  public void beginLocalDeclaration(IdentificationTable localTable){
+    this.currentLocalDeclaration = localTable; //new private-local declaration
+    this.retrieveLocally = true;
+  }
+
+  public void endLocalDeclaration(){
+    this.currentLocalDeclaration = null; //end of private-local declaration
+    retrieveLocally = false;
+  }
+
+  public Declaration retrieveLocally(String id){
+    return currentLocalDeclaration.retrieve(id);
+  }
+
+  public IdentificationTable copy(){
+    return new IdentificationTable(this.level, this.latest, this.currentLocalDeclaration);
+  }
 }

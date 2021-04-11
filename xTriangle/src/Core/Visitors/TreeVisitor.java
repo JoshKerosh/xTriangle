@@ -43,14 +43,19 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -76,7 +81,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * Generates DefaultMutableTreeNodes, used to draw a JTree.
  *
- * @author Luis Leopoldo Pérez <luiperpe@ns.isi.ulatina.ac.cr>
+ * @author Luis Leopoldo Pï¿½rez <luiperpe@ns.isi.ulatina.ac.cr>
  */
 public class TreeVisitor implements Visitor {
       
@@ -437,4 +442,75 @@ public class TreeVisitor implements Visitor {
         return(t);             
     }
     // </editor-fold>
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //SequentialProcFuncs
+    //
+    //////////////////////////
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+      return (createBinary("Sequential ProcFunc.", ast.PF1, ast.PF2));
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveProc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+      return (createTernary("Recursive Proc.", ast.I, ast.FPS, ast.C));
+    }
+
+    @Override
+    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveFunc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+      return (createQuaternary("Recursive Func.", ast.I, ast.FPS, ast.TD, ast.E));
+    }
+
+    @Override
+    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      return (createUnary("Recursive Declaration.", ast.PF));
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //PrivateDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+      return (createBinary("Privare Declaration.", ast.D1, ast.D2));
+    }
+
 }

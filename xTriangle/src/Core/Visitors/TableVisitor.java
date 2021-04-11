@@ -43,14 +43,19 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -84,7 +89,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * Generates a DefaultTableModel, used to draw a Jable.
  *
- * @author Luis Leopoldo Pérez <luiperpe@ns.isi.ulatina.ac.cr>
+ * @author Luis Leopoldo Pï¿½rez <luiperpe@ns.isi.ulatina.ac.cr>
  */
 public class TableVisitor implements Visitor {
     
@@ -622,4 +627,82 @@ public class TableVisitor implements Visitor {
   // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private DefaultTableModel model;
     // </editor-fold>
+
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //SequentialProcFuncs
+    //
+    //////////////////////////
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visit(this, null);
+      ast.PF2.visit(this, null);
+      return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visitSelf(this, null);
+      ast.PF2.visitSelf(this, null);
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveProc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    @Override
+    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveFunc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+      return null;
+    }
+
+    @Override
+    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+      return null;
+    }
+    
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      ast.PF.visit(this, null);
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //PrivateDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+      return null;
+    }
+
+
 }

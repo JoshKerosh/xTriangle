@@ -56,6 +56,7 @@ final class Token extends Object {
       ", position=" + position;
   }
 
+  // Marcos Mendez 2021-04-10
   // Token classes...
 
   public static final int
@@ -118,9 +119,10 @@ final class Token extends Object {
 
     // new punctuation tokens ...
     DOLAR = 46,
-    VBAR  = 47,
+    PIPE  = 47,
     DDOT  = 48;
 
+  // Marcos Mendez 2021-04-10
   private static String[] tokenTable = new String[] {
     "<int>",
     "<char>",

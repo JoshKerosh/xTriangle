@@ -64,8 +64,11 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -937,5 +940,34 @@ public final class Checker implements Visitor {
     StdEnvironment.equalDecl = declareStdBinaryOp("=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
     StdEnvironment.unequalDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
 
+  }
+
+
+  //NEW
+  @Override
+  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+    ast.PF1.visit(this, null);
+		ast.PF2.visit(this, null);
+		return null;
+  }
+
+  @Override
+  public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast); 
+    if(ast.duplicated){
+      reporter.reportError("identifier \"%\" already declared.", 
+                          ast.I.spelling, ast.position);
+    }
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast);
+    if(ast.duplicated){
+      reporter.reportError("identifier \"%\" already declared.", 
+                          ast.I.spelling, ast.position);
+    }
+    return null;
   }
 }

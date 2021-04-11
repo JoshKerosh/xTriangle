@@ -58,12 +58,17 @@ import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
+import Triangle.AbstractSyntaxTrees.ProcFunc;
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -591,10 +596,10 @@ public class Parser {
 
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
-    declarationAST = parseSingleDeclaration();
+    declarationAST = parseCompoundDeclaration(); //NEW
     while (currentToken.kind == Token.SEMICOLON) {
       acceptIt();
-      Declaration d2AST = parseSingleDeclaration();
+      Declaration d2AST = parseCompoundDeclaration(); //NEW
       finish(declarationPos);
       declarationAST = new SequentialDeclaration(declarationAST, d2AST,
         declarationPos);
@@ -958,5 +963,98 @@ public class Parser {
       fieldAST = new SingleFieldTypeDenoter(iAST, tAST, fieldPos);
     }
     return fieldAST;
+  }
+
+
+//NEW
+///////////////////////////////////////////////////////////////////////////////
+//
+// COMPOUND-DECLARATION 
+//
+///////////////////////////////////////////////////////////////////////////////
+
+  Declaration parseCompoundDeclaration() throws SyntaxError {
+    Declaration declarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+    
+    switch(currentToken.kind){
+      case Token.RECURSIVE:
+      {
+        acceptIt();
+        ProcFuncs procFuncsAST = parseProcFuncs();
+        accept(Token.END);
+        finish(declarationPos);
+        //declarationAST = new ResursiveDeclaration(procFuncsAST, declarationPos);
+      }
+      break;
+      default:
+        return declarationAST = parseSingleDeclaration();
+    }
+    return declarationAST;
+  }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Proc-Funcs
+//
+///////////////////////////////////////////////////////////////////////////////
+
+  ProcFuncs parseProcFuncs() throws SyntaxError{
+    ProcFuncs ProcFuncsAST = null; // in case there's a syntactic error
+
+    SourcePosition propFuncsPos = new SourcePosition();
+    start(propFuncsPos);
+    ProcFuncs secondProcFuncsAST = parseProcFunc();
+    while (currentToken.kind == Token.PIPE) { //"|"
+      acceptIt();
+      ProcFuncs thirdProcFuncsAST = parseProcFunc();
+      secondProcFuncsAST = new SequentialProcFuncs(secondProcFuncsAST, thirdProcFuncsAST, propFuncsPos);
+    }
+    finish(propFuncsPos);
+    ProcFuncsAST = secondProcFuncsAST;
+    return ProcFuncsAST;
+  }
+
+  ProcFuncs parseProcFunc() throws SyntaxError {
+    ProcFuncs procFuncsAST = null; // in case there's a syntactic error
+
+    SourcePosition procFuncPos = new SourcePosition();
+    start(procFuncPos);
+    switch(currentToken.kind){
+      case Token.PROC:
+        {
+          acceptIt();
+          Identifier iAST = parseIdentifier();
+          accept(Token.LPAREN);
+          FormalParameterSequence fpsAST = parseFormalParameterSequence();
+          accept(Token.RPAREN);
+          accept(Token.IS);
+          Command cmdAST = parseCommand();
+          accept(Token.END);
+          finish(procFuncPos);
+          procFuncsAST = new RecursiveProc(iAST, fpsAST, cmdAST, procFuncPos);
+        }
+        break;
+      case Token.FUNC:
+      {
+        acceptIt();
+        Identifier iAST = parseIdentifier();
+        accept(Token.LPAREN);
+        FormalParameterSequence fpsAST = parseFormalParameterSequence();
+        accept(Token.RPAREN);
+        accept(Token.COLON);
+        TypeDenoter tAST = parseTypeDenoter();
+        accept(Token.IS);
+        Expression eAST = parseExpression();
+        procFuncsAST = new RecursiveFunc(iAST, fpsAST, tAST, eAST, procFuncPos);
+      }
+      break;
+      default:
+      syntacticError("\"%\" cannot start a type denoter",
+                    currentToken.spelling);
+    }
+    return procFuncsAST;
   }
 }

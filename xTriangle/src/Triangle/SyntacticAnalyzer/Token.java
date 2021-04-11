@@ -118,7 +118,7 @@ final class Token extends Object {
 
     // new punctuation tokens ...
     DOLAR = 46,
-    VBAR  = 47,
+    PIPE  = 47,
     DDOT  = 48;
 
   private static String[] tokenTable = new String[] {

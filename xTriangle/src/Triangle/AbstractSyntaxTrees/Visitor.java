@@ -104,4 +104,9 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
 
+  //New visitors
+  public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
+  public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
+  public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
+
 }

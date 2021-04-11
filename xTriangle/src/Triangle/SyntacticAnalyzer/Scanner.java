@@ -186,7 +186,7 @@ public final class Scanner {
     
     case '|': //new
       takeIt();
-      return Token.VBAR;
+      return Token.PIPE;
 
     case SourceFile.EOT:
       return Token.EOT;

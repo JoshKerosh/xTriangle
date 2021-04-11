@@ -68,7 +68,6 @@ final class Token extends Object {
 
     // reserved words - must be in alphabetical order...
     ARRAY		= 4,
-    BEGIN		= 5,
     CONST		= 6,
     DO			= 7,
     ELSE		= 8,
@@ -103,7 +102,12 @@ final class Token extends Object {
 
     // special tokens...
     EOT			= 33,
-    ERROR		= 34;
+    ERROR		= 34,
+
+    // new punctuation tokens ...
+    DOLAR = 35,
+    VBAR  = 36,
+    DDOT  = 37;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -111,7 +115,6 @@ final class Token extends Object {
     "<identifier>",
     "<operator>",
     "array",
-    "begin",
     "const",
     "do",
     "else",
@@ -139,6 +142,9 @@ final class Token extends Object {
     "]",
     "{",
     "}",
+    "$",  //new
+    "|",  //new
+    "..", //new
     "",
     "<error>"
   };

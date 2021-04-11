@@ -725,6 +725,4 @@ public class TableVisitor implements Visitor {
       ast.E.visit(this, null);
       return null;
     }
-
-
 }

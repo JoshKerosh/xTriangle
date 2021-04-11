@@ -1079,7 +1079,6 @@ public final class Encoder implements Visitor {
   //////////////////////////
   @Override
   public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
-    // TODO Auto-generated method stub
     return null;
   }
 }

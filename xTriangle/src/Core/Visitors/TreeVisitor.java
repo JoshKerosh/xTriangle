@@ -452,7 +452,7 @@ public class TreeVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
-      return (createBinary("Sequential ProcFunc.", ast.PF1, ast.PF2));
+      return(createBinary("Sequential ProcFunc.", ast.PF1, ast.PF2));
     }
 
     @Override
@@ -524,5 +524,4 @@ public class TreeVisitor implements Visitor {
     public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
       return(createBinary("Assigned Declaration.", ast.I, ast.E));
     }
-
 }

@@ -63,6 +63,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -1032,6 +1033,7 @@ public final class Encoder implements Visitor {
 
   //////////////////////////
   //
+  //Marcos Mendez 2021-04-11
   //SequentialProcFuncs
   //
   //////////////////////////
@@ -1048,11 +1050,23 @@ public final class Encoder implements Visitor {
 
   //////////////////////////
   //
+  //Marcos Mendez 2021-04-11
   //SequentialProcFuncs
   //
   //////////////////////////
   @Override
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //PrivateDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
     return null;
   }
 }

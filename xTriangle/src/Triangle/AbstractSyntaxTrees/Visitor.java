@@ -104,19 +104,22 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
 
-  //SequentialProcFuncs
+  //SequentialProcFuncs Marcos Mendez 2021-04-11
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
   public abstract Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o);
 
-  //RecursiveProc
+  //RecursiveProc Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
   public abstract Object visitRecursiveProcSelf(RecursiveProc ast, Object o);
 
-  //RecursiveFunc
+  //RecursiveFunc Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
   public abstract Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o);
 
-  //RecursiveDeclaration
+  //RecursiveDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
+
+  //PrivateDeclaration Marcos Mendez 2021-04-11
+  public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);
 
 }

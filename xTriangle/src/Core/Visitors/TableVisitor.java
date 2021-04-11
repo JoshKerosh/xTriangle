@@ -43,6 +43,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -630,6 +631,7 @@ public class TableVisitor implements Visitor {
 
     //////////////////////////
     //
+    //Marcos Mendez 2021-04-11
     //SequentialProcFuncs
     //
     //////////////////////////
@@ -649,6 +651,7 @@ public class TableVisitor implements Visitor {
 
     //////////////////////////
     //
+    //Marcos Mendez 2021-04-11
     //RecursiveProc
     //
     //////////////////////////
@@ -664,6 +667,7 @@ public class TableVisitor implements Visitor {
 
     //////////////////////////
     //
+    //Marcos Mendez 2021-04-11
     //RecursiveFunc
     //
     //////////////////////////
@@ -679,12 +683,24 @@ public class TableVisitor implements Visitor {
     
     //////////////////////////
     //
+    //Marcos Mendez 2021-04-11
     //RecursiveDeclaration
     //
     //////////////////////////
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
       ast.PF.visit(this, null);
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //PrivateDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
       return null;
     }
 

@@ -55,6 +55,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -969,7 +970,7 @@ public class Parser {
 
 //NEW
 ///////////////////////////////////////////////////////////////////////////////
-//
+// Marcos Mendez 2021-04-11
 // COMPOUND-DECLARATION 
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -998,7 +999,7 @@ public class Parser {
         Declaration declaration2AST = parseDeclaration();
         accept(Token.END);
         finish(declarationPos);
-        //declarationAST = new PrivateDeclaration(procFuncsAST, declarationPos);
+        declarationAST = new PrivateDeclaration(declaration1AST, declaration2AST, declarationPos);
       }
       break;
       default:
@@ -1009,7 +1010,8 @@ public class Parser {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Proc-Funcs
+// Marcos Mendez 2021-04-11
+// PROC-FUNCS
 //
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -58,6 +58,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -946,6 +947,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
+  //Marcos Mendez 2021-04-11
   //SequentialProcFuncs
   //
   //////////////////////////
@@ -965,6 +967,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
+  //Marcos Mendez 2021-04-11
   //RecursiveProc
   //
   //////////////////////////
@@ -989,6 +992,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
+  //Marcos Mendez 2021-04-11
   //RecursiveFunc
   //
   //////////////////////////
@@ -1020,6 +1024,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
+  //Marcos Mendez 2021-04-11
   //RecursiveDeclaration
   //
   //////////////////////////
@@ -1027,6 +1032,23 @@ public final class Checker implements Visitor {
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
     ast.PF.visit(this, null);
     ast.PF.visitSelf(this, null);
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //PrivateDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+    IdentificationTable tempTable = idTable.copy();
+    ast.D1.visit(this, null); //visit in idTable
+    tempTable.beginLocalDeclaration(idTable); //make it local
+    idTable = tempTable; //idTable has a copy of itself as local
+    ast.D2.visit(this, null);
+    idTable.endLocalDeclaration();
     return null;
   }
 }

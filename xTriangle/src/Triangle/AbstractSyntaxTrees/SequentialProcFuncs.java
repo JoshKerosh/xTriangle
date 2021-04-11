@@ -24,8 +24,5 @@ public class SequentialProcFuncs extends ProcFuncs{
     return v.visitSequentialProcFuncsSelf(this, o);
   }
 
-  public ProcFuncs PF1;
-  public ProcFuncs PF2;
-
-
+  public ProcFuncs PF1, PF2;
 }

@@ -20,6 +20,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignedDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -1013,9 +1014,9 @@ public final class Checker implements Visitor {
       reporter.reportError("identifier \"%\" already declared.", 
       ast.I.spelling, ast.position);
     }
-    TypeDenoter eTD = (TypeDenoter) ast.E.visit(this, null);
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     idTable.closeScope();
-    if(ast.TD.visit(this, null).equals(eTD) == false){
+    if(ast.TD.visit(this, null).equals(eType) == false){
       reporter.reportError("body of function \"%\" has wrong type",
                           ast.I.spelling, ast.E.position);
     }
@@ -1049,6 +1050,23 @@ public final class Checker implements Visitor {
     idTable = tempTable; //idTable has a copy of itself as local
     ast.D2.visit(this, null);
     idTable.endLocalDeclaration();
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //AssignedDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    idTable.enter(ast.I.spelling, ast);
+    if(ast.duplicated){
+      reporter.reportError("identifier \"%\" already declared",
+                          ast.I.spelling, ast.position);
+    }
     return null;
   }
 }

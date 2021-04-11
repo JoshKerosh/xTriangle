@@ -18,7 +18,13 @@ public class RecursiveProc extends ProcFuncs{
     return v.visitRecursiveProc(this, o);
   }
 
+  @Override
+  public Object visitSelf(Visitor v, Object o) {
+    return v.visitRecursiveProcSelf(this, o);
+  }
+
   public Identifier I;
   public FormalParameterSequence FPS;
   public Command C;
+
 }

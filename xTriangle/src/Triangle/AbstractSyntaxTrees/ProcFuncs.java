@@ -12,4 +12,5 @@ public abstract class ProcFuncs extends Declaration{
     super(thePosition);
   }
   
+  public abstract Object visitSelf(Visitor v, Object o);
 }

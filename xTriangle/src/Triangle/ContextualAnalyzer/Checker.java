@@ -64,6 +64,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
@@ -943,14 +944,30 @@ public final class Checker implements Visitor {
   }
 
 
-  //NEW
+  //////////////////////////
+  //
+  //SequentialProcFuncs
+  //
+  //////////////////////////
   @Override
   public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
     ast.PF1.visit(this, null);
 		ast.PF2.visit(this, null);
 		return null;
   }
+  
+  @Override
+  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+    ast.PF1.visitSelf(this, null);
+    ast.PF2.visitSelf(this, null);
+    return null;
+  }
 
+  //////////////////////////
+  //
+  //RecursiveProc
+  //
+  //////////////////////////
   @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
     idTable.enter(ast.I.spelling, ast); 
@@ -962,12 +979,54 @@ public final class Checker implements Visitor {
   }
 
   @Override
+  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+    idTable.openScope();
+    ast.FPS.visit(this, null);
+    ast.C.visit(this, null);
+    idTable.closeScope();
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //RecursiveFunc
+  //
+  //////////////////////////
+  @Override
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
     idTable.enter(ast.I.spelling, ast);
     if(ast.duplicated){
       reporter.reportError("identifier \"%\" already declared.", 
                           ast.I.spelling, ast.position);
     }
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast);
+    if(ast.duplicated){
+      reporter.reportError("identifier \"%\" already declared.", 
+      ast.I.spelling, ast.position);
+    }
+    TypeDenoter eTD = (TypeDenoter) ast.E.visit(this, null);
+    idTable.closeScope();
+    if(ast.TD.visit(this, null).equals(eTD) == false){
+      reporter.reportError("body of function \"%\" has wrong type",
+                          ast.I.spelling, ast.E.position);
+    }
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //RecursiveDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    ast.PF.visit(this, null);
+    ast.PF.visitSelf(this, null);
     return null;
   }
 }

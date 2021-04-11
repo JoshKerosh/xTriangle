@@ -49,6 +49,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
@@ -627,7 +628,11 @@ public class TableVisitor implements Visitor {
     // </editor-fold>
 
 
-    //NEW
+    //////////////////////////
+    //
+    //SequentialProcFuncs
+    //
+    //////////////////////////
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
       ast.PF1.visit(this, null);
@@ -636,12 +641,52 @@ public class TableVisitor implements Visitor {
     }
 
     @Override
+    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visitSelf(this, null);
+      ast.PF2.visitSelf(this, null);
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //RecursiveProc
+    //
+    //////////////////////////
+    @Override
     public Object visitRecursiveProc(RecursiveProc ast, Object o) {
       return null;
     }
 
     @Override
+    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //RecursiveFunc
+    //
+    //////////////////////////
+    @Override
     public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
       return null;
     }
+
+    @Override
+    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+      return null;
+    }
+    
+    //////////////////////////
+    //
+    //RecursiveDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      ast.PF.visit(this, null);
+      return null;
+    }
+
+
 }

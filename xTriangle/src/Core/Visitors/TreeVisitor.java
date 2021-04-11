@@ -49,6 +49,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
@@ -441,18 +442,59 @@ public class TreeVisitor implements Visitor {
     }
     // </editor-fold>
 
+    //////////////////////////
+    //
+    //SequentialProcFuncs
+    //
+    //////////////////////////
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
       return (createBinary("Sequential ProcFunc.", ast.PF1, ast.PF2));
     }
 
     @Override
+    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //RecursiveProc
+    //
+    //////////////////////////
+    @Override
     public Object visitRecursiveProc(RecursiveProc ast, Object o) {
       return (createTernary("Recursive Proc.", ast.I, ast.FPS, ast.C));
     }
 
     @Override
+    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //RecursiveFunc
+    //
+    //////////////////////////
+    @Override
     public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
       return (createQuaternary("Recursive Func.", ast.I, ast.FPS, ast.TD, ast.E));
     }
+
+    @Override
+    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //RecursiveDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      return (createUnary("Recursive Declaration.", ast.PF));
+    }
+
 }

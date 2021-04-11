@@ -64,6 +64,7 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
@@ -986,7 +987,18 @@ public class Parser {
         ProcFuncs procFuncsAST = parseProcFuncs();
         accept(Token.END);
         finish(declarationPos);
-        //declarationAST = new ResursiveDeclaration(procFuncsAST, declarationPos);
+        declarationAST = new RecursiveDeclaration(procFuncsAST, declarationPos);
+      }
+      break;
+      case Token.PRIVATE:
+      {
+        acceptIt();
+        Declaration declaration1AST = parseDeclaration();
+        accept(Token.IN);
+        Declaration declaration2AST = parseDeclaration();
+        accept(Token.END);
+        finish(declarationPos);
+        //declarationAST = new PrivateDeclaration(procFuncsAST, declarationPos);
       }
       break;
       default:

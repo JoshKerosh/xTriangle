@@ -104,9 +104,19 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
 
-  //New visitors
+  //SequentialProcFuncs
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
+  public abstract Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o);
+
+  //RecursiveProc
   public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
+  public abstract Object visitRecursiveProcSelf(RecursiveProc ast, Object o);
+
+  //RecursiveFunc
   public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
+  public abstract Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o);
+
+  //RecursiveDeclaration
+  public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
 
 }

@@ -340,7 +340,7 @@ public class Parser {
             }
             break;
             default:
-            syntacticError("\"%\" is not else/elseif",
+            syntacticError("\"%\": expecting else/elseif",
                                 currentToken.spelling);
             break;
                    
@@ -399,7 +399,7 @@ public class Parser {
                     break;
                     default:
                     {
-                        syntacticError("\"%\":  expencting while/until",
+                        syntacticError("\"%\": expencting while/until",
                                 currentToken.spelling);
                     }
                     break;
@@ -438,7 +438,7 @@ public class Parser {
                     }
                     break;    
                     default:
-                        syntacticError("\"%\":  expencting while/until",
+                        syntacticError("\"%\": expencting while/until",
                                 currentToken.spelling);
                     break;
                 } 
@@ -452,18 +452,18 @@ public class Parser {
         
     }
     break; 
-     
+    case Token.NOTHING:
+    {
+        acceptIt();
+        commandAST = new EmptyCommand(commandPos);
+        finish(commandPos);  
+    }
+    /*
     case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-    case Token.EOT:
-    case Token.NOTHING:
-    {
-        acceptIt();
-        finish(commandPos);  
-    }
-        
+    */
     //** eliminar comando vacio
     //commandAST = new EmptyCommand(commandPos);
     break;

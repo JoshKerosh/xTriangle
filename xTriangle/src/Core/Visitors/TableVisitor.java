@@ -9,6 +9,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignedDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -758,5 +759,24 @@ public class TableVisitor implements Visitor {
       return null;
     }
 
-
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //AssignedDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
+      try {
+      addIdentifier(ast.I.spelling, 
+                  "KnownAddress", 
+                  (ast.entity!=null?ast.entity.size:0), 
+                  ((KnownRoutine)ast.entity).address.level, 
+                  ((KnownRoutine)ast.entity).address.displacement,
+                  -1);
+      }catch (NullPointerException e) { }
+      ast.I.visit(this, null);
+      ast.E.visit(this, null);
+      return null;
+    }
 }

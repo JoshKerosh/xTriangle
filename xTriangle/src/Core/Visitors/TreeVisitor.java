@@ -9,6 +9,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignedDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -504,7 +505,7 @@ public class TreeVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
-      return (createBinary("Sequential ProcFunc.", ast.PF1, ast.PF2));
+      return(createBinary("Sequential ProcFunc.", ast.PF1, ast.PF2));
     }
 
     @Override
@@ -552,7 +553,7 @@ public class TreeVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-      return (createUnary("Recursive Declaration.", ast.PF));
+      return(createUnary("Recursive Declaration.", ast.PF));
     }
 
     //////////////////////////
@@ -563,7 +564,17 @@ public class TreeVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-      return (createBinary("Privare Declaration.", ast.D1, ast.D2));
+      return(createBinary("Privare Declaration.", ast.D1, ast.D2));
     }
 
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //AssignedDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
+      return(createBinary("Assigned Declaration.", ast.I, ast.E));
+    }
 }

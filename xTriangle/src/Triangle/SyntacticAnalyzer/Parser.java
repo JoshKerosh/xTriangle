@@ -313,7 +313,7 @@ public class Parser {
         acceptIt();
         Declaration dAST = parseDeclaration();
         accept(Token.IN);
-        //cambia parseSingleComando por parseComand
+        //cambia parseSingleComand por parseComand
         Command cAST = parseCommand();
         accept(Token.END);
         finish(commandPos);

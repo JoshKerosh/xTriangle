@@ -49,6 +49,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -118,6 +124,31 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("LetCom.", ast.D, ast.C);
   }
 
+  // -- Nuevos comandos Loop
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      return layoutBinary("LoopDoUntilCom.", ast.C, ast.E);
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      return layoutBinary("LoopDoWhileCom.", ast.C, ast.E);
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      return layoutQuinary("LoopForUntilCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      return layoutQuinary("LoopForWhileCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      return layoutBinary("LoopUntilCom.", ast.E, ast.C);
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      return layoutBinary("LoopWhileCom.", ast.E, ast.C);
+  }
+  
   public Object visitSequentialCommand(SequentialCommand ast, Object obj) {
     return layoutBinary("Seq.Com.", ast.C1, ast.C2);
   }
@@ -421,6 +452,19 @@ public class LayoutVisitor implements Visitor {
     DrawingTree d3 = (DrawingTree) child3.visit(this, null);
     DrawingTree d4 = (DrawingTree) child4.visit(this, null);
     dt.setChildren(new DrawingTree[] {d1, d2, d3, d4});
+    attachParent(dt, join(dt));
+    return dt;
+  }
+  //< Extended >
+  private DrawingTree layoutQuinary (String name, AST child1, AST child2,
+                                        AST child3, AST child4, AST child5) {
+    DrawingTree dt = layoutCaption(name);
+    DrawingTree d1 = (DrawingTree) child1.visit(this, null);
+    DrawingTree d2 = (DrawingTree) child2.visit(this, null);
+    DrawingTree d3 = (DrawingTree) child3.visit(this, null);
+    DrawingTree d4 = (DrawingTree) child4.visit(this, null);
+    DrawingTree d5 = (DrawingTree) child5.visit(this, null);
+    dt.setChildren(new DrawingTree[] {d1, d2, d3, d4, d5});
     attachParent(dt, join(dt));
     return dt;
   }

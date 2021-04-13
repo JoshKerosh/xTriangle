@@ -57,6 +57,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -142,7 +148,31 @@ public final class Encoder implements Visitor {
       emit(Machine.POPop, 0, 0, extraSize);
     return null;
   }
-
+  
+// -- Nuevos comandos Loop
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      return null;
+  }
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {
     ast.C1.visit(this, o);
     ast.C2.visit(this, o);

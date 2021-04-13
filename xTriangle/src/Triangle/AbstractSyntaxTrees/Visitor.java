@@ -10,6 +10,7 @@
  * This software is provided free for educational use only. It may
  * not be used for commercial purposes without the prior written permission
  * of the authors.
+ *
  */
 
 package Triangle.AbstractSyntaxTrees;
@@ -19,12 +20,20 @@ public interface Visitor {
   // Commands
   public abstract Object visitAssignCommand(AssignCommand ast, Object o);
   public abstract Object visitCallCommand(CallCommand ast, Object o);
-  public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);
+  public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);//eliminado ** no se usa
   public abstract Object visitIfCommand(IfCommand ast, Object o);
   public abstract Object visitLetCommand(LetCommand ast, Object o);
+    /*ojo
+    * Checker, TableVisitor, TreeVisitor, LayoutVisitor, Encoder, 
+    */
+  public abstract Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o);//nuevo
+  public abstract Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o);//nuevo
+  public abstract Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o);//nuevo
+  public abstract Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o);//nuevo
+  public abstract Object visitLoopUntilCommand(LoopUntilCommand ast, Object o);//nuevo
+  public abstract Object visitLoopWhileCommand(LoopWhileCommand ast, Object o);//nuevo
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
-
 
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);

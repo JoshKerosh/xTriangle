@@ -37,6 +37,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -112,7 +118,7 @@ public class TableVisitor implements Visitor {
       
       return(null);
   }
-  
+  // comando eliminado
   public Object visitEmptyCommand(EmptyCommand ast, Object o) { 
       return(null);
   }
@@ -130,6 +136,54 @@ public class TableVisitor implements Visitor {
       ast.C.visit(this, null);
       
       return(null);
+  }
+  // -- Nuevos comandos Loop
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
   }
   
   public Object visitSequentialCommand(SequentialCommand ast, Object o) { 

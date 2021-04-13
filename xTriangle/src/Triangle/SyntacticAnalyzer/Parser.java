@@ -49,6 +49,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -299,55 +305,172 @@ public class Parser {
         }
       }
       break;
-      /*
-    case Token.BEGIN:
-      acceptIt();
-      commandAST = parseCommand();
-      accept(Token.END);
-      break;
 
+    //Nuevo Comando Let    
     case Token.LET:
-      {
+    {
         acceptIt();
         Declaration dAST = parseDeclaration();
         accept(Token.IN);
-        Command cAST = parseSingleCommand();
+        //cambia parseSingleComando por parseComand
+        Command cAST = parseCommand();
+        accept(Token.END);
         finish(commandPos);
         commandAST = new LetCommand(dAST, cAST, commandPos);
-      }
+    } 
       break;
-
+    //Nuevo Comando If
     case Token.IF:
-      {
-        acceptIt();
+    case Token.ELSEIF:
+    {
+       acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseSingleCommand();
-        accept(Token.ELSE);
-        Command c2AST = parseSingleCommand();
-        finish(commandPos);
-        commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
-      }
-      break;
-
-    case Token.WHILE:
-      {
+        Command c1AST = parseCommand();
+        //agrega elseif
+        Command c2AST;
+        switch(currentToken.kind){
+            case Token.ELSEIF:
+            {
+                c2AST = parseCommand();
+                finish(commandPos);
+                commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+            }
+            break;
+            case Token.ELSE:
+            {
+                accept(Token.ELSE); 
+                c2AST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+            }
+            break;
+            default:
+            syntacticError("\"%\": expecting else/elseif",
+                                currentToken.spelling);
+            break;
+                   
+        }
+    }  
+    break; 
+    //Nuevo Comando Loop
+    case Token.LOOP:
+    {
+       acceptIt();
+        switch(currentToken.kind){
+            case Token.WHILE:
+            {
+               acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.DO);
+                Command cAST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new LoopWhileCommand(eAST, cAST, commandPos); 
+            }
+                break;
+            case Token.UNTIL:
+            {
+                acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.DO);
+                Command cAST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new LoopUntilCommand(eAST, cAST, commandPos);
+            }
+            break;
+            case Token.DO:
+            {
+               acceptIt();
+                Command cAST = parseCommand();
+                switch(currentToken.kind){
+                    case Token.WHILE:
+                    {
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new LoopDoWhileCommand(cAST, eAST, commandPos);
+                    }
+                    break;
+                    case Token.UNTIL:
+                    {
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new LoopDoUntilCommand(cAST, eAST, commandPos);
+                    }
+                    break;
+                    default:
+                    {
+                        syntacticError("\"%\": expencting while/until",
+                                currentToken.spelling);
+                    }
+                    break;
+                }
+            }
+            break;
+            case Token.FOR:
+            {
+                acceptIt();
+                Identifier iAST = parseIdentifier();
+                accept(Token.FROM);
+                Expression e1AST = parseExpression();
+                accept(Token.TO);
+                Expression e2AST = parseExpression();
+                switch(currentToken.kind){
+                    case Token.WHILE:
+                    {
+                        acceptIt();
+                        Expression e3AST = parseExpression();
+                        accept(Token.DO);
+                        Command cAST = parseCommand();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new LoopForWhileCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);  
+                    }
+                    break;
+                    case Token.UNTIL:
+                    {
+                        acceptIt();
+                        Expression e3AST = parseExpression();
+                        accept(Token.DO);
+                        Command cAST = parseCommand();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new LoopForUntilCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+                    }
+                    break;    
+                    default:
+                        syntacticError("\"%\": expencting while/until",
+                                currentToken.spelling);
+                    break;
+                } 
+            } 
+            break;
+            default:
+                syntacticError("\"%\" cannot declare a loop command",
+                                currentToken.spelling);
+            break;
+        }
+        
+    }
+    break; 
+    case Token.NOTHING:
+    {
         acceptIt();
-        Expression eAST = parseExpression();
-        accept(Token.DO);
-        Command cAST = parseSingleCommand();
-        finish(commandPos);
-        commandAST = new WhileCommand(eAST, cAST, commandPos);
-      }
-      break;
-    */
+        commandAST = new EmptyCommand(commandPos);
+        finish(commandPos);  
+    }
+    /*
     case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-    case Token.EOT:
-
-    finish(commandPos);
+    */
     //** eliminar comando vacio
     //commandAST = new EmptyCommand(commandPos);
     break;

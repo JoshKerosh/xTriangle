@@ -52,6 +52,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -118,7 +124,8 @@ public final class Checker implements Visitor {
                            ast.I.spelling, ast.I.position);
     return null;
   }
-
+  
+// comando eliminado
   public Object visitEmptyCommand(EmptyCommand ast, Object o) {
     return null;
   }
@@ -138,6 +145,31 @@ public final class Checker implements Visitor {
     ast.C.visit(this, null);
     idTable.closeScope();
     return null;
+  }
+  
+  // -- Nuevos comandos Loop //incomplete
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      return null;
   }
 
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {

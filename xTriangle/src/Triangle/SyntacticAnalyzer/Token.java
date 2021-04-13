@@ -70,48 +70,57 @@ final class Token extends Object {
     ARRAY		= 4,
     BEGIN		= 5,
     CONST		= 6,
-    DO			= 7,
-    ELSE		= 8,
-    ELSEIF              = 9,//nuevo
-    END			= 10,
-    FOR                 = 11,//nuevo
-    FROM                = 12,//nuevo
-    FUNC		= 13,
-    IF			= 14,
-    IN			= 15,
-    LET			= 16,
-    LOOP                = 17,//nuevo
-    NOTHING             = 18,//nuevo  
-    OF			= 19,
-    PROC		= 20,
-    RECORD		= 21,
-    THEN		= 22,
-    TO                  = 23,//nuevo
-    TYPE		= 24,
-    UNTIL               = 25,//nuevo
-    VAR			= 26,
-    WHILE		= 27,
+    CHOOSE              = 7,//nuevo
+    DO			= 8,
+    ELSE		= 9,
+    ELSEIF              = 10,//nuevo
+    END			= 11,
+    FOR                 = 12,//nuevo
+    FROM                = 13,//nuevo
+    FUNC		= 14,
+    IF			= 15,
+    IN			= 16,
+    LET			= 17,
+    LOOP                = 18,//nuevo
+    NOTHING             = 19,//nuevo  
+    OF			= 20,
+    PACKAGE             = 21,//nuevo
+    PRIVATE             = 22,//nuevo
+    PROC		= 23,
+    RECORD		= 24,
+    RECURSIVE           = 25,//nuevo
+    THEN		= 26,
+    TO                  = 27,//nuevo
+    TYPE		= 28,
+    UNTIL               = 29,//nuevo
+    VAR			= 30,
+    WHEN                = 31,//nuevo
+    WHILE		= 32,
 
     // punctuation...
-    DOT			= 28,
-    COLON		= 29,
-    SEMICOLON           = 30,
-    COMMA		= 31,
-    BECOMES		= 32,
-    IS			= 36,
+    DOT			= 33,
+    COLON		= 34,
+    SEMICOLON           = 35,
+    COMMA		= 36,
+    BECOMES		= 37,
+    IS			= 38,
 
     // brackets...
-    LPAREN		= 34,
-    RPAREN		= 35,
-    LBRACKET            = 36,
-    RBRACKET            = 37,
-    LCURLY		= 38,
-    RCURLY		= 39,
+    LPAREN		= 39,
+    RPAREN		= 40,
+    LBRACKET            = 41,
+    RBRACKET            = 42,
+    LCURLY		= 43,
+    RCURLY		= 44,
 
     // special tokens...
-    EOT			= 40,
-    ERROR		= 41;
+    EOT			= 45,
+    ERROR		= 46,
 
+    // < Extended >
+    DDOT                = 47,//nuevo
+    DOLAR               = 48,
+    OR                  = 49;//nuevo
   private static String[] tokenTable = new String[] {
     "<int>",
     "<char>",
@@ -120,6 +129,7 @@ final class Token extends Object {
     "array",
     "begin",
     "const",
+    "choose",
     "do",
     "else",
     "elseif",
@@ -133,13 +143,17 @@ final class Token extends Object {
     "loop",
     "nothing",
     "of",
+    "package",
+    "private",
     "proc",
     "record",
+    "recursive",
     "then",
     "to",
     "type",
     "until",
     "var",
+    "when",
     "while",
     ".",
     ":",
@@ -154,7 +168,10 @@ final class Token extends Object {
     "{",
     "}",
     "",
-    "<error>"
+    "<error>",
+    "..",
+    "$",
+    "|",
   };
 
   private final static int	firstReservedWord = Token.ARRAY,

@@ -1,0 +1,4 @@
+loop 
+until true 
+do x:= 1 
+end

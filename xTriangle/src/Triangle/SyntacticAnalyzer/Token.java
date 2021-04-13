@@ -72,38 +72,45 @@ final class Token extends Object {
     CONST		= 6,
     DO			= 7,
     ELSE		= 8,
-    END			= 9,
-    FUNC		= 10,
-    IF			= 11,
-    IN			= 12,
-    LET			= 13,
-    OF			= 14,
-    PROC		= 15,
-    RECORD		= 16,
-    THEN		= 17,
-    TYPE		= 18,
-    VAR			= 19,
-    WHILE		= 20,
+    ELSEIF              = 9,//nuevo
+    END			= 10,
+    FOR                 = 11,//nuevo
+    FROM                = 12,//nuevo
+    FUNC		= 13,
+    IF			= 14,
+    IN			= 15,
+    LET			= 16,
+    LOOP                = 17,//nuevo
+    NOTHING             = 18,//nuevo  
+    OF			= 19,
+    PROC		= 20,
+    RECORD		= 21,
+    THEN		= 22,
+    TO                  = 23,//nuevo
+    TYPE		= 24,
+    UNTIL               = 25,//nuevo
+    VAR			= 26,
+    WHILE		= 27,
 
     // punctuation...
-    DOT			= 21,
-    COLON		= 22,
-    SEMICOLON	= 23,
-    COMMA		= 24,
-    BECOMES		= 25,
-    IS			= 26,
+    DOT			= 28,
+    COLON		= 29,
+    SEMICOLON           = 30,
+    COMMA		= 31,
+    BECOMES		= 32,
+    IS			= 36,
 
     // brackets...
-    LPAREN		= 27,
-    RPAREN		= 28,
-    LBRACKET	= 29,
-    RBRACKET	= 30,
-    LCURLY		= 31,
-    RCURLY		= 32,
+    LPAREN		= 34,
+    RPAREN		= 35,
+    LBRACKET            = 36,
+    RBRACKET            = 37,
+    LCURLY		= 38,
+    RCURLY		= 39,
 
     // special tokens...
-    EOT			= 33,
-    ERROR		= 34;
+    EOT			= 40,
+    ERROR		= 41;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -115,16 +122,23 @@ final class Token extends Object {
     "const",
     "do",
     "else",
+    "elseif",
     "end",
+    "for",
+    "from",
     "func",
     "if",
     "in",
     "let",
+    "loop",
+    "nothing",
     "of",
     "proc",
     "record",
     "then",
+    "to",
     "type",
+    "until",
     "var",
     "while",
     ".",

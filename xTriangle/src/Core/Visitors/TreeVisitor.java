@@ -37,6 +37,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -96,6 +102,7 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Call Command", ast.I, ast.APS));
     }
     
+    // commando eliminado
     public Object visitEmptyCommand(EmptyCommand ast, Object o) {
         return(createNullary("Empty Command"));
     }
@@ -108,6 +115,31 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Let Command", ast.D, ast.C));
     }
     
+    // -- Nuevos comandos Loop
+    public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+        return (createBinary("LoopDoUntil Command", ast.C, ast.E));
+    }
+
+    public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+        return (createBinary("LoopDoWhile Command", ast.C, ast.E));
+    }
+
+    public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+        return (createQuinary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+    }
+
+    public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+        return (createQuinary("LoopForWhile Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+    }
+
+    public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+        return (createBinary("LoopUntil Command", ast.E, ast.C));
+    }
+
+    public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+        return (createBinary("LoopWhile Command", ast.E, ast.C));
+    }
+  
     public Object visitSequentialCommand(SequentialCommand ast, Object obj) {
         return(createBinary("Sequential Command", ast.C1, ast.C2));
     }
@@ -433,6 +465,27 @@ public class TreeVisitor implements Visitor {
         t.add((DefaultMutableTreeNode)child2.visit(this, null));
         t.add((DefaultMutableTreeNode)child3.visit(this, null));
         t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        
+        return(t);             
+    }
+    /**
+     * < Extended >
+     * Creates a quaternary tree node.
+     * @param caption The tree's caption (text to be shown when the tree is drawn).
+     * @param child1 The first children node.
+     * @param child2 The second children node.
+     * @param child3 The third children node.
+     * @param child4 The fourth children node.
+     * @param child5 The fifth children node.
+     * @return The tree node.
+     */
+    public DefaultMutableTreeNode createQuinary(String caption, AST child1, AST child2, AST child3, AST child4, AST child5) {
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
+        t.add((DefaultMutableTreeNode)child1.visit(this, null));
+        t.add((DefaultMutableTreeNode)child2.visit(this, null));
+        t.add((DefaultMutableTreeNode)child3.visit(this, null));
+        t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        t.add((DefaultMutableTreeNode)child5.visit(this, null));
         
         return(t);             
     }

@@ -28,7 +28,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
-import Triangle.AbstractSyntaxTrees.AssignedDeclaration;
+import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -1104,11 +1104,11 @@ public final class Encoder implements Visitor {
   //////////////////////////
   //
   //Marcos Mendez 2021-04-11
-  //AssignedDeclaration
+  //AssignVarDeclaration
   //
   //////////////////////////
   @Override
-  public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
+  public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     return null;
   }
 }

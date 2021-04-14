@@ -132,6 +132,6 @@ public interface Visitor {
   public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);
 
   //AssignDeclaration Marcos Mendez 2021-04-11
-  public abstract Object visitAssignedDeclaration(AssignedDeclaration ast, Object o);
+  public abstract Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o);
 
 }

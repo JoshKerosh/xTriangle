@@ -1,0 +1,8 @@
+let 	
+	private var x := 5
+	in
+	proc test () ~ nothing end
+	end
+in
+nothing
+end

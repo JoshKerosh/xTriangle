@@ -2,9 +2,9 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class AssignedDeclaration extends Declaration {
+public class AssignVarDeclaration extends Declaration {
 
-  public AssignedDeclaration(Identifier iAST, Expression eAST, SourcePosition thePosition) {
+  public AssignVarDeclaration(Identifier iAST, Expression eAST, SourcePosition thePosition) {
     super(thePosition);
     I = iAST;
     E = eAST;
@@ -12,8 +12,7 @@ public class AssignedDeclaration extends Declaration {
 
   @Override
   public Object visit(Visitor v, Object o) {
-    v.visitAssignedDeclaration(this, o);
-    return null;
+    return v.visitAssignVarDeclaration(this, o);
   }
   
   public Identifier I;

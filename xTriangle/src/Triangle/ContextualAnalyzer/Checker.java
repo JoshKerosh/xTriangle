@@ -20,7 +20,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
-import Triangle.AbstractSyntaxTrees.AssignedDeclaration;
+import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -1006,20 +1006,11 @@ public final class Checker implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
-    idTable.enter(ast.I.spelling, ast); 
-    if(ast.duplicated){
-      reporter.reportError("identifier \"%\" already declared.", 
-                          ast.I.spelling, ast.position);
-    }
     return null;
   }
 
   @Override
   public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
-    idTable.openScope();
-    ast.FPS.visit(this, null);
-    ast.C.visit(this, null);
-    idTable.closeScope();
     return null;
   }
 
@@ -1031,27 +1022,11 @@ public final class Checker implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
-    idTable.enter(ast.I.spelling, ast);
-    if(ast.duplicated){
-      reporter.reportError("identifier \"%\" already declared.", 
-                          ast.I.spelling, ast.position);
-    }
     return null;
   }
 
   @Override
   public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
-    idTable.enter(ast.I.spelling, ast);
-    if(ast.duplicated){
-      reporter.reportError("identifier \"%\" already declared.", 
-      ast.I.spelling, ast.position);
-    }
-    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
-    idTable.closeScope();
-    if(ast.TD.visit(this, null).equals(eType) == false){
-      reporter.reportError("body of function \"%\" has wrong type",
-                          ast.I.spelling, ast.E.position);
-    }
     return null;
   }
 
@@ -1063,8 +1038,6 @@ public final class Checker implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-    ast.PF.visit(this, null);
-    ast.PF.visitSelf(this, null);
     return null;
   }
 
@@ -1076,29 +1049,17 @@ public final class Checker implements Visitor {
   //////////////////////////
   @Override
   public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-    IdentificationTable tempTable = idTable.copy();
-    ast.D1.visit(this, null); //visit in idTable
-    tempTable.beginLocalDeclaration(idTable); //make it local
-    idTable = tempTable; //idTable has a copy of itself as local
-    ast.D2.visit(this, null);
-    idTable.endLocalDeclaration();
     return null;
   }
 
   //////////////////////////
   //
   //Marcos Mendez 2021-04-11
-  //AssignedDeclaration
+  //AssignVarDeclaration
   //
   //////////////////////////
   @Override
-  public Object visitAssignedDeclaration(AssignedDeclaration ast, Object o) {
-    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
-    idTable.enter(ast.I.spelling, ast);
-    if(ast.duplicated){
-      reporter.reportError("identifier \"%\" already declared",
-                          ast.I.spelling, ast.position);
-    }
+  public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     return null;
   }
 }

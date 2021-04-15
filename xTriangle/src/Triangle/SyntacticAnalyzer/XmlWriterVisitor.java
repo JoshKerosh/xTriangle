@@ -85,9 +85,6 @@ import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class XmlWriterVisitor implements Visitor{
 
-  FileWriter fileWriter;
-  final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-
   public XmlWriterVisitor(String fileURL){
     setFileWriter(fileURL);
   }
@@ -760,6 +757,7 @@ public class XmlWriterVisitor implements Visitor{
     try {
       fileWriter = new FileWriter(new File(fileURL));
       fileWriter.write(HEADER);
+      this.fileURL = fileURL;
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
@@ -776,8 +774,13 @@ public class XmlWriterVisitor implements Visitor{
   public void end(){
     try {
       fileWriter.close();
+      System.out.println("Archivo Xml generado en el siguiente directorio: " + fileURL + "\n");
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
   }
+
+  FileWriter fileWriter;
+  final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  private String fileURL;
 }

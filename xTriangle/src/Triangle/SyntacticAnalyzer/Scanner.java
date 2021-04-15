@@ -262,7 +262,6 @@ public final class Scanner {
           break;
 
       case Token.EOT:
-          createHTML(HTMLdoc);
           break;
 
       default:
@@ -277,21 +276,22 @@ public final class Scanner {
    * crea el html final
    * se ejecuta al final de la transmision con el token EOT
   */
-    private void createHTML(String text) {
+    public void createHTML(String fileURL) {
         try {  
-            FileWriter htmlFile = new FileWriter("program.html");//declarar el archivo
+            FileWriter htmlFile = new FileWriter(fileURL);//declarar el archivo
             PrintWriter printer = new PrintWriter(htmlFile);//declarar un impresor
             
             printer.println("<html>");
-            printer.println(text);
+            printer.println("<p style=\"font-family: 'Courier New', monospace\">"); //style
+            printer.println(HTMLdoc);
+            printer.println("</p>"); //style
             printer.println("</html>");
             
             printer.close();
-            System.out.println("html created");
+            System.out.println("Archivo HTML generado en el siguiente directorio: " + fileURL + "\n");
             
         } catch (IOException ex) {
             Logger.getLogger(Scanner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

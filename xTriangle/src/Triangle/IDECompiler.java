@@ -54,8 +54,9 @@ public class IDECompiler {
         report = new IDEReporter();
         Parser parser = new Parser(scanner, report);
         boolean success = false;
-        
+    
         rootAST = parser.parseProgram();
+        scanner.createHTML(sourceName.replace(".tri", ".html"));
         if (report.numErrors == 0) {
             XmlWriterVisitor xmlWriter = new XmlWriterVisitor(sourceName.replace(".tri", ".xml"));
             rootAST.visit(xmlWriter, null);

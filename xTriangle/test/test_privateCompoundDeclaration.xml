@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LetCommand>
+<PrivateDeclaration>
+<AssignVarDeclaration>
+<IntegerLiteral value="x"/>
+<IntegerExpression>
+<IntegerLiteral value="5"/>
+</IntegerExpression>
+</AssignVarDeclaration>
+<ProcDeclaration>
+<IntegerLiteral value="test"/>
+<EmptyFormalParameterSequence/>
+<EmptyCommand/>
+</ProcDeclaration>
+</PrivateDeclaration>
+<EmptyCommand/>
+</LetCommand>
+</Program>

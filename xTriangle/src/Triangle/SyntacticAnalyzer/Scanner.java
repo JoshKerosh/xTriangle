@@ -14,6 +14,12 @@
 
 package Triangle.SyntacticAnalyzer;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public final class Scanner {
 
@@ -24,6 +30,8 @@ public final class Scanner {
   private StringBuffer currentSpelling;
   private boolean currentlyScanningToken;
 
+  private String HTMLdoc;
+  
   private boolean isLetter(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
   }
@@ -48,6 +56,7 @@ public final class Scanner {
     sourceFile = source;
     currentChar = sourceFile.getSource();
     debug = false;
+    HTMLdoc = "";
   }
 
   public void enableDebugging() {
@@ -64,22 +73,37 @@ public final class Scanner {
   }
 
   // scanSeparator skips a single separator.
-
+    /*<extended> changes:
+     * 
+    */
   private void scanSeparator() {
     switch (currentChar) {
     case '!':
-      {
+        {
+            HTMLdoc += "<font color='#00b300'>"; //<extended> inicia un comentario en el html
+            HTMLdoc += currentChar; //<extended> agrega al comentario
+            takeIt();
+            while ((currentChar != SourceFile.EOL) && (currentChar != SourceFile.EOT)){
+                HTMLdoc += currentChar; //<extended> agrega al comentario
+                takeIt(); 
+            }
+            if (currentChar == SourceFile.EOL){
+                HTMLdoc += "</font></br>"; //<extended> cierra el comentario
+                takeIt();
+            }    
+        }
+        break;
+    case '\n': 
         takeIt();
-        while ((currentChar != SourceFile.EOL) && (currentChar != SourceFile.EOT))
-          takeIt();
-        if (currentChar == SourceFile.EOL)
-          takeIt();
-      }
-      break;
-
-    case ' ': case '\n': case '\r': case '\t':
-      takeIt();
-      break;
+        HTMLdoc += "<br>";//<extended> agrega un cambio de linea al html
+        break;
+    case ' ': 
+        HTMLdoc += "&nbsp;";//<extended> agrega un espacio en blanco al html
+        takeIt();
+        break;
+    case '\r': case '\t':
+        takeIt();
+        break;
     }
   }
 
@@ -209,19 +233,65 @@ public final class Scanner {
            || currentChar == '\r'
            || currentChar == '\t')
       scanSeparator();
-
+    
     currentlyScanningToken = true;
     currentSpelling = new StringBuffer("");
     pos = new SourcePosition();
     pos.start = sourceFile.getCurrentLine();
 
     kind = scanToken();
-
+    boolean ident = (kind == Token.IDENTIFIER);// <extended> identifier/palabra reservada
     pos.finish = sourceFile.getCurrentLine();
     tok = new Token(kind, currentSpelling.toString(), pos);
+    addToHTML(tok, ident); // <extended> agrega el token al html
+        
     if (debug)
       System.out.println(tok);
     return tok;
   }
+  
+  /* < Extended >
+   * agraga un token al HTMLdoc
+  */
+  private void addToHTML(Token tok, boolean ident){
+    switch (tok.kind) {
+
+      case Token.INTLITERAL: // int
+      case Token.CHARLITERAL: // char
+          HTMLdoc += "<font color='#0000cd'>"+tok.spelling+"</font>";
+          break;
+
+      case Token.EOT:
+          createHTML(HTMLdoc);
+          break;
+
+      default:
+          if(ident && tok.kind != Token.IDENTIFIER)// Palabra Reservada
+              HTMLdoc += "<b>"+tok.spelling+"</b>";
+          else
+              HTMLdoc += tok.spelling;
+          break;
+    }
+  }
+  /* < Extended >
+   * crea el html final
+   * se ejecuta al final de la transmision con el token EOT
+  */
+    private void createHTML(String text) {
+        try {  
+            FileWriter htmlFile = new FileWriter("program.html");//declarar el archivo
+            PrintWriter printer = new PrintWriter(htmlFile);//declarar un impresor
+            
+            printer.println("<html>");
+            printer.println(text);
+            printer.println("</html>");
+            
+            printer.close();
+            System.out.println("html created");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Scanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }

@@ -282,7 +282,9 @@ public final class Scanner {
             PrintWriter printer = new PrintWriter(htmlFile);//declarar un impresor
             
             printer.println("<html>");
+            printer.println("<p style=\"font-family: 'Courier New', monospace\">"); //style
             printer.println(HTMLdoc);
+            printer.println("</p>"); //style
             printer.println("</html>");
             
             printer.close();

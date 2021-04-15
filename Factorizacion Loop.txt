@@ -1,0 +1,11 @@
+"loop" "do" Command "while" Expression "end"
+"loop" "do" Command "until" Expression "end"
+
+single-command ::= "loop"	(("while" | "until") Expression "do" Command "end"
+				| "do" Command ("while" | "until") Expression "end" 
+				| "for" Identifier "from" Expression "to" Expression ("do" Command "end"
+									     	     | ("while" | "until") Expression "do" Command "end" ))
+				
+									      
+				
+				

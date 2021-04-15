@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LetCommand>
+<RecursiveDeclaration>
+<SequentialProcFuncs>
+<RecursiveProc>
+<IntegerLiteral value="yTest"/>
+<SingleFormalParameterSequence>
+<ConstFormalParameter>
+<IntegerLiteral value="x"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="int"/>
+</RecordTypeDenoter>
+</ConstFormalParameter>
+</SingleFormalParameterSequence>
+<IfCommand>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value=">"/>
+<IntegerExpression>
+<IntegerLiteral value="0"/>
+</IntegerExpression>
+</BinaryExpression>
+<AssignCommand>
+<SimpleVname>
+<IntegerLiteral value="y"/>
+</SimpleVname>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="-"/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</BinaryExpression>
+</AssignCommand>
+<CallCommand>
+<IntegerLiteral value="yTest"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="y"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</IfCommand>
+</RecursiveProc>
+<RecursiveFunc>
+<IntegerLiteral value="xTest"/>
+<SingleFormalParameterSequence>
+<ConstFormalParameter>
+<IntegerLiteral value="x"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="int"/>
+</RecordTypeDenoter>
+</ConstFormalParameter>
+</SingleFormalParameterSequence>
+<RecordTypeDenoter>
+<IntegerLiteral value="int"/>
+</RecordTypeDenoter>
+<IfExpression>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value=">"/>
+<IntegerExpression>
+<IntegerLiteral value="0"/>
+</IntegerExpression>
+</BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="true"/>
+</SimpleVname>
+</VnameExpression>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="false"/>
+</SimpleVname>
+</VnameExpression>
+</IfExpression>
+</RecursiveFunc>
+</SequentialProcFuncs>
+</RecursiveDeclaration>
+<EmptyCommand/>
+</LetCommand>
+</Program>

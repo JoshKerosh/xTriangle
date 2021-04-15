@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<IfCommand>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="true"/>
+</SimpleVname>
+</VnameExpression>
+<AssignCommand>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</AssignCommand>
+<IfCommand>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="true"/>
+</SimpleVname>
+</VnameExpression>
+<AssignCommand>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="3"/>
+</IntegerExpression>
+</AssignCommand>
+<AssignCommand>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="4"/>
+</IntegerExpression>
+</AssignCommand>
+</IfCommand>
+</IfCommand>
+</Program>

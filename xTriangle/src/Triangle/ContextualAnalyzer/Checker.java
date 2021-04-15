@@ -55,6 +55,7 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
 import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
@@ -159,6 +160,10 @@ public final class Checker implements Visitor {
   }
   
   public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
       return null;
   }
   

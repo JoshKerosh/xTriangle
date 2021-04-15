@@ -28,6 +28,7 @@ public interface Visitor {
     */
   public abstract Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o);//nuevo
   public abstract Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o);//nuevo
+  public abstract Object visitLoopForDoCommand(LoopForDoCommand ast, Object o);//nuevo
   public abstract Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o);//nuevo
   public abstract Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o);//nuevo
   public abstract Object visitLoopUntilCommand(LoopUntilCommand ast, Object o);//nuevo

@@ -40,6 +40,7 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
 import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
@@ -130,6 +131,10 @@ public class TreeVisitor implements Visitor {
         return (createBinary("LoopDoWhile Command", ast.C, ast.E));
     }
 
+    public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
+      return (createQuaternary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.C));
+  }
+    
     public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
         return (createQuinary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
     }

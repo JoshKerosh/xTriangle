@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LetCommand>
+<VarDeclaration>
+<IntegerLiteral value="x"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="int"/>
+</RecordTypeDenoter>
+</VarDeclaration>
+<AssignCommand>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</AssignCommand>
+</LetCommand>
+</Program>

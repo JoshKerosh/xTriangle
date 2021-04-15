@@ -52,6 +52,7 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
 import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
@@ -132,6 +133,10 @@ public class LayoutVisitor implements Visitor {
   
   public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
       return layoutBinary("LoopDoWhileCom.", ast.C, ast.E);
+  }
+    
+  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
+      return layoutQuaternary("LoopForDoCom.", ast.I, ast.E1, ast.E2, ast.C);
   }
   
   public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){

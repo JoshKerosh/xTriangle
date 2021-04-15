@@ -1,0 +1,6 @@
+loop 
+for x
+from true
+to x > 3
+do x := 1
+end

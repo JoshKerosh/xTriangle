@@ -52,6 +52,7 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
 import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
@@ -423,6 +424,15 @@ public class Parser {
                 accept(Token.TO);
                 Expression e2AST = parseExpression();
                 switch(currentToken.kind){
+                    case Token.DO:
+                    {
+                        acceptIt();
+                        Command cAST = parseCommand();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new LoopForDoCommand(iAST, e1AST, e2AST, cAST, commandPos);
+                    }
+                    break;
                     case Token.WHILE:
                     {
                         acceptIt();

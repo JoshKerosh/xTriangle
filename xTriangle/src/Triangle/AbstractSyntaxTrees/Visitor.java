@@ -116,15 +116,11 @@ public interface Visitor {
 
   //SequentialProcFuncs Marcos Mendez 2021-04-11
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
-  public abstract Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o);
-
   //RecursiveProc Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
-  public abstract Object visitRecursiveProcSelf(RecursiveProc ast, Object o);
 
   //RecursiveFunc Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
-  public abstract Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o);
 
   //RecursiveDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
@@ -134,5 +130,4 @@ public interface Visitor {
 
   //AssignDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o);
-
 }

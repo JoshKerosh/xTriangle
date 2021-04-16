@@ -686,22 +686,12 @@ public class XmlWriterVisitor implements Visitor{
   }
 
   @Override
-  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-    return null;
-  }
-
-  @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
     writeLine("<RecursiveProc>");
     ast.I.visit(this, null);
     ast.FPS.visit(this, null);
     ast.C.visit(this, null);
     writeLine("</RecursiveProc>");
-    return null;
-  }
-
-  @Override
-  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
     return null;
   }
 
@@ -713,11 +703,6 @@ public class XmlWriterVisitor implements Visitor{
     ast.TD.visit(this, null);
     ast.E.visit(this, null);
     writeLine("</RecursiveFunc>");
-    return null;
-  }
-
-  @Override
-  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
     return null;
   }
 

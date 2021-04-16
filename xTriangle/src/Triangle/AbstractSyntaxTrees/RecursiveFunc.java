@@ -17,11 +17,6 @@ public class RecursiveFunc extends ProcFuncs{
     return v.visitRecursiveFunc(this, o); 
   }
 
-  @Override
-  public Object visitSelf(Visitor v, Object o) {
-    return v.visitRecursiveFuncSelf(this, o);
-  }
-
   public Identifier I;
   public FormalParameterSequence FPS;
   public TypeDenoter TD;

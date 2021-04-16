@@ -610,11 +610,6 @@ public class LayoutVisitor implements Visitor {
     return null;
   }
 
-  @Override
-  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-    return null;
-  }
-
   //////////////////////////
   //
   //Marcos Mendez 2021-04-11
@@ -626,11 +621,6 @@ public class LayoutVisitor implements Visitor {
     return null;
   }
 
-  @Override
-  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
-    return null;
-  }
-
   //////////////////////////
   //
   //Marcos Mendez 2021-04-11
@@ -639,11 +629,6 @@ public class LayoutVisitor implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
-    return null;
-  }
-
-  @Override
-  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
     return null;
   }
 

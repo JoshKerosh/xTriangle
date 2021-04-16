@@ -701,15 +701,6 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
-      ast.PF1.visit(this, null);
-      ast.PF2.visit(this, null);
-      return null;
-    }
-
-    @Override
-    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-      ast.PF1.visitSelf(this, null);
-      ast.PF2.visitSelf(this, null);
       return null;
     }
 
@@ -724,11 +715,6 @@ public class TableVisitor implements Visitor {
       return null;
     }
 
-    @Override
-    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
-      return null;
-    }
-
     //////////////////////////
     //
     //Marcos Mendez 2021-04-11
@@ -737,11 +723,6 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
-      return null;
-    }
-
-    @Override
-    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
       return null;
     }
     
@@ -753,7 +734,6 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-      ast.PF.visit(this, null);
       return null;
     }
 
@@ -776,15 +756,6 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
-      try {
-        addIdentifier(ast.I.spelling, 
-                      "KnownAddress", 
-                      (ast.entity!=null?ast.entity.size:0), 
-                      ((KnownAddress)ast.entity).address.level, 
-                      ((KnownAddress)ast.entity).address.displacement, 
-                      -1);
-      ast.E.visit(this, null);
-      }catch (NullPointerException e) { }
       return null;
     }
 }

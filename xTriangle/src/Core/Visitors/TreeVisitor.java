@@ -513,11 +513,6 @@ public class TreeVisitor implements Visitor {
       return(createBinary("Sequential ProcFunc", ast.PF1, ast.PF2));
     }
 
-    @Override
-    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-      return null;
-    }
-
     //////////////////////////
     //
     //Marcos Mendez 2021-04-11
@@ -529,11 +524,6 @@ public class TreeVisitor implements Visitor {
       return (createTernary("Recursive Proc", ast.I, ast.FPS, ast.C));
     }
 
-    @Override
-    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
-      return null;
-    }
-
     //////////////////////////
     //
     //Marcos Mendez 2021-04-11
@@ -543,11 +533,6 @@ public class TreeVisitor implements Visitor {
     @Override
     public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
       return (createQuaternary("Recursive Func", ast.I, ast.FPS, ast.TD, ast.E));
-    }
-
-    @Override
-    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
-      return null;
     }
 
     //////////////////////////
@@ -581,5 +566,10 @@ public class TreeVisitor implements Visitor {
     @Override
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
       return(createBinary("Assigned Var Declaration", ast.I, ast.E));
+    }
+
+    @Override
+    public Object visitExample(AssignVarDeclaration ast, Object o) {
+      return null;
     }
 }

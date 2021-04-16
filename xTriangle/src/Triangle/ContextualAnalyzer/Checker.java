@@ -996,12 +996,6 @@ public final class Checker implements Visitor {
 		return null;
   }
   
-  @Override
-  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-    ast.PF1.visitSelf(this, null);
-    ast.PF2.visitSelf(this, null);
-    return null;
-  }
 
   //////////////////////////
   //
@@ -1011,11 +1005,6 @@ public final class Checker implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
-    return null;
-  }
-
-  @Override
-  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
     return null;
   }
 
@@ -1029,12 +1018,7 @@ public final class Checker implements Visitor {
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
     return null;
   }
-
-  @Override
-  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
-    return null;
-  }
-
+  
   //////////////////////////
   //
   //Marcos Mendez 2021-04-11
@@ -1065,6 +1049,13 @@ public final class Checker implements Visitor {
   //////////////////////////
   @Override
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitExample(AssignVarDeclaration ast, Object o) {
+    // TODO Auto-generated method stub
     return null;
   }
 }

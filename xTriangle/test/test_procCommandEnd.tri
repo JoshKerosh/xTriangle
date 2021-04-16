@@ -1,0 +1,7 @@
+let proc test(x : int)
+~
+nothing
+end
+in
+nothing
+end

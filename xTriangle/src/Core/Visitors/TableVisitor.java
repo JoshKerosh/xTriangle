@@ -9,6 +9,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -37,20 +38,32 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -84,7 +97,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * Generates a DefaultTableModel, used to draw a Jable.
  *
- * @author Luis Leopoldo Pérez <luiperpe@ns.isi.ulatina.ac.cr>
+ * @author Luis Leopoldo Pï¿½rez <luiperpe@ns.isi.ulatina.ac.cr>
  */
 public class TableVisitor implements Visitor {
     
@@ -107,7 +120,7 @@ public class TableVisitor implements Visitor {
       
       return(null);
   }
-  
+  // comando eliminado
   public Object visitEmptyCommand(EmptyCommand ast, Object o) { 
       return(null);
   }
@@ -125,6 +138,62 @@ public class TableVisitor implements Visitor {
       ast.C.visit(this, null);
       
       return(null);
+  }
+  // -- Nuevos comandos Loop
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return null;
   }
   
   public Object visitSequentialCommand(SequentialCommand ast, Object o) { 
@@ -622,4 +691,100 @@ public class TableVisitor implements Visitor {
   // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private DefaultTableModel model;
     // </editor-fold>
+
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //SequentialProcFuncs
+    //
+    //////////////////////////
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visit(this, null);
+      ast.PF2.visit(this, null);
+      return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visitSelf(this, null);
+      ast.PF2.visitSelf(this, null);
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveProc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    @Override
+    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveFunc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+      return null;
+    }
+
+    @Override
+    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+      return null;
+    }
+    
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      ast.PF.visit(this, null);
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //PrivateDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //AssignVarDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+      try {
+        addIdentifier(ast.I.spelling, 
+                      "KnownAddress", 
+                      (ast.entity!=null?ast.entity.size:0), 
+                      ((KnownAddress)ast.entity).address.level, 
+                      ((KnownAddress)ast.entity).address.displacement, 
+                      -1);
+      ast.E.visit(this, null);
+      }catch (NullPointerException e) { }
+      return null;
+    }
 }

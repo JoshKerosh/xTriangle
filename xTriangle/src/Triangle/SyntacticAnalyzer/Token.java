@@ -56,6 +56,7 @@ final class Token extends Object {
       ", position=" + position;
   }
 
+  // Marcos Mendez 2021-04-10
   // Token classes...
 
   public static final int
@@ -68,64 +69,90 @@ final class Token extends Object {
 
     // reserved words - must be in alphabetical order...
     ARRAY		= 4,
-    BEGIN		= 5,
+    CHOOSE              = 5,//new
     CONST		= 6,
     DO			= 7,
     ELSE		= 8,
-    END			= 9,
-    FUNC		= 10,
-    IF			= 11,
-    IN			= 12,
-    LET			= 13,
-    OF			= 14,
-    PROC		= 15,
-    RECORD		= 16,
-    THEN		= 17,
-    TYPE		= 18,
-    VAR			= 19,
-    WHILE		= 20,
+    ELSEIF              = 9,//nuevo
+    END			= 10,
+    FOR                 = 11,//nuevo
+    FROM                = 12,//nuevo
+    FUNC		= 13,
+    IF			= 14,
+    IN			= 15,
+    LET			= 16,
+    LOOP                = 17,//nuevo
+    NOTHING             = 18,//nuevo  
+    OF			= 19,
+    PACKAGE             = 20,//nuevo
+    PRIVATE             = 21,//nuevo
+    PROC		= 22,
+    RECORD		= 23,
+    RECURSIVE           = 24,//nuevo
+    THEN		= 25,
+    TO                  = 26,//nuevo
+    TYPE		= 27,
+    UNTIL               = 28,//nuevo
+    VAR			= 29,
+    WHEN                = 30,//nuevo
+    WHILE		= 31,
 
     // punctuation...
-    DOT			= 21,
-    COLON		= 22,
-    SEMICOLON	= 23,
-    COMMA		= 24,
-    BECOMES		= 25,
-    IS			= 26,
+    DOT			= 32,
+    COLON		= 33,
+    SEMICOLON           = 34,
+    COMMA		= 35,
+    BECOMES		= 36,
+    IS			= 37,
 
     // brackets...
-    LPAREN		= 27,
-    RPAREN		= 28,
-    LBRACKET	= 29,
-    RBRACKET	= 30,
-    LCURLY		= 31,
-    RCURLY		= 32,
+    LPAREN		= 38,
+    RPAREN		= 39,
+    LBRACKET            = 40,
+    RBRACKET            = 41,
+    LCURLY		= 42,
+    RCURLY		= 43,
 
     // special tokens...
-    EOT			= 33,
-    ERROR		= 34;
+    EOT			= 44,
+    ERROR		= 45,
 
+    // < Extended >
+    DDOT                = 46,//nuevo
+    DOLAR               = 47,
+    PIPE                = 48;//nuevo
   private static String[] tokenTable = new String[] {
     "<int>",
     "<char>",
     "<identifier>",
     "<operator>",
     "array",
-    "begin",
+    "choose", //new
     "const",
     "do",
     "else",
+    "elseif", //new
     "end",
+    "for",  //new
+    "from", //new
     "func",
     "if",
     "in",
     "let",
+    "loop", //new
+    "nothing",  //new
     "of",
+    "package",  //new
+    "private",  //new
     "proc",
     "record",
+    "recursive",  //new
     "then",
+    "to", //new
     "type",
+    "until",  //new
     "var",
+    "when", //new
     "while",
     ".",
     ":",
@@ -139,8 +166,14 @@ final class Token extends Object {
     "]",
     "{",
     "}",
+    "$",  //new
+    "|",  //new
+    "..", //new
     "",
-    "<error>"
+    "<error>",
+    "..",
+    "$",
+    "|",
   };
 
   private final static int	firstReservedWord = Token.ARRAY,

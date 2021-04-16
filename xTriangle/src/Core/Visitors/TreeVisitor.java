@@ -9,6 +9,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -37,20 +38,32 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -76,7 +89,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * Generates DefaultMutableTreeNodes, used to draw a JTree.
  *
- * @author Luis Leopoldo Pérez <luiperpe@ns.isi.ulatina.ac.cr>
+ * @author Luis Leopoldo Pï¿½rez <luiperpe@ns.isi.ulatina.ac.cr>
  */
 public class TreeVisitor implements Visitor {
       
@@ -96,6 +109,7 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Call Command", ast.I, ast.APS));
     }
     
+    // commando eliminado
     public Object visitEmptyCommand(EmptyCommand ast, Object o) {
         return(createNullary("Empty Command"));
     }
@@ -108,6 +122,35 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Let Command", ast.D, ast.C));
     }
     
+    // -- Nuevos comandos Loop
+    public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+        return (createBinary("LoopDoUntil Command", ast.C, ast.E));
+    }
+
+    public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+        return (createBinary("LoopDoWhile Command", ast.C, ast.E));
+    }
+
+    public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
+      return (createQuaternary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.C));
+  }
+    
+    public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+        return (createQuinary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+    }
+
+    public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+        return (createQuinary("LoopForWhile Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+    }
+
+    public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+        return (createBinary("LoopUntil Command", ast.E, ast.C));
+    }
+
+    public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+        return (createBinary("LoopWhile Command", ast.E, ast.C));
+    }
+  
     public Object visitSequentialCommand(SequentialCommand ast, Object obj) {
         return(createBinary("Sequential Command", ast.C1, ast.C2));
     }
@@ -436,5 +479,107 @@ public class TreeVisitor implements Visitor {
         
         return(t);             
     }
+    /**
+     * < Extended >
+     * Creates a quaternary tree node.
+     * @param caption The tree's caption (text to be shown when the tree is drawn).
+     * @param child1 The first children node.
+     * @param child2 The second children node.
+     * @param child3 The third children node.
+     * @param child4 The fourth children node.
+     * @param child5 The fifth children node.
+     * @return The tree node.
+     */
+    public DefaultMutableTreeNode createQuinary(String caption, AST child1, AST child2, AST child3, AST child4, AST child5) {
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
+        t.add((DefaultMutableTreeNode)child1.visit(this, null));
+        t.add((DefaultMutableTreeNode)child2.visit(this, null));
+        t.add((DefaultMutableTreeNode)child3.visit(this, null));
+        t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        t.add((DefaultMutableTreeNode)child5.visit(this, null));
+        
+        return(t);             
+    }
     // </editor-fold>
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //SequentialProcFuncs
+    //
+    //////////////////////////
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+      return(createBinary("Sequential ProcFunc", ast.PF1, ast.PF2));
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveProc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+      return (createTernary("Recursive Proc", ast.I, ast.FPS, ast.C));
+    }
+
+    @Override
+    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveFunc
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+      return (createQuaternary("Recursive Func", ast.I, ast.FPS, ast.TD, ast.E));
+    }
+
+    @Override
+    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+      return null;
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //RecursiveDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      return(createUnary("Recursive Declaration", ast.PF));
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //PrivateDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+      return(createBinary("Private Declaration", ast.D1, ast.D2));
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-11
+    //AssignVarDeclaration
+    //
+    //////////////////////////
+    @Override
+    public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+      return(createBinary("Assigned Var Declaration", ast.I, ast.E));
+    }
 }

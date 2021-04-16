@@ -20,6 +20,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -52,20 +53,32 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -118,7 +131,8 @@ public final class Checker implements Visitor {
                            ast.I.spelling, ast.I.position);
     return null;
   }
-
+  
+// comando eliminado
   public Object visitEmptyCommand(EmptyCommand ast, Object o) {
     return null;
   }
@@ -138,6 +152,35 @@ public final class Checker implements Visitor {
     ast.C.visit(this, null);
     idTable.closeScope();
     return null;
+  }
+  
+  // -- Nuevos comandos Loop //incomplete
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      return null;
   }
 
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {
@@ -937,5 +980,91 @@ public final class Checker implements Visitor {
     StdEnvironment.equalDecl = declareStdBinaryOp("=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
     StdEnvironment.unequalDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
 
+  }
+
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //SequentialProcFuncs
+  //
+  //////////////////////////
+  @Override
+  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+    ast.PF1.visit(this, null);
+		ast.PF2.visit(this, null);
+		return null;
+  }
+  
+  @Override
+  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+    ast.PF1.visitSelf(this, null);
+    ast.PF2.visitSelf(this, null);
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //RecursiveProc
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //RecursiveFunc
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //RecursiveDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //PrivateDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //AssignVarDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+    return null;
   }
 }

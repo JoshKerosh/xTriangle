@@ -28,6 +28,7 @@ import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
+import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
@@ -57,20 +58,32 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc; 
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -98,7 +111,7 @@ public final class Encoder implements Visitor {
     Frame frame = (Frame) o;
     Integer valSize = (Integer) ast.E.visit(this, frame);
     encodeStore(ast.V, new Frame (frame, valSize.intValue()),
-		valSize.intValue());
+    valSize.intValue());
     return null;
   }
 
@@ -137,7 +150,35 @@ public final class Encoder implements Visitor {
       emit(Machine.POPop, 0, 0, extraSize);
     return null;
   }
-
+  
+// -- Nuevos comandos Loop
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+      return null;
+  }
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {
     ast.C1.visit(this, o);
     ast.C2.visit(this, o);
@@ -185,7 +226,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitCharacterExpression(CharacterExpression ast,
-						Object o) {
+            Object o) {
     Frame frame = (Frame) o;
     Integer valSize = (Integer) ast.type.visit(this, null);
     emit(Machine.LOADLop, 0, 0, ast.CL.spelling.charAt(1));
@@ -255,7 +296,7 @@ public final class Encoder implements Visitor {
 
   // Declarations
   public Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast,
-					       Object o){
+                 Object o){
     return new Integer(0);
   }
 
@@ -270,7 +311,7 @@ public final class Encoder implements Visitor {
     } else if (ast.E instanceof IntegerExpression) {
         IntegerLiteral IL = ((IntegerExpression) ast.E).IL;
         ast.entity = new KnownValue(Machine.integerSize,
-				 Integer.parseInt(IL.spelling));
+         Integer.parseInt(IL.spelling));
     } else {
       int valSize = ((Integer) ast.E.visit(this, frame)).intValue();
       ast.entity = new UnknownValue(valSize, frame.level, frame.size);
@@ -340,7 +381,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitUnaryOperatorDeclaration(UnaryOperatorDeclaration ast,
-					      Object o) {
+                Object o) {
     return new Integer(0);
   }
 
@@ -358,7 +399,7 @@ public final class Encoder implements Visitor {
 
   // Array Aggregates
   public Object visitMultipleArrayAggregate(MultipleArrayAggregate ast,
-					    Object o) {
+              Object o) {
     Frame frame = (Frame) o;
     int elemSize = ((Integer) ast.E.visit(this, frame)).intValue();
     Frame frame1 = new Frame(frame, elemSize);
@@ -373,7 +414,7 @@ public final class Encoder implements Visitor {
 
   // Record Aggregates
   public Object visitMultipleRecordAggregate(MultipleRecordAggregate ast,
-					     Object o) {
+               Object o) {
     Frame frame = (Frame) o;
     int fieldSize = ((Integer) ast.E.visit(this, frame)).intValue();
     Frame frame1 = new Frame (frame, fieldSize);
@@ -382,7 +423,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitSingleRecordAggregate(SingleRecordAggregate ast,
-					   Object o) {
+             Object o) {
     return ast.E.visit(this, o);
   }
 
@@ -400,7 +441,7 @@ public final class Encoder implements Visitor {
     Frame frame = (Frame) o;
     int argsSize = Machine.closureSize;
     ast.entity = new UnknownRoutine (Machine.closureSize, frame.level,
-				  -frame.size - argsSize);
+          -frame.size - argsSize);
     writeTableDetails(ast);
     return new Integer(argsSize);
   }
@@ -409,7 +450,7 @@ public final class Encoder implements Visitor {
     Frame frame = (Frame) o;
     int argsSize = Machine.closureSize;
     ast.entity = new UnknownRoutine (Machine.closureSize, frame.level,
-				  -frame.size - argsSize);
+          -frame.size - argsSize);
     writeTableDetails(ast);
     return new Integer(argsSize);
   }
@@ -418,19 +459,19 @@ public final class Encoder implements Visitor {
     Frame frame = (Frame) o;
     ast.T.visit(this, null);
     ast.entity = new UnknownAddress (Machine.addressSize, frame.level,
-				  -frame.size - Machine.addressSize);
+          -frame.size - Machine.addressSize);
     writeTableDetails(ast);
     return new Integer(Machine.addressSize);
   }
 
 
   public Object visitEmptyFormalParameterSequence(
-	 EmptyFormalParameterSequence ast, Object o) {
+   EmptyFormalParameterSequence ast, Object o) {
     return new Integer(0);
   }
 
   public Object visitMultipleFormalParameterSequence(
- 	 MultipleFormalParameterSequence ast, Object o) {
+    MultipleFormalParameterSequence ast, Object o) {
     Frame frame = (Frame) o;
     int argsSize1 = ((Integer) ast.FPS.visit(this, frame)).intValue();
     Frame frame1 = new Frame(frame, argsSize1);
@@ -439,7 +480,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitSingleFormalParameterSequence(
-	 SingleFormalParameterSequence ast, Object o) {
+   SingleFormalParameterSequence ast, Object o) {
     return ast.FP.visit (this, o);
   }
 
@@ -496,12 +537,12 @@ public final class Encoder implements Visitor {
 
 
   public Object visitEmptyActualParameterSequence(
-	 EmptyActualParameterSequence ast, Object o) {
+   EmptyActualParameterSequence ast, Object o) {
     return new Integer(0);
   }
 
   public Object visitMultipleActualParameterSequence(
-	 MultipleActualParameterSequence ast, Object o) {
+   MultipleActualParameterSequence ast, Object o) {
     Frame frame = (Frame) o;
     int argsSize1 = ((Integer) ast.AP.visit(this, frame)).intValue();
     Frame frame1 = new Frame (frame, argsSize1);
@@ -510,7 +551,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitSingleActualParameterSequence(
-	 SingleActualParameterSequence ast, Object o) {
+   SingleActualParameterSequence ast, Object o) {
     return ast.AP.visit (this, o);
   }
 
@@ -553,7 +594,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitSimpleTypeDenoter(SimpleTypeDenoter ast,
-					   Object o) {
+             Object o) {
     return new Integer(0);
   }
 
@@ -578,7 +619,7 @@ public final class Encoder implements Visitor {
 
 
   public Object visitMultipleFieldTypeDenoter(MultipleFieldTypeDenoter ast,
-					      Object o) {
+                Object o) {
     int offset = ((Integer) o).intValue();
     int fieldSize;
 
@@ -595,7 +636,7 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitSingleFieldTypeDenoter(SingleFieldTypeDenoter ast,
-					    Object o) {
+              Object o) {
     int offset = ((Integer) o).intValue();
     int fieldSize;
 
@@ -620,7 +661,7 @@ public final class Encoder implements Visitor {
     if (ast.decl.entity instanceof KnownRoutine) {
       ObjectAddress address = ((KnownRoutine) ast.decl.entity).address;
       emit(Machine.CALLop, displayRegister(frame.level, address.level),
-	   Machine.CBr, address.displacement);
+     Machine.CBr, address.displacement);
     } else if (ast.decl.entity instanceof UnknownRoutine) {
       ObjectAddress address = ((UnknownRoutine) ast.decl.entity).address;
       emit(Machine.LOADop, Machine.closureSize, displayRegister(frame.level,
@@ -647,7 +688,7 @@ public final class Encoder implements Visitor {
     if (ast.decl.entity instanceof KnownRoutine) {
       ObjectAddress address = ((KnownRoutine) ast.decl.entity).address;
       emit(Machine.CALLop, displayRegister (frame.level, address.level),
-	   Machine.CBr, address.displacement);
+     Machine.CBr, address.displacement);
     } else if (ast.decl.entity instanceof UnknownRoutine) {
       ObjectAddress address = ((UnknownRoutine) ast.decl.entity).address;
       emit(Machine.LOADop, Machine.closureSize, displayRegister(frame.level,
@@ -738,7 +779,7 @@ public final class Encoder implements Visitor {
 
   // Decides run-time representation of a standard constant.
   private final void elaborateStdConst (Declaration constDeclaration,
-					int value) {
+          int value) {
 
     if (constDeclaration instanceof ConstDeclaration) {
       ConstDeclaration decl = (ConstDeclaration) constDeclaration;
@@ -905,7 +946,7 @@ public final class Encoder implements Visitor {
         emit(Machine.STOREIop, valSize, 0, 0);
       } else {
         emit(Machine.STOREop, valSize, displayRegister(frame.level,
-	     address.level), address.displacement + V.offset);
+       address.level), address.displacement + V.offset);
       }
     } else if (baseObject instanceof UnknownAddress) {
       ObjectAddress address = ((UnknownAddress) baseObject).address;
@@ -952,7 +993,7 @@ public final class Encoder implements Visitor {
         emit(Machine.LOADIop, valSize, 0, 0);
       } else
         emit(Machine.LOADop, valSize, displayRegister(frame.level,
-	     address.level), address.displacement + V.offset);
+       address.level), address.displacement + V.offset);
     } else if (baseObject instanceof UnknownAddress) {
       ObjectAddress address = ((UnknownAddress) baseObject).address;
       emit(Machine.LOADop, Machine.addressSize, displayRegister(frame.level,
@@ -994,5 +1035,85 @@ public final class Encoder implements Visitor {
         emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.addDisplacement);
       }
     }
+  }
+
+  //////////////////////////
+  //
+  //SequentialProcFuncs
+  //
+  //////////////////////////
+  @Override 
+  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+    return null;
+  }  
+  
+  @Override
+  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //RecursiveProc
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //SequentialProcFuncs
+  //
+  //////////////////////////
+
+  @Override
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //SequentialProcFuncs
+  //
+  //////////////////////////
+  @Override
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //PrivateDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-11
+  //AssignVarDeclaration
+  //
+  //////////////////////////
+  @Override
+  public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+    return null;
   }
 }

@@ -567,9 +567,4 @@ public class TreeVisitor implements Visitor {
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
       return(createBinary("Assigned Var Declaration", ast.I, ast.E));
     }
-
-    @Override
-    public Object visitExample(AssignVarDeclaration ast, Object o) {
-      return null;
-    }
 }

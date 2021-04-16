@@ -130,6 +130,4 @@ public interface Visitor {
 
   //AssignDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o);
-  public abstract Object visitExample(AssignVarDeclaration ast, Object o);
-
 }

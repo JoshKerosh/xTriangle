@@ -768,9 +768,4 @@ public class XmlWriterVisitor implements Visitor{
   FileWriter fileWriter;
   final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   private String fileURL;
-  
-  @Override
-  public Object visitExample(AssignVarDeclaration ast, Object o) {
-    return null;
-  }
 }

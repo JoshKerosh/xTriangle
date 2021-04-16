@@ -758,9 +758,4 @@ public class TableVisitor implements Visitor {
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
       return null;
     }
-
-    @Override
-    public Object visitExample(AssignVarDeclaration ast, Object o) {
-      return null;
-    }
 }

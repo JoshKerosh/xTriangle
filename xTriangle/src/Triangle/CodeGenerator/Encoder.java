@@ -1102,9 +1102,4 @@ public final class Encoder implements Visitor {
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     return null;
   }
-
-  @Override
-  public Object visitExample(AssignVarDeclaration ast, Object o) {
-    return null;
-  }
 }

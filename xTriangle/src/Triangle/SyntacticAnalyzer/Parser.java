@@ -150,6 +150,7 @@ public class Parser {
     currentToken = lexicalAnalyser.scan();
 
     try {
+      //while que acepta package declaration, ; TOKEN.; TODO
       Command cAST = parseCommand();
       programAST = new Program(cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
@@ -272,9 +273,9 @@ public class Parser {
 
     switch (currentToken.kind) {
 
-    case Token.IDENTIFIER:
+    case Token.IDENTIFIER: //LONG IDENTIFIER CAMBIAR ?? TODO
       {
-        Identifier iAST = parseIdentifier();
+        Identifier iAST = parseIdentifier(); // LONG IDENTIFIER CAMBIAR TODO
         if (currentToken.kind == Token.LPAREN) {
           acceptIt();
           ActualParameterSequence apsAST = parseActualParameterSequence();
@@ -551,7 +552,7 @@ public class Parser {
 // VALUE-OR-VARIABLE NAMES
 //
 ///////////////////////////////////////////////////////////////////////////////
-
+//modificar TODO
   Vname parseVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
@@ -903,9 +904,9 @@ public class Parser {
 
     switch (currentToken.kind) {
 
-    case Token.IDENTIFIER:
+    case Token.IDENTIFIER: //LONG IDENTIFIER, cambiar TODO 
       {
-        Identifier iAST = parseIdentifier();
+        Identifier iAST = parseIdentifier(); //long identifier , cambiar TODO
         finish(typePos);
         typeAST = new SimpleTypeDenoter(iAST, typePos);
       }
@@ -925,7 +926,7 @@ public class Parser {
     case Token.RECORD:
       {
         acceptIt();
-        FieldTypeDenoter fAST = parseFieldTypeDenoter();
+        FieldTypeDenoter fAST = parseFieldTypeDenoter(); // record type denoter, cambiar eso TODO
         accept(Token.END);
         finish(typePos);
         typeAST = new RecordTypeDenoter(fAST, typePos);

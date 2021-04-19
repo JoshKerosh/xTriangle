@@ -1165,11 +1165,11 @@ public class Parser {
     SourcePosition propFuncsPos = new SourcePosition();
     start(propFuncsPos);
     ProcFuncs secondProcFuncsAST = parseProcFunc();
-    while (currentToken.kind == Token.PIPE) { //"|"
-      acceptIt();
+    do {
+      accept(Token.PIPE);
       ProcFuncs thirdProcFuncsAST = parseProcFunc();
       secondProcFuncsAST = new SequentialProcFuncs(secondProcFuncsAST, thirdProcFuncsAST, propFuncsPos);
-    }
+    } while (currentToken.kind == Token.PIPE); //"|"
     finish(propFuncsPos);
     ProcFuncsAST = secondProcFuncsAST;
     return ProcFuncsAST;

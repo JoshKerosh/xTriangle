@@ -130,4 +130,21 @@ public interface Visitor {
 
   //AssignDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o);
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-20
+  //Cases(Extra)
+  //
+  /////////////////////////
+
+  public abstract Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o);
+  public abstract Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o);
+  public abstract Object visitCaseRange(CaseRange ast, Object o);
+  public abstract Object visitCaseLiterals(CaseLiterals ast, Object o);
+  public abstract Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o);
+  public abstract Object visitElseCase(ElseCase ast, Object o);
+  public abstract Object visitCase(Case ast, Object o);
+  public abstract Object visitSequentialCases(SequentialCases ast, Object o);
+  public abstract Object visitChooseCommand(ChooseCommand ast, Object o);
 }

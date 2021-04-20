@@ -14,13 +14,20 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -60,6 +67,8 @@ import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
@@ -729,6 +738,89 @@ public class XmlWriterVisitor implements Visitor{
     ast.I.visit(this, null);
     ast.E.visit(this, null);
     writeLine("</AssignVarDeclaration>");
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Cases(Extra)
+  //
+  /////////////////////////
+
+  @Override
+  public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
+    writeLine("<CaseLiteralInteger>");
+    ast.I.visit(this, null);
+    writeLine("</CaseLiteralInteger>");
+    return null;
+  }
+
+  @Override
+  public Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o) {
+    writeLine("<CaseLiteralCharacter>");
+    ast.C.visit(this, null);
+    writeLine("</CaseLiteralCharacter>");
+    return null;
+  }
+
+  @Override
+  public Object visitCaseRange(CaseRange ast, Object o) {
+    writeLine("<CaseRange>");
+    ast.E1.visit(this, null);
+    ast.E2.visit(this, null);
+    writeLine("</CaseRange>");
+    return null;
+  }
+
+  @Override
+  public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+    writeLine("<CaseLiterals>");
+    ast.E.visit(this, null);
+    writeLine("</CaseLiterals>");
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
+    writeLine("<SequentialCaseLiterals>");
+    ast.E1.visit(this, null);
+    ast.E2.visit(this, null);
+    writeLine("</SequentialCaseLiterals>");
+    return null;
+  }
+
+  @Override
+  public Object visitElseCase(ElseCase ast, Object o){
+    writeLine("<ElseCase>");
+    ast.C.visit(this, null);
+    writeLine("</ElseCase>");
+    return null;
+  }
+
+  @Override
+  public Object visitCase(Case ast, Object o){
+    writeLine("<Case>");
+    ast.E.visit(this, null);
+    ast.C.visit(this, null);
+    writeLine("</Case>");
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialCases(SequentialCases ast, Object o){
+    writeLine("<SequentialCases>");
+    ast.C1.visit(this, null);
+    ast.C2.visit(this, null);
+    writeLine("</SequentialCases>");
+    return null;
+  }
+
+  @Override
+  public Object visitChooseCommand(ChooseCommand ast, Object o){
+    writeLine("<ChooseCommand>");
+    ast.E.visit(this, null);
+    ast.C.visit(this, null);
+    writeLine("</ChooseCommand>");
     return null;
   }
 

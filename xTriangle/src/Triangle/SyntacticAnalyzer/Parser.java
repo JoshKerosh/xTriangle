@@ -25,14 +25,23 @@ import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
+import Triangle.AbstractSyntaxTrees.Cases;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.Command;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -76,6 +85,8 @@ import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
@@ -476,14 +487,18 @@ public class Parser {
         commandAST = new EmptyCommand(commandPos);
         finish(commandPos);  
     }
-    /*
-    case Token.SEMICOLON:
-    case Token.END:
-    case Token.ELSE:
-    case Token.IN:
-    */
-    //** eliminar comando vacio
-    //commandAST = new EmptyCommand(commandPos);
+
+    //EXTRA
+    case Token.CHOOSE:
+    {
+      acceptIt();
+      Expression eAST = parseExpression();
+      accept(Token.FROM);
+      Cases cAST = parseCases();
+      accept(Token.END);
+      finish(commandPos);
+      commandAST = new ChooseCommand(eAST, cAST, commandPos);
+    }
     break;
 
     default:
@@ -1215,4 +1230,130 @@ public class Parser {
     }
     return procFuncsAST;
   }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Marcos Mendez 2021-04-20
+// CASES (EXTRA)
+//
+///////////////////////////////////////////////////////////////////////////////
+  Expression parseCaseRange() throws SyntaxError{
+    Expression caseRangeAST = null; // in case there's a syntactic error
+
+    SourcePosition caseRangePos = new SourcePosition();
+    start(caseRangePos);
+
+    caseRangeAST = parseCaseLiteral();
+    finish(caseRangePos);
+
+    if(currentToken.kind == Token.DDOT){ //..
+      acceptIt();
+      Expression e2AST = parseCaseLiteral();
+      finish(caseRangePos);
+      caseRangeAST = new CaseRange(caseRangeAST, e2AST, caseRangePos);
+    }
+    return caseRangeAST;
+  }
+
+  Expression parseCaseLiteral() throws SyntaxError{
+    Expression caseLiteralAST = null; // in case there's a syntactic error
+
+    SourcePosition caseLiteralPos = new SourcePosition();
+    start(caseLiteralPos);
+
+    switch (currentToken.kind) {
+      case Token.INTLITERAL:
+      {
+        IntegerLiteral ilAST = parseIntegerLiteral();
+        finish(caseLiteralPos);
+        caseLiteralAST = new CaseLiteralInteger(ilAST, caseLiteralPos);
+      }
+      break;
+      case Token.CHARLITERAL:
+      {
+        CharacterLiteral clAST= parseCharacterLiteral();
+        finish(caseLiteralPos);
+        caseLiteralAST = new CaseLiteralCharacter(clAST, caseLiteralPos);
+      }
+      break;
+      default:
+        syntacticError("Case-Literal expected here.", "");
+    }
+    return caseLiteralAST;
+  }
+
+  Expression parseCaseLiterals() throws SyntaxError{
+    Expression caseLiteralsAST = null;
+
+    SourcePosition caseLiteralsPos = new SourcePosition();
+    start(caseLiteralsPos);
+
+    Expression caseRangeAST = parseCaseRange();
+
+    finish(caseLiteralsPos);
+    caseLiteralsAST = new CaseLiterals(caseRangeAST, caseLiteralsPos);
+    while(currentToken.kind == Token.PIPE){
+      acceptIt();
+      caseRangeAST = parseCaseRange();
+      Expression caseLiteralsAST2 = new CaseLiterals(caseRangeAST, caseLiteralsPos);
+      finish(caseLiteralsPos);
+      caseLiteralsAST = new SequentialCaseLiterals(caseLiteralsAST, caseLiteralsAST2, caseLiteralsPos);
+    }
+    return caseLiteralsAST;
+  }
+
+  Cases parseElseCase() throws SyntaxError{
+    Cases elseCaseAST = null;
+
+    SourcePosition elseCasePos = new SourcePosition();
+    start(elseCasePos);
+
+    Command cAST = parseCommand();
+    finish(elseCasePos);
+    elseCaseAST = new ElseCase(cAST, elseCasePos);
+
+    return elseCaseAST;
+  }
+
+  Cases parseCase() throws SyntaxError{
+    Cases caseAST = null;
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+
+    Expression eAST = parseCaseLiterals();
+    accept(Token.THEN);
+    Command cAST = parseCommand();
+    finish(casePos);
+
+    caseAST = new Case(eAST, cAST, casePos);
+    return caseAST;
+  }
+
+  Cases parseCases() throws SyntaxError{
+    Cases casesAST = null;
+
+    SourcePosition casesPos = new SourcePosition();
+    start(casesPos);
+
+    accept(Token.WHEN);
+    casesAST = parseCase();
+
+    while(currentToken.kind == Token.WHEN){
+      acceptIt();
+      Cases caseAST = parseCase();
+      finish(casesPos);
+      casesAST = new SequentialCases(casesAST, caseAST, casesPos);
+    }
+
+    if(currentToken.kind == Token.ELSE){
+      acceptIt();
+      Cases elseCaseAST = parseElseCase();
+      finish(casesPos);
+      casesAST = new SequentialCases(casesAST, elseCaseAST, casesPos);
+    }
+
+    return casesAST;
+  }
+
 }

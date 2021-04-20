@@ -15,13 +15,21 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -60,7 +68,9 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
-import Triangle.AbstractSyntaxTrees.RecursiveProc; 
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
@@ -566,5 +576,57 @@ public class TreeVisitor implements Visitor {
     @Override
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
       return(createBinary("Assigned Var Declaration", ast.I, ast.E));
+    }
+
+    //////////////////////////
+    //
+    //Marcos Mendez 2021-04-20
+    //Cases(Extra)
+    //
+    /////////////////////////
+
+    @Override
+    public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
+      return createUnary("Case Literal Integer", ast.I);
+    }
+
+    @Override
+    public Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o) {
+      return createUnary("Case Literal Character", ast.C);
+    }
+
+    @Override
+    public Object visitCaseRange(CaseRange ast, Object o) {
+      return createBinary("Case Range", ast.E1, ast.E2);
+    }
+
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+      return createUnary("Case Literals", ast.E);
+    }
+
+    @Override
+    public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
+      return createBinary("Sequential Case Literals", ast.E1, ast.E2);
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o){
+      return createUnary("Else Case", ast.C);
+    }
+
+    @Override
+    public Object visitCase(Case ast, Object o){
+      return createBinary("Case", ast.E, ast.C);
+    }
+
+    @Override
+    public Object visitSequentialCases(SequentialCases ast, Object o){
+      return createBinary("Sequential Cases", ast.C1, ast.C2);
+    }
+
+    @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o){
+      return createBinary("Choose Command", ast.E, ast.C);
     }
 }

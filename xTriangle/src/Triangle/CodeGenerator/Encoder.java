@@ -34,14 +34,22 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -80,7 +88,9 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
-import Triangle.AbstractSyntaxTrees.RecursiveProc; 
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
@@ -1046,11 +1056,6 @@ public final class Encoder implements Visitor {
   public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
     return null;
   }  
-  
-  @Override
-  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-    return null;
-  }
 
   //////////////////////////
   //
@@ -1059,11 +1064,6 @@ public final class Encoder implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
-    return null;
-  }
-
-  @Override
-  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
     return null;
   }
 
@@ -1079,10 +1079,6 @@ public final class Encoder implements Visitor {
     return null;
   }
 
-  @Override
-  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
-    return null;
-  }
 
   //////////////////////////
   //
@@ -1114,6 +1110,57 @@ public final class Encoder implements Visitor {
   //////////////////////////
   @Override
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-20
+  //Cases(Extra)
+  //
+  /////////////////////////
+  @Override
+  public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitCaseRange(CaseRange ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitElseCase(ElseCase ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitCase(Case ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialCases(SequentialCases ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitChooseCommand(ChooseCommand ast, Object o){
     return null;
   }
 }

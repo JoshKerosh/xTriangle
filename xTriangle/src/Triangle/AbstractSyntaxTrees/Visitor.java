@@ -116,15 +116,11 @@ public interface Visitor {
 
   //SequentialProcFuncs Marcos Mendez 2021-04-11
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
-  public abstract Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o);
-
   //RecursiveProc Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
-  public abstract Object visitRecursiveProcSelf(RecursiveProc ast, Object o);
 
   //RecursiveFunc Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
-  public abstract Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o);
 
   //RecursiveDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
@@ -135,4 +131,20 @@ public interface Visitor {
   //AssignDeclaration Marcos Mendez 2021-04-11
   public abstract Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o);
 
+  //////////////////////////
+  //
+  //Marcos Mendez 2021-04-20
+  //Cases(Extra)
+  //
+  /////////////////////////
+
+  public abstract Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o);
+  public abstract Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o);
+  public abstract Object visitCaseRange(CaseRange ast, Object o);
+  public abstract Object visitCaseLiterals(CaseLiterals ast, Object o);
+  public abstract Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o);
+  public abstract Object visitElseCase(ElseCase ast, Object o);
+  public abstract Object visitCase(Case ast, Object o);
+  public abstract Object visitSequentialCases(SequentialCases ast, Object o);
+  public abstract Object visitChooseCommand(ChooseCommand ast, Object o);
 }

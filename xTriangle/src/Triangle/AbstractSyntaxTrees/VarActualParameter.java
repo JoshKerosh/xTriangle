@@ -18,7 +18,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class VarActualParameter extends ActualParameter {
 
-  public VarActualParameter (Vname vAST, SourcePosition thePosition) {
+  public VarActualParameter (VarName vAST, SourcePosition thePosition) {
     super (thePosition);
     V = vAST;
   }
@@ -27,5 +27,5 @@ public class VarActualParameter extends ActualParameter {
     return v.visitVarActualParameter(this, o);
   }
 
-  public Vname V;
+  public VarName V;
 }

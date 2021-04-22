@@ -1,5 +1,5 @@
 /*
- * @(#)Program.java                        2.1 2003/10/07
+ * @(#)VarNameExpression.java                        2.1 2003/10/07
  *
  * Copyright (C) 1999, 2003 D.A. Watt and D.F. Brown
  * Dept. of Computing Science, University of Glasgow, Glasgow G12 8QQ Scotland
@@ -16,23 +16,16 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class Program extends AST {
+public class VarNameExpression extends Expression {
 
-  public Program (Command cAST, SourcePosition thePosition) {
+  public VarNameExpression (VarName vAST, SourcePosition thePosition) {
     super (thePosition);
-    C = cAST;
-  }
-
-  public Program (Declaration pDAST,Command cAST, SourcePosition thePosition) {
-    super (thePosition);
-    pD = pDAST;
-    C = cAST;
+    V = vAST;
   }
 
   public Object visit(Visitor v, Object o) {
-    return v.visitProgram(this, o);
+    return v.visitVarNameExpression(this, o);
   }
 
-  public Command C;
-  public Declaration pD;
+  public VarName V;
 }

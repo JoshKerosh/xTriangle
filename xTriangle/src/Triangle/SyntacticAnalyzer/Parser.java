@@ -301,18 +301,14 @@ Identifier parseLongIdentifier() throws SyntaxError {
   SourcePosition longIdentifierPos = new SourcePosition();
   start(longIdentifierPos);
   
-  if(currentToken.kind == Token.IDENTIFIER){
-    Identifier pIAST = parsePackageIdentifier();
-    accept(Token.DOLAR);
-
-    Identifier iAST = parseIdentifier();
-    finish(longIdentifierPos);
-    longIdentifierAST = new LongIdentifier(iAST.spelling, pIAST , iAST, longIdentifierPos);
+  Identifier iAST = parseIdentifier();
+  if(currentToken.kind == Token.DOLAR){
+    acceptIt();
+    Identifier iAST2 = parseIdentifier();
+    longIdentifierAST = new LongIdentifier(currentToken.spelling, iAST2, iAST, longIdentifierPos);
   }
 
-  else {
-    longIdentifierAST = parseIdentifier();
-  }
+  longIdentifierAST = iAST;
 
   return longIdentifierAST;
 }

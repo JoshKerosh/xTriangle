@@ -1167,7 +1167,7 @@ VarName parseVname () throws SyntaxError {
     case Token.VAR:
       {
         acceptIt();
-        VarName vAST = parseVarName();
+        VarName vAST = parseVname();
         finish(actualPos);
         actualAST = new VarActualParameter(vAST, actualPos);
       }

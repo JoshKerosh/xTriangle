@@ -303,7 +303,7 @@ Identifier parseLongIdentifier() throws SyntaxError {
   
   Identifier iAST = parseIdentifier();
   if(currentToken.kind == Token.DOLAR){
-    acceptIt();
+    accept(Token.DOLAR);
     Identifier iAST2 = parseIdentifier();
     longIdentifierAST = new LongIdentifier(currentToken.spelling, iAST2, iAST, longIdentifierPos);
   }

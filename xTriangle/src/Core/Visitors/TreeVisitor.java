@@ -641,16 +641,16 @@ public class TreeVisitor implements Visitor {
 
     @Override
     public Object visitLongIdentifier(LongIdentifier ast, Object o) {
-        return null;
+        return createBinary("Long Identifier", ast.pI, ast.I);
     }
 
     @Override
     public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-        return null;
+        return createBinary("Package Declaration", ast.pI, ast.D);
     }
 
     @Override
     public Object visitVname(Vname ast, Object o) {
-        return null;
+        return createBinary("V-name", ast.pI, ast.vN);
     }
 }

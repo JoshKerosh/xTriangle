@@ -76,6 +76,7 @@ import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
 import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVarName;
@@ -634,6 +635,13 @@ public class TreeVisitor implements Visitor {
       return createBinary("Choose Command", ast.E, ast.C);
     }
 
+    //////////////////////////
+    //
+    //María José Cortés
+    //Packages
+    //
+    /////////////////////////
+
     @Override
     public Object visitPackageIdentifier(PackageIdentifier ast, Object o) {
         return createUnary("Package Identifier", ast.I);
@@ -652,5 +660,10 @@ public class TreeVisitor implements Visitor {
     @Override
     public Object visitVname(Vname ast, Object o) {
         return createBinary("V-name", ast.pI, ast.vN);
+    }
+
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        return null;
     }
 }

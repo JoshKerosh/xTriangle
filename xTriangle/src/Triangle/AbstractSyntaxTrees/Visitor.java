@@ -105,9 +105,11 @@ public interface Visitor {
   public abstract Object visitIdentifier(Identifier ast, Object o);
   public abstract Object visitIntegerLiteral(IntegerLiteral ast, Object o);
   public abstract Object visitOperator(Operator ast, Object o);
+  //María José Cortés
   public abstract Object visitPackageIdentifier(PackageIdentifier ast, Object o);
   public abstract Object visitLongIdentifier(LongIdentifier ast, Object o);
   public abstract Object visitPackageDeclaration(PackageDeclaration ast, Object o);
+  public abstract Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o);
 
   // Value-or-variable names
   public abstract Object visitDotVarName(DotVarName ast, Object o);

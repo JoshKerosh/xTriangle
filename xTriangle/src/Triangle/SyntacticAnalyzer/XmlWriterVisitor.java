@@ -74,6 +74,7 @@ import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
 import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVarName;
@@ -863,6 +864,15 @@ public class XmlWriterVisitor implements Visitor{
     return null;
   }
 
+  @Override
+  public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+    writeLine("<SequentialPackageDeclaration>");
+    ast.D1.visit(this, null);
+    ast.D2.visit(this, null);
+    writeLine("</SequentialPackageDeclaration>");
+    return null;
+  }
+
   ////////////////////
   //
   //File functions
@@ -899,4 +909,5 @@ public class XmlWriterVisitor implements Visitor{
   FileWriter fileWriter;
   final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   private String fileURL;
+
 }

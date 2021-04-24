@@ -92,6 +92,7 @@ import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
 import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVarName;
@@ -182,10 +183,13 @@ public class Parser {
     try {
 
       if(currentToken.kind == Token.PACKAGE){
-        Declaration pDAST = null;
+        Declaration pDAST = parsePackageDeclaration();
+        accept(Token.SEMICOLON);
         while(currentToken.kind == Token.PACKAGE){
-           pDAST = parsePackageDeclaration();
+           Declaration pDAST2 = parsePackageDeclaration();
            accept(Token.SEMICOLON);
+           pDAST = new SequentialPackageDeclaration(pDAST, pDAST2, previousTokenPosition);
+           
         }
         Command cAST = parseCommand();
         programAST = new Program(pDAST, cAST, previousTokenPosition);
@@ -306,6 +310,10 @@ Identifier parseLongIdentifier() throws SyntaxError {
     accept(Token.DOLAR);
     Identifier iAST2 = parseIdentifier();
     longIdentifierAST = new LongIdentifier(currentToken.spelling, iAST2, iAST, longIdentifierPos);
+  }
+  else if(currentToken.kind == Token.IDENTIFIER){
+    syntacticError("$ expected here",
+    currentToken.spelling);
   }
 
   longIdentifierAST = iAST;
@@ -871,11 +879,19 @@ VarName parseVname () throws SyntaxError {
       if (currentToken.kind == Token.DOT) {
         acceptIt();
         Identifier iAST = parseIdentifier();
+        if(currentToken.kind == Token.DOLAR){
+          syntacticError("$ not expected here",
+          currentToken.spelling);
+        }
         vAST = new DotVarName(vAST, iAST, VarNamePos);
       } else {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.RBRACKET);
+        if(currentToken.kind == Token.DOLAR){
+          syntacticError("$ not expected here",
+          currentToken.spelling);
+        }
         finish(VarNamePos);
         vAST = new SubscriptVarName(vAST, eAST, VarNamePos);
       }

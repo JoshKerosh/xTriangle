@@ -2,20 +2,20 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class Vname extends VarName {
+public class PackageDeclaration extends Declaration{
 
-    public Vname(Identifier pIAST, VarName vNAST, SourcePosition thePosition) {
+    public PackageDeclaration(Identifier pIAST, Declaration dAST, SourcePosition thePosition) {
         super(thePosition);
         pI = pIAST;
-        vN = vNAST;
+        D = dAST;
     }
 
     @Override
     public Object visit(Visitor v, Object o) {
-        return v.visitVname(this, o);
+        return v.visitPackageDeclaration(this, o);
     }
 
     public Identifier pI;
-    public VarName vN;
+    public Declaration D;
     
 }

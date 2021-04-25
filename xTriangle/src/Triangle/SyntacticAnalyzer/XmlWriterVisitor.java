@@ -26,7 +26,7 @@ import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
-import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DotVarName;
 import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
@@ -44,6 +44,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
@@ -57,6 +58,8 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -71,15 +74,16 @@ import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
 import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SimpleVname;
+import Triangle.AbstractSyntaxTrees.SimpleVarName;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
-import Triangle.AbstractSyntaxTrees.SubscriptVname;
+import Triangle.AbstractSyntaxTrees.SubscriptVarName;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
@@ -87,7 +91,8 @@ import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
-import Triangle.AbstractSyntaxTrees.VnameExpression;
+import Triangle.AbstractSyntaxTrees.Vname;
+import Triangle.AbstractSyntaxTrees.VarNameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 //Marcos Mendez 2021-04-15
@@ -317,10 +322,10 @@ public class XmlWriterVisitor implements Visitor{
   }
 
   @Override
-  public Object visitVnameExpression(VnameExpression ast, Object o) {
-    writeLine("<VnameExpression>");
+  public Object visitVarNameExpression(VarNameExpression ast, Object o) {
+    writeLine("<VarNameExpression>");
     ast.V.visit(this, null);
-    writeLine("</VnameExpression>");
+    writeLine("</VarNameExpression>");
     return null;
   }
 
@@ -652,28 +657,28 @@ public class XmlWriterVisitor implements Visitor{
   }
 
   @Override
-  public Object visitDotVname(DotVname ast, Object o) {
-    writeLine("<DotVname>");
+  public Object visitDotVarName(DotVarName ast, Object o) {
+    writeLine("<DotVarName>");
     ast.I.visit(this, null);
     ast.V.visit(this, null);
-    writeLine("</DotVname>");
+    writeLine("</DotVarName>");
     return null;
   }
 
   @Override
-  public Object visitSimpleVname(SimpleVname ast, Object o) {
-    writeLine("<SimpleVname>");
+  public Object visitSimpleVarName(SimpleVarName ast, Object o) {
+    writeLine("<SimpleVarName>");
     ast.I.visit(this, null);
-    writeLine("</SimpleVname>");
+    writeLine("</SimpleVarName>");
     return null;
   }
 
   @Override
-  public Object visitSubscriptVname(SubscriptVname ast, Object o) {
-    writeLine("<SubscriptVname>");
+  public Object visitSubscriptVarName(SubscriptVarName ast, Object o) {
+    writeLine("<SubscriptVarName>");
     ast.V.visit(this, null);
     ast.E.visit(this, null);
-    writeLine("</SubscriptVname>");
+    writeLine("</SubscriptVarName>");
     return null;
   }
 
@@ -824,6 +829,50 @@ public class XmlWriterVisitor implements Visitor{
     return null;
   }
 
+  @Override
+  public Object visitPackageIdentifier(PackageIdentifier ast, Object o) {
+    writeLine("<PackageIdentifier>");
+    ast.I.visit(this, null);
+    writeLine("</PackageIdentifier>");
+    return null;
+  }
+
+  @Override
+  public Object visitLongIdentifier(LongIdentifier ast, Object o) {
+    writeLine("<LongIdentifier>");
+    ast.pI.visit(this, null);
+    ast.I.visit(this, null);
+    writeLine("</LongIdentifier>");
+    return null;
+  }
+
+  @Override
+  public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+    writeLine("<PackageDeclaration>");
+    ast.pI.visit(this, null);
+    ast.D.visit(this, null);
+    writeLine("</PackageDeclaration>");
+    return null;
+  }
+
+  @Override
+  public Object visitVname(Vname ast, Object o) {
+    writeLine("<Vname>");
+    ast.pI.visit(this, null);
+    ast.vN.visit(this, null);
+    writeLine("</Vname>");
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+    writeLine("<SequentialPackageDeclaration>");
+    ast.D1.visit(this, null);
+    ast.D2.visit(this, null);
+    writeLine("</SequentialPackageDeclaration>");
+    return null;
+  }
+
   ////////////////////
   //
   //File functions
@@ -860,4 +909,5 @@ public class XmlWriterVisitor implements Visitor{
   FileWriter fileWriter;
   final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   private String fileURL;
+
 }

@@ -18,7 +18,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class AssignCommand extends Command {
 
-  public AssignCommand (Vname vAST, Expression eAST, SourcePosition thePosition) {
+  public AssignCommand (VarName vAST, Expression eAST, SourcePosition thePosition) {
     super (thePosition);
     V = vAST;
     E = eAST;
@@ -28,6 +28,6 @@ public class AssignCommand extends Command {
     return v.visitAssignCommand(this, o);
   }
 
-  public Vname V;
+  public VarName V;
   public Expression E;
 }

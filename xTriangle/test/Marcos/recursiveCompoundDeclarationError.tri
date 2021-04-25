@@ -1,0 +1,11 @@
+let 	
+recursive 
+	proc yTest(x : int)~
+		if x > 0
+			then y := x-1
+			else yTest(y) 
+		end
+	end
+in
+	puteol()
+end

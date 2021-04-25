@@ -1,0 +1,6 @@
+choose x from
+	when 0 | 1 then putint (1)
+	when 2 then putint(2)
+  	when 'd' .. 'e' then put(x)
+	else x := 0
+end

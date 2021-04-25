@@ -2,6 +2,9 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+//Marcos Méndez
+//AST Nuevo
+
 public class CaseLiteralInteger extends CaseLiteral{
 
   public CaseLiteralInteger(IntegerLiteral iAST, SourcePosition thePosition) {

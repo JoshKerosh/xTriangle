@@ -1,11 +1,9 @@
-/*
-  Marcos Mendez Hidalgo 2021-04-10
-  Class to represent a new AST SequentialProcFuncs.
-*/
-
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
+
+//Marcos Méndez
+//AST Nuevo
 
 public class SequentialProcFuncs extends ProcFuncs{
   

@@ -95,7 +95,7 @@ import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VarNameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
-//Marcos Mendez 2021-04-15
+//Marcos Méndez 2021-04-15
 
 public class XmlWriterVisitor implements Visitor{
 
@@ -761,7 +761,7 @@ public class XmlWriterVisitor implements Visitor{
   }
 
   @Override
-  public Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o) {
+  public Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o) {
     writeLine("<CaseLiteralCharacter>");
     ast.C.visit(this, null);
     writeLine("</CaseLiteralCharacter>");

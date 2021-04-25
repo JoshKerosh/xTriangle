@@ -56,7 +56,7 @@ final class Token extends Object {
       ", position=" + position;
   }
 
-  // Marcos Mendez 2021-04-10
+  // Marcos Méndez 2021-04-10
   // Token classes...
 
   public static final int

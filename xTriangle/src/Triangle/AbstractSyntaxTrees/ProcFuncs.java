@@ -1,5 +1,5 @@
 /*
-  Marcos Mendez Hidalgo 2021-04-10
+  Marcos Méndez Hidalgo 2021-04-10
 */
 
 package Triangle.AbstractSyntaxTrees;

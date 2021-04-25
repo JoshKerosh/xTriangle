@@ -2,6 +2,9 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+//Marcos Méndez
+//AST Nuevo
+
 public class SequentialCaseLiterals extends Expression{
 
   public SequentialCaseLiterals(Expression e1AST, Expression e2AST, SourcePosition thePosition) {

@@ -120,32 +120,32 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
 
-  //SequentialProcFuncs Marcos Mendez 2021-04-11
+  //SequentialProcFuncs Marcos Méndez 2021-04-11
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
-  //RecursiveProc Marcos Mendez 2021-04-11
+  //RecursiveProc Marcos Méndez 2021-04-11
   public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
 
-  //RecursiveFunc Marcos Mendez 2021-04-11
+  //RecursiveFunc Marcos Méndez 2021-04-11
   public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
 
-  //RecursiveDeclaration Marcos Mendez 2021-04-11
+  //RecursiveDeclaration Marcos Méndez 2021-04-11
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
 
-  //PrivateDeclaration Marcos Mendez 2021-04-11
+  //PrivateDeclaration Marcos Méndez 2021-04-11
   public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);
 
-  //AssignDeclaration Marcos Mendez 2021-04-11
+  //AssignDeclaration Marcos Méndez 2021-04-11
   public abstract Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o);
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-20
+  //Marcos Méndez 2021-04-20
   //Cases(Extra)
   //
   /////////////////////////
 
   public abstract Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o);
-  public abstract Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o);
+  public abstract Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o);
   public abstract Object visitCaseRange(CaseRange ast, Object o);
   public abstract Object visitCaseLiterals(CaseLiterals ast, Object o);
   public abstract Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o);

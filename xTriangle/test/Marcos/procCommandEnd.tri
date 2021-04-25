@@ -1,0 +1,5 @@
+let 
+	proc test(x : int) ~ puteol() end
+in
+	puteol()
+end

@@ -1,0 +1,8 @@
+let
+	private
+	in
+		var c := a * b * 2
+	end;
+in
+	puteol()
+end;

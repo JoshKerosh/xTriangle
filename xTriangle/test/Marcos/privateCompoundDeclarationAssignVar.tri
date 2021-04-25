@@ -1,0 +1,8 @@
+let 	
+	private var x := 5
+	in
+		proc test () ~ puteol() end
+	end
+in
+	puteol()
+end

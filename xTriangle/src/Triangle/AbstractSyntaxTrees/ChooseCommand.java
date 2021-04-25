@@ -2,6 +2,9 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+//Marcos Méndez
+//AST Nuevo
+
 public class ChooseCommand extends Command{
 
   public ChooseCommand(Expression eAST, Cases cAST, SourcePosition thePosition) {

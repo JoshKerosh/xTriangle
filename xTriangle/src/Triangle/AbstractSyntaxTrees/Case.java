@@ -2,6 +2,9 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+//Marcos Méndez
+//AST Nuevo
+
 public class Case extends Cases{
 
   public Case(Expression eAST, Command cAST, SourcePosition thePosition) {

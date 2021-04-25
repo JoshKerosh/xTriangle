@@ -1,6 +1,6 @@
 /*
  * @(#)LoopWhileCommand.java 
- * Joshua Jimenez, Marco Mendez, maria Cortez
+ * Joshua Jimenez, Marco Méndez, maria Cortez
  * < Extension de Triangulo >
  * Proyecto Compiladores e Interpretes, 2021
  */

@@ -1000,7 +1000,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //SequentialProcFuncs
   //
   //////////////////////////
@@ -1014,7 +1014,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //RecursiveProc
   //
   //////////////////////////
@@ -1025,7 +1025,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //RecursiveFunc
   //
   //////////////////////////
@@ -1036,7 +1036,7 @@ public final class Checker implements Visitor {
   
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //RecursiveDeclaration
   //
   //////////////////////////
@@ -1047,7 +1047,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //PrivateDeclaration
   //
   //////////////////////////
@@ -1058,7 +1058,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //AssignVarDeclaration
   //
   //////////////////////////
@@ -1069,7 +1069,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-20
+  //Marcos Méndez 2021-04-20
   //Cases(Extra)
   //
   /////////////////////////
@@ -1080,7 +1080,7 @@ public final class Checker implements Visitor {
 
 
   @Override
-  public Object visitCaseLiteralChart(CaseLiteralCharacter ast, Object o) {
+  public Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o) {
     return null;
   }
 

@@ -26,7 +26,6 @@ import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.Case;
-import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
 import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
 import Triangle.AbstractSyntaxTrees.CaseLiterals;
@@ -79,7 +78,6 @@ import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
-import Triangle.AbstractSyntaxTrees.ProcFunc;
 import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
@@ -111,7 +109,6 @@ import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.VarName;
 import Triangle.AbstractSyntaxTrees.VarNameExpression;
 import Triangle.AbstractSyntaxTrees.Vname;
-import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
 

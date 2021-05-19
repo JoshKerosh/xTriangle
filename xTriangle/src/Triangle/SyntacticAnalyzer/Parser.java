@@ -594,7 +594,7 @@ Declaration parsePackageDeclaration() throws SyntaxError {
         commandAST = new EmptyCommand(commandPos);
         finish(commandPos);  
     }
-
+    break;
     //EXTRA
     case Token.CHOOSE:
     {

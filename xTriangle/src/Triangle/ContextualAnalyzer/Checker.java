@@ -876,7 +876,14 @@ public final class Checker implements Visitor {
       } else if (binding instanceof VarFormalParameter) {
         ast.type = ((VarFormalParameter) binding).T;
         ast.variable = true;
-      } else
+      } else if (binding instanceof AssignVarDeclaration) { //Marcos Mendez AssignVarDeclaration agregado
+        ast.type = ((AssignVarDeclaration) binding).E.type;
+        ast.variable = true; 
+      }else if (binding instanceof ControlVarDeclaration) { //Joshua Jimenez ControlVarDeclaration agregado
+        ast.type = StdEnvironment.integerType;
+        ast.variable = false;
+      } 
+      else
         reporter.reportError ("\"%\" is not a const or var identifier",
                               ast.I.spelling, ast.I.position);
     return ast.type;
@@ -1296,7 +1303,7 @@ public final class Checker implements Visitor {
   public Object visitVname(Vname ast, Object o) {
     return null;
   }
-
+  
   @Override
   public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
     return null;

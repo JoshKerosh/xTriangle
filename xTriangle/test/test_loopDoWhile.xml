@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LoopDoWhileCommand>
+<AssignCommand>
+<SimpleVname>
+<IntegerLiteral value="x"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</AssignCommand>
+<VnameExpression>
+<SimpleVname>
+<IntegerLiteral value="true"/>
+</SimpleVname>
+</VnameExpression>
+</LoopDoWhileCommand>
+</Program>

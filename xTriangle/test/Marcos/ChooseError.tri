@@ -1,0 +1,4 @@
+choose x from !cases
+	0 | 1 then putint (1)
+        else x := 0 
+end

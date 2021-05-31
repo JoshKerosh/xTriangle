@@ -15,13 +15,21 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
-import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DotVarName;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -39,6 +47,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
@@ -52,6 +61,8 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -61,18 +72,21 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
-import Triangle.AbstractSyntaxTrees.RecursiveProc; 
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SimpleVname;
+import Triangle.AbstractSyntaxTrees.SimpleVarName;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
-import Triangle.AbstractSyntaxTrees.SubscriptVname;
+import Triangle.AbstractSyntaxTrees.SubscriptVarName;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
@@ -80,7 +94,8 @@ import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
-import Triangle.AbstractSyntaxTrees.VnameExpression;
+import Triangle.AbstractSyntaxTrees.Vname;
+import Triangle.AbstractSyntaxTrees.VarNameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -203,8 +218,8 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Unary Expression", ast.O, ast.E));
     }
     
-    public Object visitVnameExpression(VnameExpression ast, Object obj) {
-        return(createUnary("Vname Expression", ast.V));
+    public Object visitVarNameExpression(VarNameExpression ast, Object obj) {
+        return(createUnary("VarName Expression", ast.V));
     }
     // </editor-fold>
     
@@ -393,16 +408,16 @@ public class TreeVisitor implements Visitor {
     
     // <editor-fold defaultstate="collapsed" desc=" Values or Variable Names ">
     // Values or Variable Names
-    public Object visitDotVname(DotVname ast, Object obj) {
-        return(createBinary("Dot Vname", ast.I, ast.V));
+    public Object visitDotVarName(DotVarName ast, Object obj) {
+        return(createBinary("Dot VarName", ast.I, ast.V));
     }
     
-    public Object visitSimpleVname(SimpleVname ast, Object obj) {
-        return(createUnary("Simple Vname", ast.I));
+    public Object visitSimpleVarName(SimpleVarName ast, Object obj) {
+        return(createUnary("Simple VarName", ast.I));
     }
     
-    public Object visitSubscriptVname(SubscriptVname ast, Object obj) {
-        return(createBinary("Subscript Vname", ast.V, ast.E));
+    public Object visitSubscriptVarName(SubscriptVarName ast, Object obj) {
+        return(createBinary("Subscript VarName", ast.V, ast.E));
     }
     
     public Object visitProgram(Program ast, Object obj) {
@@ -511,7 +526,7 @@ public class TreeVisitor implements Visitor {
 
     //////////////////////////
     //
-    //Marcos Mendez 2021-04-11
+    //Marcos Méndez 2021-04-11
     //SequentialProcFuncs
     //
     //////////////////////////
@@ -520,14 +535,9 @@ public class TreeVisitor implements Visitor {
       return(createBinary("Sequential ProcFunc", ast.PF1, ast.PF2));
     }
 
-    @Override
-    public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-      return null;
-    }
-
     //////////////////////////
     //
-    //Marcos Mendez 2021-04-11
+    //Marcos Méndez 2021-04-11
     //RecursiveProc
     //
     //////////////////////////
@@ -536,14 +546,9 @@ public class TreeVisitor implements Visitor {
       return (createTernary("Recursive Proc", ast.I, ast.FPS, ast.C));
     }
 
-    @Override
-    public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
-      return null;
-    }
-
     //////////////////////////
     //
-    //Marcos Mendez 2021-04-11
+    //Marcos Méndez 2021-04-11
     //RecursiveFunc
     //
     //////////////////////////
@@ -552,14 +557,9 @@ public class TreeVisitor implements Visitor {
       return (createQuaternary("Recursive Func", ast.I, ast.FPS, ast.TD, ast.E));
     }
 
-    @Override
-    public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
-      return null;
-    }
-
     //////////////////////////
     //
-    //Marcos Mendez 2021-04-11
+    //Marcos Méndez 2021-04-11
     //RecursiveDeclaration
     //
     //////////////////////////
@@ -570,7 +570,7 @@ public class TreeVisitor implements Visitor {
 
     //////////////////////////
     //
-    //Marcos Mendez 2021-04-11
+    //Marcos Méndez 2021-04-11
     //PrivateDeclaration
     //
     //////////////////////////
@@ -581,7 +581,7 @@ public class TreeVisitor implements Visitor {
 
     //////////////////////////
     //
-    //Marcos Mendez 2021-04-11
+    //Marcos Méndez 2021-04-11
     //AssignVarDeclaration
     //
     //////////////////////////
@@ -590,5 +590,87 @@ public class TreeVisitor implements Visitor {
       return(createBinary("Assigned Var Declaration", ast.I, ast.E));
     }
 
-    
+    //////////////////////////
+    //
+    //Marcos Méndez 2021-04-20
+    //Cases(Extra)
+    //
+    /////////////////////////
+
+    @Override
+    public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
+      return createUnary("Case Literal Integer", ast.I);
+    }
+
+    @Override
+    public Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o) {
+      return createUnary("Case Literal Character", ast.C);
+    }
+
+    @Override
+    public Object visitCaseRange(CaseRange ast, Object o) {
+      return createBinary("Case Range", ast.E1, ast.E2);
+    }
+
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+      return createUnary("Case Literals", ast.E);
+    }
+
+    @Override
+    public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
+      return createBinary("Sequential Case Literals", ast.E1, ast.E2);
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o){
+      return createUnary("Else Case", ast.C);
+    }
+
+    @Override
+    public Object visitCase(Case ast, Object o){
+      return createBinary("Case", ast.E, ast.C);
+    }
+
+    @Override
+    public Object visitSequentialCases(SequentialCases ast, Object o){
+      return createBinary("Sequential Cases", ast.C1, ast.C2);
+    }
+
+    @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o){
+      return createBinary("Choose Command", ast.E, ast.C);
+    }
+
+    //////////////////////////
+    //
+    //María José Cortés
+    //Packages
+    //
+    /////////////////////////
+
+    @Override
+    public Object visitPackageIdentifier(PackageIdentifier ast, Object o) {
+        return createUnary("Package Identifier", ast.I);
+    }
+
+    @Override
+    public Object visitLongIdentifier(LongIdentifier ast, Object o) {
+        return createBinary("Long Identifier", ast.pI, ast.I);
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        return createBinary("Package Declaration", ast.pI, ast.D);
+    }
+
+    @Override
+    public Object visitVname(Vname ast, Object o) {
+        return createBinary("V-name", ast.pI, ast.vN);
+    }
+
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        return null;
+    }
 }

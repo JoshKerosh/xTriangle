@@ -2,6 +2,9 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+//Marcos Méndez
+//AST Nuevo
+
 public class RecursiveFunc extends ProcFuncs{
 
   public RecursiveFunc(Identifier iAST, FormalParameterSequence fAST, TypeDenoter tAST, Expression eAST, SourcePosition thePosition) {
@@ -15,11 +18,6 @@ public class RecursiveFunc extends ProcFuncs{
 
   public Object visit(Visitor v, Object o) { 
     return v.visitRecursiveFunc(this, o); 
-  }
-
-  @Override
-  public Object visitSelf(Visitor v, Object o) {
-    return v.visitRecursiveFuncSelf(this, o);
   }
 
   public Identifier I;

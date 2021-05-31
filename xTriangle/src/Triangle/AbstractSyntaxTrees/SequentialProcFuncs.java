@@ -1,11 +1,9 @@
-/*
-  Marcos Mendez Hidalgo 2021-04-10
-  Class to represent a new AST SequentialProcFuncs.
-*/
-
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
+
+//Marcos Méndez
+//AST Nuevo
 
 public class SequentialProcFuncs extends ProcFuncs{
   
@@ -17,11 +15,6 @@ public class SequentialProcFuncs extends ProcFuncs{
 
   public Object visit(Visitor v, Object o) {
     return v.visitSequentialProcFuncs(this, o);
-  }
-
-  @Override
-  public Object visitSelf(Visitor v, Object o) {
-    return v.visitSequentialProcFuncsSelf(this, o);
   }
 
   public ProcFuncs PF1, PF2;

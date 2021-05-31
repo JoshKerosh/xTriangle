@@ -23,9 +23,16 @@ public class Program extends AST {
     C = cAST;
   }
 
+  public Program (Declaration pDAST,Command cAST, SourcePosition thePosition) {
+    super (thePosition);
+    pD = pDAST;
+    C = cAST;
+  }
+
   public Object visit(Visitor v, Object o) {
     return v.visitProgram(this, o);
   }
 
   public Command C;
+  public Declaration pD;
 }

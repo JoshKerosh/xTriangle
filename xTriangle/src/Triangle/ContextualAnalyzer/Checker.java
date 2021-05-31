@@ -26,14 +26,22 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
-import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DotVarName;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -54,6 +62,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
@@ -67,6 +76,8 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -76,18 +87,21 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
-import Triangle.AbstractSyntaxTrees.RecursiveProc; 
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs; 
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SimpleVname;
+import Triangle.AbstractSyntaxTrees.SimpleVarName;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
-import Triangle.AbstractSyntaxTrees.SubscriptVname;
+import Triangle.AbstractSyntaxTrees.SubscriptVarName;
 import Triangle.AbstractSyntaxTrees.Terminal;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
@@ -97,7 +111,8 @@ import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
-import Triangle.AbstractSyntaxTrees.VnameExpression;
+import Triangle.AbstractSyntaxTrees.Vname;
+import Triangle.AbstractSyntaxTrees.VarNameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
@@ -400,7 +415,7 @@ public final class Checker implements Visitor {
     return ast.type;
   }
 
-  public Object visitVnameExpression(VnameExpression ast, Object o) {
+  public Object visitVarNameExpression(VarNameExpression ast, Object o) {
     ast.type = (TypeDenoter) ast.V.visit(this, null);
     return ast.type;
   }
@@ -812,10 +827,10 @@ public final class Checker implements Visitor {
   // than literals). In that case code is generated to compute the
   // offset due to these indexing operations at run-time.
 
-  // Returns the TypeDenoter of the Vname. Does not use the
+  // Returns the TypeDenoter of the VarName. Does not use the
   // given object.
 
-  public Object visitDotVname(DotVname ast, Object o) {
+  public Object visitDotVarName(DotVarName ast, Object o) {
     ast.type = null;
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
     ast.variable = ast.V.variable;
@@ -830,7 +845,7 @@ public final class Checker implements Visitor {
     return ast.type;
   }
 
-  public Object visitSimpleVname(SimpleVname ast, Object o) {
+  public Object visitSimpleVarName(SimpleVarName ast, Object o) {
     ast.variable = false;
     ast.type = StdEnvironment.errorType;
     Declaration binding = (Declaration) ast.I.visit(this, null);
@@ -855,7 +870,7 @@ public final class Checker implements Visitor {
     return ast.type;
   }
 
-  public Object visitSubscriptVname(SubscriptVname ast, Object o) {
+  public Object visitSubscriptVarName(SubscriptVarName ast, Object o) {
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
     ast.variable = ast.V.variable;
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
@@ -1077,7 +1092,7 @@ public final class Checker implements Visitor {
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //SequentialProcFuncs
   //
   //////////////////////////
@@ -1088,75 +1103,175 @@ public final class Checker implements Visitor {
 		return null;
   }
   
-  @Override
-  public Object visitSequentialProcFuncsSelf(SequentialProcFuncs ast, Object o) {
-    ast.PF1.visitSelf(this, null);
-    ast.PF2.visitSelf(this, null);
-    return null;
-  }
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //RecursiveProc
   //
   //////////////////////////
   @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
-    return null;
-  }
-
-  @Override
-  public Object visitRecursiveProcSelf(RecursiveProc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast); //permits recursion
+    if(ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+    idTable.openScope();
+    ast.FPS.visit(this, null);
+    ast.C.visit(this, null);
+    idTable.closeScope();
     return null;
   }
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //RecursiveFunc
   //
   //////////////////////////
   @Override
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast);
+    if(ast.duplicated){
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+    }
+    idTable.openScope();
+    ast.FPS.visit(this, null);
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    idTable.closeScope();
+    if (! ast.TD.visit(this, null).equals(eType))
+      reporter.reportError ("body of function \"%\" has wrong type",
+                          ast.I.spelling, ast.E.position);
     return null;
   }
-
-  @Override
-  public Object visitRecursiveFuncSelf(RecursiveFunc ast, Object o) {
-    return null;
-  }
-
+  
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //RecursiveDeclaration
   //
   //////////////////////////
   @Override
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    ast.PF.visit(this, null);
     return null;
   }
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //PrivateDeclaration
   //
   //////////////////////////
   @Override
   public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+    IdentificationTable tempTable = idTable.copy();
+    ast.D1.visit(this, null); //visit in idTable
+    tempTable.beginLocalDeclaration(idTable); //make it local
+    idTable = tempTable; //idTable has a copy of itself as local
+    ast.D2.visit(this, null);
+    idTable.endLocalDeclaration();
     return null;
   }
 
   //////////////////////////
   //
-  //Marcos Mendez 2021-04-11
+  //Marcos Méndez 2021-04-11
   //AssignVarDeclaration
   //
   //////////////////////////
   @Override
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    idTable.enter(ast.I.spelling, ast);
+    if (ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+    return null;
+  }
+
+  //////////////////////////
+  //
+  //Marcos Méndez 2021-04-20
+  //Cases(Extra)
+  //
+  /////////////////////////
+  @Override
+  public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitCaseRange(CaseRange ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitElseCase(ElseCase ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitCase(Case ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialCases(SequentialCases ast, Object o){
+    return null;
+  }
+
+  @Override
+  public Object visitChooseCommand(ChooseCommand ast, Object o){
+    return null;
+  }
+
+
+  @Override
+  public Object visitPackageIdentifier(PackageIdentifier ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitLongIdentifier(LongIdentifier ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitVname(Vname ast, Object o) {
+    return null;
+  }
+
+
+  @Override
+  public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
     return null;
   }
   

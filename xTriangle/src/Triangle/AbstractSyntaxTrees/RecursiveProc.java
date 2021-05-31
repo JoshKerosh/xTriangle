@@ -1,10 +1,9 @@
-/*
-  Marcos Mendez Hidalgo 2021-04-11
-*/
-
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
+
+//Marcos Méndez
+//AST Nuevo
 
 public class RecursiveProc extends ProcFuncs{
   public RecursiveProc(Identifier iAST, FormalParameterSequence fpsAST, Command cAST, SourcePosition thePosition) {
@@ -16,11 +15,6 @@ public class RecursiveProc extends ProcFuncs{
 
   public Object visit(Visitor v, Object o) {
     return v.visitRecursiveProc(this, o);
-  }
-
-  @Override
-  public Object visitSelf(Visitor v, Object o) {
-    return v.visitRecursiveProcSelf(this, o);
   }
 
   public Identifier I;

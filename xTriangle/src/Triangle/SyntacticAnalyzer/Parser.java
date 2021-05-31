@@ -25,14 +25,22 @@ import Triangle.AbstractSyntaxTrees.AssignVarDeclaration;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharacter;
+import Triangle.AbstractSyntaxTrees.CaseLiteralInteger;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
+import Triangle.AbstractSyntaxTrees.Cases;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.Command;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
-import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DotVarName;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -51,6 +59,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
@@ -64,11 +73,12 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
-import Triangle.AbstractSyntaxTrees.ProcFunc;
 import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
@@ -77,26 +87,29 @@ import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialCaseLiterals;
+import Triangle.AbstractSyntaxTrees.SequentialCases;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
-import Triangle.AbstractSyntaxTrees.SimpleVname;
+import Triangle.AbstractSyntaxTrees.SimpleVarName;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
-import Triangle.AbstractSyntaxTrees.SubscriptVname;
+import Triangle.AbstractSyntaxTrees.SubscriptVarName;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
+import Triangle.AbstractSyntaxTrees.VarName;
+import Triangle.AbstractSyntaxTrees.VarNameExpression;
 import Triangle.AbstractSyntaxTrees.Vname;
-import Triangle.AbstractSyntaxTrees.VnameExpression;
-import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
 
@@ -166,8 +179,25 @@ public class Parser {
     currentToken = lexicalAnalyser.scan();
 
     try {
-      Command cAST = parseCommand();
-      programAST = new Program(cAST, previousTokenPosition);
+
+      if(currentToken.kind == Token.PACKAGE){
+        Declaration pDAST = parsePackageDeclaration();
+        accept(Token.SEMICOLON);
+        while(currentToken.kind == Token.PACKAGE){
+           Declaration pDAST2 = parsePackageDeclaration();
+           accept(Token.SEMICOLON);
+           pDAST = new SequentialPackageDeclaration(pDAST, pDAST2, previousTokenPosition);
+           
+        }
+        Command cAST = parseCommand();
+        programAST = new Program(pDAST, cAST, previousTokenPosition);
+      }
+      else {
+        Command cAST = parseCommand();
+        programAST = new Program(cAST, previousTokenPosition);
+      }
+
+    
       if (currentToken.kind != Token.EOT) {
         syntacticError("\"%\" not expected after end of program",
           currentToken.spelling);
@@ -237,6 +267,87 @@ public class Parser {
     return I;
   }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+//  PACKAGE-IDENTIFIER 
+//
+///////////////////////////////////////////////////////////////////////////////
+
+Identifier parsePackageIdentifier() throws SyntaxError {
+  Identifier packageIdentifierAST = null;
+
+  SourcePosition packageIdentifierPos = new SourcePosition();
+  start(packageIdentifierPos);
+  
+  if (currentToken.kind == Token.IDENTIFIER) {
+    Identifier iAST = parseIdentifier();
+    finish(packageIdentifierPos);
+    packageIdentifierAST = new PackageIdentifier(iAST.spelling, iAST, packageIdentifierPos);
+  }
+  
+  return packageIdentifierAST;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+//  LONG-IDENTIFIER 
+//
+///////////////////////////////////////////////////////////////////////////////
+
+Identifier parseLongIdentifier() throws SyntaxError {
+  Identifier longIdentifierAST = null;
+
+  SourcePosition longIdentifierPos = new SourcePosition();
+  start(longIdentifierPos);
+  
+  Identifier iAST = parseIdentifier();
+  if(currentToken.kind == Token.DOLAR){
+    accept(Token.DOLAR);
+    Identifier iAST2 = parseIdentifier();
+    longIdentifierAST = new LongIdentifier(currentToken.spelling, iAST2, iAST, longIdentifierPos);
+  }
+  else if(currentToken.kind == Token.IDENTIFIER){
+    syntacticError("$ expected here",
+    currentToken.spelling);
+  }
+
+  longIdentifierAST = iAST;
+
+  return longIdentifierAST;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+//  PACKAGE DECLARATION 
+//
+///////////////////////////////////////////////////////////////////////////////
+
+Declaration parsePackageDeclaration() throws SyntaxError {
+  Declaration packageDeclarationAST = null;
+
+  SourcePosition packageDeclarationPos = new SourcePosition();
+  start(packageDeclarationPos);
+  
+  accept(Token.PACKAGE);
+  Identifier pIAST = parsePackageIdentifier();
+  accept(Token.IS);
+  Declaration dAST = parseDeclaration();
+  accept(Token.END);
+
+  finish(packageDeclarationPos);
+
+  packageDeclarationAST = new PackageDeclaration(pIAST, dAST, packageDeclarationPos);
+
+  return packageDeclarationAST;
+
+
+}
+
+
 // parseOperator parses an operator, and constructs a leaf AST to
 // represent it.
 
@@ -280,6 +391,13 @@ public class Parser {
     return commandAST;
   }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+//  Single Command modified  
+//
+///////////////////////////////////////////////////////////////////////////////
+
   Command parseSingleCommand() throws SyntaxError {
     Command commandAST = null; // in case there's a syntactic error
 
@@ -290,17 +408,17 @@ public class Parser {
 
     case Token.IDENTIFIER:
       {
-        Identifier iAST = parseIdentifier();
+        Identifier liAST = parseLongIdentifier(); // modified to longIdentifier
         if (currentToken.kind == Token.LPAREN) {
           acceptIt();
           ActualParameterSequence apsAST = parseActualParameterSequence();
           accept(Token.RPAREN);
           finish(commandPos);
-          commandAST = new CallCommand(iAST, apsAST, commandPos);
+          commandAST = new CallCommand(liAST, apsAST, commandPos);
 
         } else {
 
-          Vname vAST = parseRestOfVname(iAST);
+          VarName vAST = parseRestOfVarName(liAST);
           accept(Token.BECOMES);
           Expression eAST = parseExpression();
           finish(commandPos);
@@ -477,14 +595,18 @@ public class Parser {
         commandAST = new EmptyCommand(commandPos);
         finish(commandPos);  
     }
-    /*
-    case Token.SEMICOLON:
-    case Token.END:
-    case Token.ELSE:
-    case Token.IN:
-    */
-    //** eliminar comando vacio
-    //commandAST = new EmptyCommand(commandPos);
+    break;
+    //EXTRA
+    case Token.CHOOSE:
+    {
+      acceptIt();
+      Expression eAST = parseExpression();
+      accept(Token.FROM);
+      Cases cAST = parseCases();
+      accept(Token.END);
+      finish(commandPos);
+      commandAST = new ChooseCommand(eAST, cAST, commandPos);
+    }
     break;
 
     default:
@@ -558,6 +680,12 @@ public class Parser {
     }
     return expressionAST;
   }
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+//  Primary Expression modified
+//
+///////////////////////////////////////////////////////////////////////////////
 
   Expression parsePrimaryExpression() throws SyntaxError {
     Expression expressionAST = null; // in case there's a syntactic error
@@ -605,7 +733,7 @@ public class Parser {
 
     case Token.IDENTIFIER:
       {
-        Identifier iAST= parseIdentifier();
+        Identifier iAST= parseLongIdentifier(); //modified to long identifier
         if (currentToken.kind == Token.LPAREN) {
           acceptIt();
           ActualParameterSequence apsAST = parseActualParameterSequence();
@@ -614,9 +742,9 @@ public class Parser {
           expressionAST = new CallExpression(iAST, apsAST, expressionPos);
 
         } else {
-          Vname vAST = parseRestOfVname(iAST);
+          VarName vAST = parseRestOfVarName(iAST);
           finish(expressionPos);
-          expressionAST = new VnameExpression(vAST, expressionPos);
+          expressionAST = new VarNameExpression(vAST, expressionPos);
         }
       }
       break;
@@ -692,17 +820,56 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-  Vname parseVname () throws SyntaxError {
-    Vname vnameAST = null; // in case there's a syntactic error
-    Identifier iAST = parseIdentifier();
-    vnameAST = parseRestOfVname(iAST);
-    return vnameAST;
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+// V-NAME (Modified)
+//
+///////////////////////////////////////////////////////////////////////////////
+VarName parseVname () throws SyntaxError {
+  VarName VnameAST = null; // in case there's a syntactic error
+  
+  SourcePosition VnamePos = new SourcePosition();
+  start(VnamePos);
+  
+
+  if(currentToken.kind == Token.IDENTIFIER){
+    Identifier pIAST = parsePackageIdentifier();
+    accept(Token.DOLAR);
+
+    VarName vNAST = parseVarName();
+    finish(VnamePos);
+
+    VnameAST = new Vname(pIAST, vNAST, VnamePos);
+
   }
 
-  Vname parseRestOfVname(Identifier identifierAST) throws SyntaxError {
-    SourcePosition vnamePos = new SourcePosition();
-    vnamePos = identifierAST.position;
-    Vname vAST = new SimpleVname(identifierAST, vnamePos);
+  else {
+    VnameAST = parseVarName();
+    finish(VnamePos);
+  }
+
+  return VnameAST;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// María José Cortés
+// VAR-NAME (Modified)
+//
+///////////////////////////////////////////////////////////////////////////////
+  VarName parseVarName () throws SyntaxError {
+    VarName VarNameAST = null; // in case there's a syntactic error
+    Identifier iAST = parseIdentifier();
+    VarNameAST = parseRestOfVarName(iAST);
+    return VarNameAST;
+  }
+
+  VarName parseRestOfVarName(Identifier identifierAST) throws SyntaxError {
+    SourcePosition VarNamePos = new SourcePosition();
+    VarNamePos = identifierAST.position;
+    VarName vAST = new SimpleVarName(identifierAST, VarNamePos);
 
     while (currentToken.kind == Token.DOT ||
            currentToken.kind == Token.LBRACKET) {
@@ -710,13 +877,21 @@ public class Parser {
       if (currentToken.kind == Token.DOT) {
         acceptIt();
         Identifier iAST = parseIdentifier();
-        vAST = new DotVname(vAST, iAST, vnamePos);
+        if(currentToken.kind == Token.DOLAR){
+          syntacticError("$ not expected here",
+          currentToken.spelling);
+        }
+        vAST = new DotVarName(vAST, iAST, VarNamePos);
       } else {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.RBRACKET);
-        finish(vnamePos);
-        vAST = new SubscriptVname(vAST, eAST, vnamePos);
+        if(currentToken.kind == Token.DOLAR){
+          syntacticError("$ not expected here",
+          currentToken.spelling);
+        }
+        finish(VarNamePos);
+        vAST = new SubscriptVarName(vAST, eAST, VarNamePos);
       }
     }
     return vAST;
@@ -724,7 +899,7 @@ public class Parser {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Marcos Mendez 2021-04-11
+// Marcos Méndez 2021-04-11
 // DECLARATIONS MODIFIED
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -745,7 +920,7 @@ public class Parser {
     return declarationAST;
   }
 
-  // Marcos Mendez 2021-04-11
+  // Marcos Méndez 2021-04-11
   Declaration parseSingleDeclaration() throws SyntaxError {
     Declaration declarationAST = null; // in case there's a syntactic error
 
@@ -1014,7 +1189,7 @@ public class Parser {
     case Token.VAR:
       {
         acceptIt();
-        Vname vAST = parseVname();
+        VarName vAST = parseVname();
         finish(actualPos);
         actualAST = new VarActualParameter(vAST, actualPos);
       }
@@ -1049,8 +1224,9 @@ public class Parser {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// TYPE-DENOTERS
-//
+// María José Cortés
+// TYPE-DENOTERS modified
+// 
 ///////////////////////////////////////////////////////////////////////////////
 
   TypeDenoter parseTypeDenoter() throws SyntaxError {
@@ -1061,11 +1237,11 @@ public class Parser {
 
     switch (currentToken.kind) {
 
-    case Token.IDENTIFIER:
+    case Token.IDENTIFIER: 
       {
-        Identifier iAST = parseIdentifier();
+        Identifier liAST = parseLongIdentifier();
         finish(typePos);
-        typeAST = new SimpleTypeDenoter(iAST, typePos);
+        typeAST = new SimpleTypeDenoter(liAST, typePos);
       }
       break;
 
@@ -1123,7 +1299,7 @@ public class Parser {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Marcos Mendez 2021-04-11
+// Marcos Méndez 2021-04-11
 // COMPOUND-DECLARATION 
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -1163,7 +1339,7 @@ public class Parser {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Marcos Mendez 2021-04-11
+// Marcos Méndez 2021-04-11
 // PROC-FUNCS
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -1174,11 +1350,11 @@ public class Parser {
     SourcePosition propFuncsPos = new SourcePosition();
     start(propFuncsPos);
     ProcFuncs secondProcFuncsAST = parseProcFunc();
-    while (currentToken.kind == Token.PIPE) { //"|"
-      acceptIt();
+    do {
+      accept(Token.PIPE);
       ProcFuncs thirdProcFuncsAST = parseProcFunc();
       secondProcFuncsAST = new SequentialProcFuncs(secondProcFuncsAST, thirdProcFuncsAST, propFuncsPos);
-    }
+    } while (currentToken.kind == Token.PIPE); //"|"
     finish(propFuncsPos);
     ProcFuncsAST = secondProcFuncsAST;
     return ProcFuncsAST;
@@ -1224,5 +1400,129 @@ public class Parser {
     }
     return procFuncsAST;
   }
-  
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Marcos Méndez 2021-04-20
+// CASES (EXTRA)
+//
+///////////////////////////////////////////////////////////////////////////////
+  Expression parseCaseRange() throws SyntaxError{
+    Expression caseRangeAST = null; // in case there's a syntactic error
+
+    SourcePosition caseRangePos = new SourcePosition();
+    start(caseRangePos);
+
+    caseRangeAST = parseCaseLiteral();
+    finish(caseRangePos);
+
+    if(currentToken.kind == Token.DDOT){ //..
+      acceptIt();
+      Expression e2AST = parseCaseLiteral();
+      finish(caseRangePos);
+      caseRangeAST = new CaseRange(caseRangeAST, e2AST, caseRangePos);
+    }
+    return caseRangeAST;
+  }
+
+  Expression parseCaseLiteral() throws SyntaxError{
+    Expression caseLiteralAST = null; // in case there's a syntactic error
+
+    SourcePosition caseLiteralPos = new SourcePosition();
+    start(caseLiteralPos);
+
+    switch (currentToken.kind) {
+      case Token.INTLITERAL:
+      {
+        IntegerLiteral ilAST = parseIntegerLiteral();
+        finish(caseLiteralPos);
+        caseLiteralAST = new CaseLiteralInteger(ilAST, caseLiteralPos);
+      }
+      break;
+      case Token.CHARLITERAL:
+      {
+        CharacterLiteral clAST= parseCharacterLiteral();
+        finish(caseLiteralPos);
+        caseLiteralAST = new CaseLiteralCharacter(clAST, caseLiteralPos);
+      }
+      break;
+      default:
+        syntacticError("Case-Literal expected here.", "");
+    }
+    return caseLiteralAST;
+  }
+
+  Expression parseCaseLiterals() throws SyntaxError{
+    Expression caseLiteralsAST = null;
+
+    SourcePosition caseLiteralsPos = new SourcePosition();
+    start(caseLiteralsPos);
+
+    Expression caseRangeAST = parseCaseRange();
+
+    finish(caseLiteralsPos);
+    caseLiteralsAST = new CaseLiterals(caseRangeAST, caseLiteralsPos);
+    while(currentToken.kind == Token.PIPE){
+      acceptIt();
+      caseRangeAST = parseCaseRange();
+      Expression caseLiteralsAST2 = new CaseLiterals(caseRangeAST, caseLiteralsPos);
+      finish(caseLiteralsPos);
+      caseLiteralsAST = new SequentialCaseLiterals(caseLiteralsAST, caseLiteralsAST2, caseLiteralsPos);
+    }
+    return caseLiteralsAST;
+  }
+
+  Cases parseElseCase() throws SyntaxError{
+    Cases elseCaseAST = null;
+
+    SourcePosition elseCasePos = new SourcePosition();
+    start(elseCasePos);
+
+    Command cAST = parseCommand();
+    finish(elseCasePos);
+    elseCaseAST = new ElseCase(cAST, elseCasePos);
+
+    return elseCaseAST;
+  }
+
+  Cases parseCase() throws SyntaxError{
+    Cases caseAST = null;
+
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+
+    Expression eAST = parseCaseLiterals();
+    accept(Token.THEN);
+    Command cAST = parseCommand();
+    finish(casePos);
+
+    caseAST = new Case(eAST, cAST, casePos);
+    return caseAST;
+  }
+
+  Cases parseCases() throws SyntaxError{
+    Cases casesAST = null;
+
+    SourcePosition casesPos = new SourcePosition();
+    start(casesPos);
+
+    accept(Token.WHEN);
+    casesAST = parseCase();
+
+    while(currentToken.kind == Token.WHEN){
+      acceptIt();
+      Cases caseAST = parseCase();
+      finish(casesPos);
+      casesAST = new SequentialCases(casesAST, caseAST, casesPos);
+    }
+
+    if(currentToken.kind == Token.ELSE){
+      acceptIt();
+      Cases elseCaseAST = parseElseCase();
+      finish(casesPos);
+      casesAST = new SequentialCases(casesAST, elseCaseAST, casesPos);
+    }
+
+    return casesAST;
+  }
 }

@@ -20,12 +20,10 @@ public interface Visitor {
   // Commands
   public abstract Object visitAssignCommand(AssignCommand ast, Object o);
   public abstract Object visitCallCommand(CallCommand ast, Object o);
-  public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);//eliminado ** no se usa
+  public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);
   public abstract Object visitIfCommand(IfCommand ast, Object o);
   public abstract Object visitLetCommand(LetCommand ast, Object o);
-    /*ojo
-    * Checker, TableVisitor, TreeVisitor, LayoutVisitor, Encoder, 
-    */
+  //< extended> ojo Checker, TableVisitor, TreeVisitor, LayoutVisitor, Encoder
   public abstract Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o);//nuevo
   public abstract Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o);//nuevo
   public abstract Object visitLoopForDoCommand(LoopForDoCommand ast, Object o);//nuevo
@@ -33,6 +31,7 @@ public interface Visitor {
   public abstract Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o);//nuevo
   public abstract Object visitLoopUntilCommand(LoopUntilCommand ast, Object o);//nuevo
   public abstract Object visitLoopWhileCommand(LoopWhileCommand ast, Object o);//nuevo
+  //< extended>
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
 
@@ -58,6 +57,7 @@ public interface Visitor {
   public abstract Object visitTypeDeclaration(TypeDeclaration ast, Object o);
   public abstract Object visitUnaryOperatorDeclaration(UnaryOperatorDeclaration ast, Object o);
   public abstract Object visitVarDeclaration(VarDeclaration ast, Object o);
+  public abstract Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o);
 
   // Array Aggregates
   public abstract Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object o);

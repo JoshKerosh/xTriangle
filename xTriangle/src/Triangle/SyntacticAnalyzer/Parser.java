@@ -52,6 +52,7 @@ import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
@@ -536,7 +537,7 @@ Declaration parsePackageDeclaration() throws SyntaxError {
             case Token.FOR:
             {
                 acceptIt();
-                Identifier iAST = parseIdentifier();
+                Declaration dAST = parseDeclaration();
                 accept(Token.FROM);
                 Expression e1AST = parseExpression();
                 accept(Token.TO);
@@ -548,7 +549,7 @@ Declaration parsePackageDeclaration() throws SyntaxError {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                        commandAST = new LoopForDoCommand(iAST, e1AST, e2AST, cAST, commandPos);
+                        commandAST = new LoopForDoCommand(dAST, e1AST, e2AST, cAST, commandPos);
                     }
                     break;
                     case Token.WHILE:
@@ -559,7 +560,7 @@ Declaration parsePackageDeclaration() throws SyntaxError {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                        commandAST = new LoopForWhileCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);  
+                        commandAST = new LoopForWhileCommand(dAST, e1AST, e2AST, e3AST, cAST, commandPos);  
                     }
                     break;
                     case Token.UNTIL:
@@ -570,7 +571,7 @@ Declaration parsePackageDeclaration() throws SyntaxError {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                        commandAST = new LoopForUntilCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+                        commandAST = new LoopForUntilCommand(dAST, e1AST, e2AST, e3AST, cAST, commandPos);
                     }
                     break;    
                     default:
@@ -999,7 +1000,15 @@ VarName parseVname () throws SyntaxError {
         declarationAST = new TypeDeclaration(iAST, tAST, declarationPos);
       }
       break;
-
+      
+    case Token.IDENTIFIER:
+      {
+        Identifier iAST = parseIdentifier();
+        finish(declarationPos);
+        declarationAST = new ControlVarDeclaration(iAST, declarationPos);
+      }
+      
+      break;
     default:
       syntacticError("\"%\" cannot start a declaration",
         currentToken.spelling);
@@ -1516,5 +1525,4 @@ VarName parseVname () throws SyntaxError {
 
     return casesAST;
   }
-
 }

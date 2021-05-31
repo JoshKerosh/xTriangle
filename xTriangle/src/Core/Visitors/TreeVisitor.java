@@ -38,6 +38,7 @@ import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
@@ -147,15 +148,15 @@ public class TreeVisitor implements Visitor {
     }
 
     public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
-      return (createQuaternary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.C));
+      return (createQuaternary("LoopForUntil Command", ast.D, ast.E1, ast.E2, ast.C));
   }
     
     public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
-        return (createQuinary("LoopForUntil Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+        return (createQuinary("LoopForUntil Command", ast.D, ast.E1, ast.E2, ast.E3, ast.C));
     }
 
     public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
-        return (createQuinary("LoopForWhile Command", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+        return (createQuinary("LoopForWhile Command", ast.D, ast.E1, ast.E2, ast.E3, ast.C));
     }
 
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
@@ -254,6 +255,12 @@ public class TreeVisitor implements Visitor {
     
     public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
         return(createBinary("Variable Declaration", ast.I, ast.T));
+    }
+    
+    //(extended) usado en loopfor
+    @Override
+    public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
+        return(createBinary("Control Variable Declaration", ast.I, ast.T));
     }
     // </editor-fold>
     

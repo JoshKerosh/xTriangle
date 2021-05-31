@@ -38,6 +38,7 @@ import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
@@ -170,7 +171,7 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
-      ast.I.visit(this, null);
+      ast.D.visit(this, null);
       ast.E1.visit(this, null);
       ast.E2.visit(this, null);
       ast.C.visit(this, null);
@@ -178,7 +179,7 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
-      ast.I.visit(this, null);
+      ast.D.visit(this, null);
       ast.E1.visit(this, null);
       ast.E2.visit(this, null);
       ast.E3.visit(this, null);
@@ -188,7 +189,7 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
-      ast.I.visit(this, null);
+      ast.D.visit(this, null);
       ast.E1.visit(this, null);
       ast.E2.visit(this, null);
       ast.E3.visit(this, null);
@@ -380,6 +381,20 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitVarDeclaration(VarDeclaration ast, Object o) {      
+      try {
+      addIdentifier(ast.I.spelling, 
+              "KnownAddress", 
+              (ast.entity!=null?ast.entity.size:0), 
+              ((KnownAddress)ast.entity).address.level, 
+              ((KnownAddress)ast.entity).address.displacement, 
+              -1);
+      } catch (NullPointerException e) { }
+      
+      ast.T.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {      
       try {
       addIdentifier(ast.I.spelling, 
               "KnownAddress", 
@@ -773,7 +788,7 @@ public class TableVisitor implements Visitor {
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
       return null;
     }
-
+  
     //////////////////////////
     //
     //Marcos Méndez 2021-04-20

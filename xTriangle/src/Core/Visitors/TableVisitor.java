@@ -747,6 +747,11 @@ public class TableVisitor implements Visitor {
       return null;
     }
 
+    @Override
+    public Object visitRecursiveProcRec(RecursiveProc ast, Object o) {
+      return null;
+    }
+
     //////////////////////////
     //
     //Marcos Méndez 2021-04-11
@@ -757,7 +762,11 @@ public class TableVisitor implements Visitor {
     public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
       return null;
     }
-    
+
+    @Override
+    public Object visitRecursiveFuncRec(RecursiveFunc ast, Object o) {
+      return null;
+    }
     //////////////////////////
     //
     //Marcos Méndez 2021-04-11
@@ -890,5 +899,12 @@ public class TableVisitor implements Visitor {
     @Override
     public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
         return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visitRec(this, null);
+      ast.PF2.visitRec(this, null);
+      return null;
     }
 }

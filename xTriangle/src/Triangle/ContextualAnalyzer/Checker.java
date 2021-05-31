@@ -628,7 +628,7 @@ public final class Checker implements Visitor {
     if (! (fp instanceof ConstFormalParameter))
       reporter.reportError ("const actual parameter not expected here", "",
                             ast.position);
-    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T))
+    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T.visit(this,null))) //Marcos Mendez ajuste para Recursive
       reporter.reportError ("wrong type for const actual parameter", "",
                             ast.E.position);
     return null;
@@ -1128,10 +1128,13 @@ public final class Checker implements Visitor {
     if(ast.duplicated)
       reporter.reportError ("identifier \"%\" already declared",
                             ast.I.spelling, ast.position);
-    idTable.openScope();
-    ast.FPS.visit(this, null);
-    ast.C.visit(this, null);
-    idTable.closeScope();
+    return null;
+  }
+
+  @Override
+  public Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o) {
+    ast.PF1.visitRec(this, null);
+    ast.PF2.visitRec(this, null);
     return null;
   }
 
@@ -1148,6 +1151,11 @@ public final class Checker implements Visitor {
       reporter.reportError ("identifier \"%\" already declared",
                             ast.I.spelling, ast.position);
     }
+    return null;
+  }
+  
+  @Override
+  public Object visitRecursiveFuncRec(RecursiveFunc ast, Object o) {
     idTable.openScope();
     ast.FPS.visit(this, null);
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
@@ -1157,7 +1165,6 @@ public final class Checker implements Visitor {
                           ast.I.spelling, ast.E.position);
     return null;
   }
-  
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11
@@ -1167,9 +1174,18 @@ public final class Checker implements Visitor {
   @Override
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
     ast.PF.visit(this, null);
+    ast.PF.visitRec(this, null);
     return null;
   }
 
+  @Override
+  public Object visitRecursiveProcRec(RecursiveProc ast, Object o) {
+    idTable.openScope();
+    ast.FPS.visit(this, null);
+    ast.C.visit(this, null);
+    idTable.closeScope();
+    return null;
+  }
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11
@@ -1281,11 +1297,8 @@ public final class Checker implements Visitor {
     return null;
   }
 
-
   @Override
   public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
     return null;
   }
-  
-  
 }

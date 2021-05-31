@@ -1068,6 +1068,10 @@ public final class Encoder implements Visitor {
     return null;
   }  
 
+  @Override
+  public Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o) {
+    return null;
+  }
   //////////////////////////
   //
   //RecursiveProc
@@ -1078,10 +1082,14 @@ public final class Encoder implements Visitor {
     return null;
   }
 
+  @Override
+  public Object visitRecursiveProcRec(RecursiveProc ast, Object o) {
+    return null;
+  }
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11
-  //SequentialProcFuncs
+  //RecursiveFunc
   //
   //////////////////////////
 
@@ -1090,7 +1098,10 @@ public final class Encoder implements Visitor {
     return null;
   }
 
-
+  @Override
+  public Object visitRecursiveFuncRec(RecursiveFunc ast, Object o) {
+    return null;
+  }
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11

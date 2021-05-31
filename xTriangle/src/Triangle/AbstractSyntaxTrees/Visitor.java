@@ -122,12 +122,15 @@ public interface Visitor {
 
   //SequentialProcFuncs Marcos Méndez 2021-04-11
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
+  public abstract Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o);
+
   //RecursiveProc Marcos Méndez 2021-04-11
   public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
-
+  public abstract Object visitRecursiveProcRec(RecursiveProc ast, Object o);
+  
   //RecursiveFunc Marcos Méndez 2021-04-11
   public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
-
+  public abstract Object visitRecursiveFuncRec(RecursiveFunc ast, Object o);
   //RecursiveDeclaration Marcos Méndez 2021-04-11
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
 

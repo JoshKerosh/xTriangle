@@ -731,6 +731,8 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visit(this, null);
+      ast.PF2.visit(this, null);
       return null;
     }
 
@@ -745,6 +747,11 @@ public class TableVisitor implements Visitor {
       return null;
     }
 
+    @Override
+    public Object visitRecursiveProcRec(RecursiveProc ast, Object o) {
+      return null;
+    }
+
     //////////////////////////
     //
     //Marcos Méndez 2021-04-11
@@ -755,7 +762,11 @@ public class TableVisitor implements Visitor {
     public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
       return null;
     }
-    
+
+    @Override
+    public Object visitRecursiveFuncRec(RecursiveFunc ast, Object o) {
+      return null;
+    }
     //////////////////////////
     //
     //Marcos Méndez 2021-04-11
@@ -764,6 +775,7 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+      ast.PF.visit(this, null);
       return null;
     }
 
@@ -786,6 +798,30 @@ public class TableVisitor implements Visitor {
     //////////////////////////
     @Override
     public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
+      String name = ast.I.spelling;
+      String type = "N/A";
+      try {
+          int size = (ast.entity!=null?ast.entity.size:0);
+          int level = -1;
+          int displacement = -1;
+          int value = -1;
+
+          if (ast.entity instanceof KnownValue) {
+              type = "KnownValue";
+              value = ((KnownValue)ast.entity).value;
+          }
+          else if (ast.entity instanceof UnknownValue) {
+              type = "UnknownValue";
+              level = ((UnknownValue)ast.entity).address.level;
+              displacement = ((UnknownValue)ast.entity).address.displacement;
+          }
+          addIdentifier(name, type, size, level, displacement, value);
+      } catch (NullPointerException e) {
+          System.out.println(e.toString());
+      }
+
+      ast.E.visit(this, null);
+      ast.I.visit(this, null);
       return null;
     }
   
@@ -863,5 +899,12 @@ public class TableVisitor implements Visitor {
     @Override
     public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
         return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o) {
+      ast.PF1.visitRec(this, null);
+      ast.PF2.visitRec(this, null);
+      return null;
     }
 }

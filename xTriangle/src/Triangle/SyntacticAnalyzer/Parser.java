@@ -442,16 +442,16 @@ Declaration parsePackageDeclaration() throws SyntaxError {
       break;
     //Nuevo Comando If
     case Token.IF:
-    case Token.ELSEIF:
+    case Token.ELSIF:
     {
        acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
         Command c1AST = parseCommand();
-        //agrega elseif
+        //agrega ELSIF
         Command c2AST;
         switch(currentToken.kind){
-            case Token.ELSEIF:
+            case Token.ELSIF:
             {
                 c2AST = parseCommand();
                 finish(commandPos);
@@ -468,7 +468,7 @@ Declaration parsePackageDeclaration() throws SyntaxError {
             }
             break;
             default:
-            syntacticError("\"%\": expecting else/elseif",
+            syntacticError("\"%\": expecting else/elsif",
                                 currentToken.spelling);
             break;
                    
@@ -834,13 +834,14 @@ VarName parseVname () throws SyntaxError {
   
 
   if(currentToken.kind == Token.IDENTIFIER){
-    Identifier pIAST = parsePackageIdentifier();
-    accept(Token.DOLAR);
+    //Identifier pIAST = parsePackageIdentifier();
+    //accept(Token.DOLAR);
 
-    VarName vNAST = parseVarName();
+    //VarName VnameAST = parseVarName();
+    VnameAST = parseVarName();
     finish(VnamePos);
 
-    VnameAST = new Vname(pIAST, vNAST, VnamePos);
+    //VnameAST = new Vname(pIAST, vNAST, VnamePos);
 
   }
 

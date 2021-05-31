@@ -629,6 +629,10 @@ public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
     return null;
   }
 
+  @Override
+  public Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o) {
+    return null;
+  }
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11
@@ -640,6 +644,10 @@ public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
     return null;
   }
 
+  @Override
+  public Object visitRecursiveProcRec(RecursiveProc ast, Object o) {
+    return null;
+  }
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11
@@ -651,6 +659,10 @@ public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
     return null;
   }
 
+  @Override
+  public Object visitRecursiveFuncRec(RecursiveFunc ast, Object o) {
+    return null;
+  }
   //////////////////////////
   //
   //Marcos Méndez 2021-04-11

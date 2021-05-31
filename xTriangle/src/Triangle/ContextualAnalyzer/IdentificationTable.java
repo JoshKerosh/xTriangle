@@ -108,7 +108,8 @@ public final class IdentificationTable {
       }
       else if (entry.id.equals(id)) {
         present = true;
-        searching = false; 
+        searching = false;
+        attr = entry.attr;
       }else{
         entry = entry.previous;
       }

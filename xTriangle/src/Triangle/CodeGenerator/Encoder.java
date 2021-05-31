@@ -50,6 +50,7 @@ import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
@@ -396,6 +397,11 @@ public final class Encoder implements Visitor {
     return new Integer(extraSize);
   }
 
+    //extended //Josh
+    @Override
+    public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
+        return null;
+    }
 
   // Array Aggregates
   public Object visitMultipleArrayAggregate(MultipleArrayAggregate ast,
@@ -1116,4 +1122,5 @@ public final class Encoder implements Visitor {
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     return null;
   }
+
 }

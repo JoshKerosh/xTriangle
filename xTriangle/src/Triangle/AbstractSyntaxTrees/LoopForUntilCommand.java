@@ -10,9 +10,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class LoopForUntilCommand extends Command {
 
-  public LoopForUntilCommand (Identifier iAST, Expression e1AST, Expression e2AST, Expression e3AST, Command cAST, SourcePosition thePosition) {
+  public LoopForUntilCommand (Declaration dAST, Expression e1AST, Expression e2AST, Expression e3AST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
-    I = iAST;
+    D = dAST;
     E1 = e1AST;
     E2 = e2AST;
     E3 = e3AST;
@@ -23,7 +23,7 @@ public class LoopForUntilCommand extends Command {
     return v.visitLoopForUntilCommand(this, o);
   }
   
-  public Identifier I;
+  public Declaration D;
   public Expression E1;
   public Expression E2;
   public Expression E3;

@@ -42,6 +42,7 @@ import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
@@ -136,15 +137,15 @@ public class LayoutVisitor implements Visitor {
   }
     
   public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
-      return layoutQuaternary("LoopForDoCom.", ast.I, ast.E1, ast.E2, ast.C);
+      return layoutQuaternary("LoopForDoCom.", ast.D, ast.E1, ast.E2, ast.C);
   }
   
   public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
-      return layoutQuinary("LoopForUntilCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+      return layoutQuinary("LoopForUntilCom.", ast.D, ast.E1, ast.E2, ast.E3, ast.C);
   }
   
   public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
-      return layoutQuinary("LoopForWhileCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+      return layoutQuinary("LoopForWhileCom.", ast.D, ast.E1, ast.E2, ast.E3, ast.C);
   }
   
   public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
@@ -243,6 +244,10 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
 
+  @Override
+public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
+    return layoutBinary("CtrlVarDecl.", ast.I, ast.T);
+}
 
   // Array Aggregates
   public Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object obj) {
@@ -679,4 +684,6 @@ public class LayoutVisitor implements Visitor {
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     return null;
   }
+
+    
 }

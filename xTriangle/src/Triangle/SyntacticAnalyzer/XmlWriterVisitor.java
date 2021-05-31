@@ -29,6 +29,7 @@ import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
@@ -157,7 +158,7 @@ public class XmlWriterVisitor implements Visitor{
   @Override
   public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o) {
     writeLine("<LoopForDoCommand>");
-    ast.I.visit(this, null);
+    ast.D.visit(this, null);
     ast.E1.visit(this, null);
     ast.E2.visit(this, null);
     ast.C.visit(this, null);
@@ -168,7 +169,7 @@ public class XmlWriterVisitor implements Visitor{
   @Override
   public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o) {
     writeLine("<LoopForUntilCommand>");
-    ast.I.visit(this, null);
+    ast.D.visit(this, null);
     ast.E1.visit(this, null);
     ast.E2.visit(this, null);
     ast.E3.visit(this, null);
@@ -180,7 +181,7 @@ public class XmlWriterVisitor implements Visitor{
   @Override
   public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o) {
     writeLine("<LoopForWhileCommand>");
-    ast.I.visit(this, null);
+    ast.D.visit(this, null);
     ast.E1.visit(this, null);
     ast.E2.visit(this, null);
     ast.E3.visit(this, null);
@@ -395,7 +396,15 @@ public class XmlWriterVisitor implements Visitor{
     writeLine("</VarDeclaration>");
     return null;
   }
-
+    @Override
+    public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
+        writeLine("<ControlVarDeclaration>");
+        ast.I.visit(this, null);
+        ast.T.visit(this, null);
+        writeLine("</ControlVarDeclaration>");
+        return null;
+    }
+    
   @Override
   public Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object o) {
     writeLine("<MultipleArrayAggregate>");
@@ -780,4 +789,6 @@ public class XmlWriterVisitor implements Visitor{
       System.out.println(e.getMessage());
     }
   }
+
+    
 }

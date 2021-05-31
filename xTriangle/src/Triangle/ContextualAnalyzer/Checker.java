@@ -45,6 +45,7 @@ import Triangle.AbstractSyntaxTrees.FormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
@@ -111,6 +112,9 @@ public final class Checker implements Visitor {
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     if (!ast.V.variable)
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
+    //asignacion de paquete
+   /* if (!ast.V.variable)// REVISAR ASIGNACION DE PAQUETE! 
+      reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);*/
     if (! eType.equals(vType))
       reporter.reportError ("assignment incompatibilty", "", ast.position);
     return null;
@@ -132,11 +136,10 @@ public final class Checker implements Visitor {
     return null;
   }
   
-// comando eliminado
   public Object visitEmptyCommand(EmptyCommand ast, Object o) {
     return null;
   }
-
+  
   public Object visitIfCommand(IfCommand ast, Object o) {
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     if (! eType.equals(StdEnvironment.booleanType))
@@ -145,7 +148,7 @@ public final class Checker implements Visitor {
     ast.C2.visit(this, null);
     return null;
   }
-
+  
   public Object visitLetCommand(LetCommand ast, Object o) {
     idTable.openScope();
     ast.D.visit(this, null);
@@ -154,41 +157,6 @@ public final class Checker implements Visitor {
     return null;
   }
   
-  // -- Nuevos comandos Loop //incomplete
-  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
-      return null;
-  }
-  
-  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
-      return null;
-  }
-  
-  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
-      return null;
-  }
-  
-  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
-      return null;
-  }
-  
-  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
-      return null;
-  }
-  
-  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
-      return null;
-  }
-  
-  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
-      return null;
-  }
-
-  public Object visitSequentialCommand(SequentialCommand ast, Object o) {
-    ast.C1.visit(this, null);
-    ast.C2.visit(this, null);
-    return null;
-  }
-
   public Object visitWhileCommand(WhileCommand ast, Object o) {
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     if (! eType.equals(StdEnvironment.booleanType))
@@ -196,7 +164,121 @@ public final class Checker implements Visitor {
     ast.C.visit(this, null);
     return null;
   }
+  
+  public Object visitSequentialCommand(SequentialCommand ast, Object o) {
+    ast.C1.visit(this, null);
+    ast.C2.visit(this, null);
+    return null;
+  }
+  
+  // (extended) // loop commands
+  
+  public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
+      
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    if (! eType.equals(StdEnvironment.booleanType))
+      reporter.reportError("Boolean expression expected here", "", ast.E.position);
+    
+    ast.C.visit(this, null);
+    return null;
+  }
+  
+  public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    if (! eType.equals(StdEnvironment.booleanType))
+      reporter.reportError("Boolean expression expected here", "", ast.E.position);
+    ast.C.visit(this, null);
+    return null;
+  }
+  
+  public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    if (! eType.equals(StdEnvironment.booleanType))
+      reporter.reportError("Boolean expression expected here", "", ast.E.position);
+    ast.C.visit(this, null);
+    return null;
+  }
+  
+  public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    if (! eType.equals(StdEnvironment.booleanType))
+      reporter.reportError("Boolean expression expected here", "", ast.E.position);
+    ast.C.visit(this, null);
+    return null;
+  }
+  
+  public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
 
+    TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
+    if (! eType1.equals(StdEnvironment.integerType))
+      reporter.reportError("Integer expected here", "", ast.E1.position);
+
+    TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+    if (! eType2.equals(StdEnvironment.integerType))
+      reporter.reportError("Integer expected here", "", ast.E2.position);
+    
+    idTable.openScope();
+        TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
+        if (! idType.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expected here", "", ast.E2.position);
+
+        idTable.enter ("variableControl", ast.D);//meter el id a la tabla
+        ast.C.visit(this, null);
+    idTable.closeScope();
+
+    return null;  
+  }
+  
+  public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      
+    TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
+    TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+    if (! eType1.equals(StdEnvironment.integerType))
+      reporter.reportError("Integer expected here", "", ast.E1.position);
+    if (! eType2.equals(StdEnvironment.integerType))
+      reporter.reportError("Integer expected here", "", ast.E2.position);
+    
+    idTable.openScope();
+        TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
+        if (! idType.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expected here", "", ast.E2.position);
+        idTable.enter ("variableControl", ast.D);//meter el id a la tabla
+
+        TypeDenoter eType3 = (TypeDenoter) ast.E3.visit(this, null);
+        if (! eType3.equals(StdEnvironment.booleanType)) 
+          reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+
+        ast.C.visit(this, null);
+    idTable.closeScope();
+      
+    return null;
+  }
+  
+  public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      
+    TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
+    TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+    if (! eType1.equals(StdEnvironment.integerType))
+      reporter.reportError("Integer expected here", "", ast.E1.position);
+    if (! eType2.equals(StdEnvironment.integerType))
+      reporter.reportError("Integer expected here", "", ast.E2.position);
+    
+    idTable.openScope();
+        TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
+        if (! idType.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expected here", "", ast.E2.position);
+        idTable.enter ("variableControl", ast.D);//meter el id a la tabla
+
+        TypeDenoter eType3 = (TypeDenoter) ast.E3.visit(this, null);
+        if (! eType3.equals(StdEnvironment.booleanType)) 
+          reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+
+        ast.C.visit(this, null);
+    idTable.closeScope();
+      
+    return null;
+  }
+  
   // Expressions
 
   // Returns the TypeDenoter denoting the type of the expression. Does
@@ -396,6 +478,16 @@ public final class Checker implements Visitor {
     return null;
   }
 
+  //(extended) usado en loopFor //Josh
+  public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
+    ast.T = (TypeDenoter) ast.T.visit(this, null);
+    idTable.enter (ast.I.spelling, ast);
+    if (ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+      
+      return null;
+    }
   // Array Aggregates
 
   // Returns the TypeDenoter for the Array Aggregate. Does not use the
@@ -1067,4 +1159,6 @@ public final class Checker implements Visitor {
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     return null;
   }
+  
+  
 }

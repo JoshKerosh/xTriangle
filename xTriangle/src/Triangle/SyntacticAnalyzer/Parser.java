@@ -44,6 +44,7 @@ import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
+import Triangle.AbstractSyntaxTrees.ControlVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
@@ -418,7 +419,7 @@ public class Parser {
             case Token.FOR:
             {
                 acceptIt();
-                Identifier iAST = parseIdentifier();
+                Declaration dAST = parseDeclaration();
                 accept(Token.FROM);
                 Expression e1AST = parseExpression();
                 accept(Token.TO);
@@ -430,7 +431,7 @@ public class Parser {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                        commandAST = new LoopForDoCommand(iAST, e1AST, e2AST, cAST, commandPos);
+                        commandAST = new LoopForDoCommand(dAST, e1AST, e2AST, cAST, commandPos);
                     }
                     break;
                     case Token.WHILE:
@@ -441,7 +442,7 @@ public class Parser {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                        commandAST = new LoopForWhileCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);  
+                        commandAST = new LoopForWhileCommand(dAST, e1AST, e2AST, e3AST, cAST, commandPos);  
                     }
                     break;
                     case Token.UNTIL:
@@ -452,7 +453,7 @@ public class Parser {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                        commandAST = new LoopForUntilCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+                        commandAST = new LoopForUntilCommand(dAST, e1AST, e2AST, e3AST, cAST, commandPos);
                     }
                     break;    
                     default:
@@ -824,7 +825,15 @@ public class Parser {
         declarationAST = new TypeDeclaration(iAST, tAST, declarationPos);
       }
       break;
-
+      
+    case Token.IDENTIFIER:
+      {
+        Identifier iAST = parseIdentifier();
+        finish(declarationPos);
+        declarationAST = new ControlVarDeclaration(iAST, declarationPos);
+      }
+      
+      break;
     default:
       syntacticError("\"%\" cannot start a declaration",
         currentToken.spelling);
@@ -1215,4 +1224,5 @@ public class Parser {
     }
     return procFuncsAST;
   }
+  
 }

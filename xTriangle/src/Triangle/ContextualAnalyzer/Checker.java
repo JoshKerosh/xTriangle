@@ -130,11 +130,10 @@ public final class Checker implements Visitor {
     //asignacion de paquete
    /* if (!ast.V.variable)// REVISAR ASIGNACION DE PAQUETE! 
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);*/
-    if (! eType.equals(vType))
+    if (! eType.visit(this,null).equals(vType)) //Marcos Méndez Ajuste para recursiveProc
       reporter.reportError ("assignment incompatibilty", "", ast.position);
     return null;
   }
-
 
   public Object visitCallCommand(CallCommand ast, Object o) {
 
@@ -143,9 +142,12 @@ public final class Checker implements Visitor {
       reportUndeclared(ast.I);
     else if (binding instanceof ProcDeclaration) {
       ast.APS.visit(this, ((ProcDeclaration) binding).FPS);
+    } else if (binding instanceof RecursiveProc) { //Marcos Méndez RecursiveProc agregado
+      ast.APS.visit(this, ((RecursiveProc) binding).FPS);
     } else if (binding instanceof ProcFormalParameter) {
       ast.APS.visit(this, ((ProcFormalParameter) binding).FPS);
-    } else
+    }
+    else
       reporter.reportError("\"%\" is not a procedure identifier",
                            ast.I.spelling, ast.I.position);
     return null;
@@ -325,10 +327,10 @@ public final class Checker implements Visitor {
         if (! e1Type.equals(e2Type))
           reporter.reportError ("incompatible argument types for \"%\"",
                                 ast.O.spelling, ast.position);
-      } else if (! e1Type.equals(bbinding.ARG1))
+      } else if (! e1Type.visit(this,null).equals(bbinding.ARG1))
           reporter.reportError ("wrong argument type for \"%\"",
                                 ast.O.spelling, ast.E1.position);
-      else if (! e2Type.equals(bbinding.ARG2))
+      else if (! e2Type.visit(this,null).equals(bbinding.ARG2))
           reporter.reportError ("wrong argument type for \"%\"",
                                 ast.O.spelling, ast.E2.position);
       ast.type = bbinding.RES;
@@ -347,7 +349,11 @@ public final class Checker implements Visitor {
     } else if (binding instanceof FuncFormalParameter) {
       ast.APS.visit(this, ((FuncFormalParameter) binding).FPS);
       ast.type = ((FuncFormalParameter) binding).T;
-    } else
+    } else if(binding instanceof  RecursiveFunc){ //Marcos Méndez RecursiveFunc agregado
+      ast.APS.visit(this,((RecursiveFunc) binding).FPS);
+      ast.type = ((RecursiveFunc) binding).TD;
+    } 
+    else
       reporter.reportError("\"%\" is not a function identifier",
                            ast.I.spelling, ast.I.position);
     return ast.type;
@@ -370,9 +376,15 @@ public final class Checker implements Visitor {
                             ast.E1.position);
     TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
     TypeDenoter e3Type = (TypeDenoter) ast.E3.visit(this, null);
-    if (! e2Type.equals(e3Type))
+    //Marcos Méndez NewTypeDenotres
+    TypeDenoter newe2Type = (TypeDenoter) e2Type.visit(this, null);
+    TypeDenoter newe3Type = (TypeDenoter) e3Type.visit(this, null);
+    //if (! e2Type.equals(e3Type))
+      //reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
+    //ast.type = e2Type;
+    if (! newe2Type.equals(newe3Type))//modified by SS.
       reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
-    ast.type = e2Type;
+    ast.type = newe2Type;
     return ast.type;
   }
 
@@ -616,7 +628,7 @@ public final class Checker implements Visitor {
     if (! (fp instanceof ConstFormalParameter))
       reporter.reportError ("const actual parameter not expected here", "",
                             ast.position);
-    else if (! eType.equals(((ConstFormalParameter) fp).T))
+    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T))
       reporter.reportError ("wrong type for const actual parameter", "",
                             ast.E.position);
     return null;
@@ -662,7 +674,7 @@ public final class Checker implements Visitor {
     if (binding == null)
       reportUndeclared (ast.I);
     else if (! (binding instanceof ProcDeclaration ||
-                binding instanceof ProcFormalParameter))
+                binding instanceof ProcFormalParameter || binding instanceof RecursiveProc)) //Marcos Mendez RecursiveProc agregado
       reporter.reportError ("\"%\" is not a procedure identifier",
                             ast.I.spelling, ast.I.position);
     else if (! (fp instanceof ProcFormalParameter))
@@ -691,7 +703,7 @@ public final class Checker implements Visitor {
     else if (! (fp instanceof VarFormalParameter))
       reporter.reportError ("var actual parameter not expected here", "",
                             ast.V.position);
-    else if (! vType.equals(((VarFormalParameter) fp).T))
+    else if (! vType.equals(((VarFormalParameter) fp).T.visit(this, null)))
       reporter.reportError ("wrong type for var actual parameter", "",
                             ast.V.position);
     return null;

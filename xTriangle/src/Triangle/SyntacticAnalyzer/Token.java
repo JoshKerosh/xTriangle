@@ -73,7 +73,7 @@ final class Token extends Object {
     CONST   = 6,
     DO      = 7,
     ELSE    = 8,
-    ELSEIF  = 9,//nuevo
+    ELSIF  = 9,//nuevo
     END     = 10,
     FOR     = 11,//nuevo
     FROM    = 12,//nuevo
@@ -131,7 +131,7 @@ final class Token extends Object {
     "const",
     "do",
     "else",
-    "elseif", //new
+    "elsif", //new
     "end",
     "for",  //new
     "from", //new

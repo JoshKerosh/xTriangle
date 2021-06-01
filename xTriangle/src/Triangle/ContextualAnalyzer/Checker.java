@@ -241,8 +241,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-
-        idTable.enter (this.packageName,"variableControl", ast.D);//meter el id a la tabla
         ast.C.visit(this, null);
     idTable.closeScope();
 
@@ -262,7 +260,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-        idTable.enter (this.packageName,"variableControl", ast.D);//meter el id a la tabla
 
         TypeDenoter eType3 = (TypeDenoter) ast.E3.visit(this, null);
         if (! eType3.equals(StdEnvironment.booleanType)) 
@@ -287,7 +284,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-        idTable.enter (this.packageName,"variableControl", ast.D);//meter el id a la tabla
 
         TypeDenoter eType3 = (TypeDenoter) ast.E3.visit(this, null);
         if (! eType3.equals(StdEnvironment.booleanType)) 
@@ -1222,7 +1218,7 @@ public final class Checker implements Visitor {
   @Override
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
-    idTable.enter(this.packageName, ast.I.spelling, ast);
+    idTable.enter(this.packageName,ast.I.spelling, ast);
     if (ast.duplicated)
       reporter.reportError ("identifier \"%\" already declared",
                             ast.I.spelling, ast.position);

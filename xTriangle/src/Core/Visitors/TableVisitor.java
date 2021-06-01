@@ -816,12 +816,11 @@ public class TableVisitor implements Visitor {
               displacement = ((UnknownValue)ast.entity).address.displacement;
           }
           addIdentifier(name, type, size, level, displacement, value);
-      } catch (NullPointerException e) {
-          System.out.println(e.toString());
-      }
+      } catch (NullPointerException e) { }
 
       ast.E.visit(this, null);
       ast.I.visit(this, null);
+      
       return null;
     }
   

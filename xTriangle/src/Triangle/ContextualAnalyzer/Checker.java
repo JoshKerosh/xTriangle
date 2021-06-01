@@ -380,7 +380,7 @@ public final class Checker implements Visitor {
     //if (! e2Type.equals(e3Type))
       //reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
     //ast.type = e2Type;
-    if (! newe2Type.equals(newe3Type))//modified by SS.
+    if (! newe2Type.equals(newe3Type))
       reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
     ast.type = newe2Type;
     return ast.type;
@@ -625,7 +625,7 @@ public final class Checker implements Visitor {
     if (! (fp instanceof ConstFormalParameter))
       reporter.reportError ("const actual parameter not expected here", "",
                             ast.position);
-    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T.visit(this,null))) //Marcos Mendez ajuste para Recursive
+    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T.visit(this,null))) //Marcos Méndez ajuste para Recursive
       reporter.reportError ("wrong type for const actual parameter", "",
                             ast.E.position);
     return null;
@@ -671,7 +671,7 @@ public final class Checker implements Visitor {
     if (binding == null)
       reportUndeclared (ast.I);
     else if (! (binding instanceof ProcDeclaration ||
-                binding instanceof ProcFormalParameter || binding instanceof RecursiveProc)) //Marcos Mendez RecursiveProc agregado
+                binding instanceof ProcFormalParameter || binding instanceof RecursiveProc)) //Marcos Méndez RecursiveProc agregado
       reporter.reportError ("\"%\" is not a procedure identifier",
                             ast.I.spelling, ast.I.position);
     else if (! (fp instanceof ProcFormalParameter))
@@ -873,7 +873,7 @@ public final class Checker implements Visitor {
       } else if (binding instanceof VarFormalParameter) {
         ast.type = ((VarFormalParameter) binding).T;
         ast.variable = true;
-      } else if (binding instanceof AssignVarDeclaration) { //Marcos Mendez AssignVarDeclaration agregado
+      } else if (binding instanceof AssignVarDeclaration) { //Marcos Méndez AssignVarDeclaration agregado
         ast.type = ((AssignVarDeclaration) binding).E.type;
         ast.variable = true; 
       }else if (binding instanceof ControlVarDeclaration) { //Joshua Jimenez ControlVarDeclaration agregado

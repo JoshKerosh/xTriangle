@@ -16,6 +16,7 @@ package Triangle.ContextualAnalyzer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -1261,7 +1262,7 @@ public final class Checker implements Visitor {
     Terminal [] terminals = new Terminal[0];
 
     if (! (eType1.equals(eType2)) )
-      reporter.reportError("Incompatible types found in the literals %.", T1.spelling + ".." + T2.spelling, ast.position);
+      reporter.reportError("Literals types mismatch", T1.spelling + ".." + T2.spelling, ast.position);
     else
       terminals = new Terminal[]{T2, T1};
 

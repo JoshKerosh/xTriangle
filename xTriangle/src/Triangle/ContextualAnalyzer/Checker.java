@@ -127,6 +127,8 @@ public final class Checker implements Visitor {
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     if (!ast.V.variable)
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
+    if ( ast.V.control)
+      reporter.reportError ("LHS of assignment is not an available variable", "", ast.V.position);
     //asignacion de paquete
    /* if (!ast.V.variable)// REVISAR ASIGNACION DE PAQUETE! 
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);*/
@@ -237,7 +239,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-        idTable.enter ("variableControl", ast.D);//meter el id a la tabla
         ast.C.visit(this, null);
     idTable.closeScope();
 
@@ -257,7 +258,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-        idTable.enter ("variableControl", ast.D);//meter el id a la tabla
 
         TypeDenoter eType3 = (TypeDenoter) ast.E3.visit(this, null);
         if (! eType3.equals(StdEnvironment.booleanType)) 
@@ -282,7 +282,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-        idTable.enter ("variableControl", ast.D);//meter el id a la tabla
 
         TypeDenoter eType3 = (TypeDenoter) ast.E3.visit(this, null);
         if (! eType3.equals(StdEnvironment.booleanType)) 
@@ -697,6 +696,9 @@ public final class Checker implements Visitor {
     if (! ast.V.variable)
       reporter.reportError ("actual parameter is not a variable", "",
                             ast.V.position);
+    if ( ast.V.control)
+      reporter.reportError ("actual parameter is not an available variable", "",
+                            ast.V.position);
     else if (! (fp instanceof VarFormalParameter))
       reporter.reportError ("var actual parameter not expected here", "",
                             ast.V.position);
@@ -879,6 +881,7 @@ public final class Checker implements Visitor {
       }else if (binding instanceof ControlVarDeclaration) { //Joshua Jimenez ControlVarDeclaration agregado
         ast.type = StdEnvironment.integerType;
         ast.variable = true;
+        ast.control = true;
       } 
       else
         reporter.reportError ("\"%\" is not a const or var identifier",

@@ -21,10 +21,11 @@ public abstract class VarName extends AST {
   public VarName (SourcePosition thePosition) {
     super (thePosition);
     variable = false;
+    control = false;
     type = null;
   }
 
-  public boolean variable, indexed;
+  public boolean variable, indexed, control;
   public int offset;
   public TypeDenoter type;
 }

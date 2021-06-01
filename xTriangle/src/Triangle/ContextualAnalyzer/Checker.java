@@ -16,7 +16,6 @@ package Triangle.ContextualAnalyzer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -1275,7 +1274,7 @@ public final class Checker implements Visitor {
     Object T = ast.E.visit(this, null);
     TypeDenoter chooseEType = (TypeDenoter) o;
     boolean ignoreChooseType = chooseEType == StdEnvironment.anyType;
-    List<Terminal[]> checkedTerminals = new ArrayList<>();
+    ArrayList<Terminal[]> checkedTerminals = new ArrayList<>();
 
     Terminal[] rawTerminals = ast.E instanceof CaseRange ? (Terminal[]) T : new Terminal[] {(Terminal) T};
 
@@ -1296,8 +1295,8 @@ public final class Checker implements Visitor {
 
   @Override
   public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
-    List<Terminal[]> T1 = (List<Terminal[]>) ast.E1.visit(this, o);
-    List<Terminal[]> T2 = (List<Terminal[]>) ast.E2.visit(this, o);
+    ArrayList<Terminal[]> T1 = (ArrayList<Terminal[]>) ast.E1.visit(this, o);
+    ArrayList<Terminal[]> T2 = (ArrayList<Terminal[]>) ast.E2.visit(this, o);
 
     T1.addAll(T2);
     return T1;
@@ -1313,15 +1312,15 @@ public final class Checker implements Visitor {
 
   @Override
   public Object visitCase(Case ast, Object o){
-    List<Terminal[]> terminals = (List<Terminal[]>) ast.E.visit(this, o);
+    ArrayList<Terminal[]> terminals = (ArrayList<Terminal[]>) ast.E.visit(this, o);
     ast.C.visit(this, null);
     return terminals;
   }
 
   @Override
   public Object visitSequentialCases(SequentialCases ast, Object o){
-    List<Terminal[]> T1 = (List<Terminal[]>) ast.C1.visit(this, o);
-    List<Terminal[]> T2 = (List<Terminal[]>) ast.C2.visit(this, o);
+    ArrayList<Terminal[]> T1 = (ArrayList<Terminal[]>) ast.C1.visit(this, o);
+    ArrayList<Terminal[]> T2 = (ArrayList<Terminal[]>) ast.C2.visit(this, o);
 
     T1.addAll(T2);
     return T1;
@@ -1331,16 +1330,16 @@ public final class Checker implements Visitor {
   public Object visitChooseCommand(ChooseCommand ast, Object o){
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     Set<Integer> ranges = new HashSet<>();
-    List<Terminal[]> casesLiterals;
+    ArrayList<Terminal[]> casesLiterals;
 
     if (! (eType.equals(StdEnvironment.integerType) || eType.equals(StdEnvironment.charType)) ){
         reporter.reportError("Integer or Char expression expected here.", "", ast.E.position);
         eType = StdEnvironment.anyType;
     }
 
-    casesLiterals = (List<Terminal[]>) ast.C.visit(this, eType);
-    List<Integer> singleLimits = new ArrayList<>();
-    List<int[]> rangeLimits = new  ArrayList<>();
+    casesLiterals = (ArrayList<Terminal[]>) ast.C.visit(this, eType);
+    ArrayList<Integer> singleLimits = new ArrayList<>();
+    ArrayList<int[]> rangeLimits = new  ArrayList<>();
     int count = 0;
     for (Terminal[] currentLimits : casesLiterals){
       Set currentRange;

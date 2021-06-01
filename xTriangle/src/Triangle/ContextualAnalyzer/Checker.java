@@ -14,6 +14,13 @@
 
 package Triangle.ContextualAnalyzer;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import Triangle.ErrorReporter;
 import Triangle.StdEnvironment;
 import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
@@ -1234,49 +1241,149 @@ public final class Checker implements Visitor {
   /////////////////////////
   @Override
   public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
-    return null;
+    return ast.I;
   }
 
 
   @Override
   public Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o) {
-    return null;
+    return ast.C;
   }
 
 
   @Override
   public Object visitCaseRange(CaseRange ast, Object o) {
-    return null;
+    Terminal T1 = (Terminal) ast.E1.visit(this, null);
+    Terminal T2 = (Terminal) ast.E2.visit(this, null);
+
+    TypeDenoter eType1 = (TypeDenoter) T1.visit(this, null);
+    TypeDenoter eType2 = (TypeDenoter) T2.visit(this, null);
+
+    Terminal [] terminals = new Terminal[0];
+
+    if (! (eType1.equals(eType2)) )
+      reporter.reportError("Incompatible types found in the literals %.", T1.spelling + ".." + T2.spelling, ast.position);
+    else
+      terminals = new Terminal[]{T2, T1};
+
+    return terminals;
   }
 
 
   @Override
   public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-    return null;
+    Object T = ast.E.visit(this, null);
+    TypeDenoter chooseEType = (TypeDenoter) o;
+    boolean ignoreChooseType = chooseEType == StdEnvironment.anyType;
+    List<Terminal[]> checkedTerminals = new ArrayList<>();
+
+    Terminal[] rawTerminals = ast.E instanceof CaseRange ? (Terminal[]) T : new Terminal[] {(Terminal) T};
+
+    if (rawTerminals.length > 0){
+      TypeDenoter eType = (TypeDenoter) rawTerminals[0].visit(this, null);
+     if (!  (eType.equals(StdEnvironment.integerType) || eType.equals(StdEnvironment.charType)))
+      reporter.reportError("Literals values mismatch.", "", ast.position);
+     else if (!eType.equals(chooseEType)){
+      reporter.reportError("Literals values mismatch the type of the choose expression.", "", ast.position);
+     }
+
+     else if (!ignoreChooseType)
+      checkedTerminals.add(rawTerminals);
+    }
+
+    return checkedTerminals;
   }
 
   @Override
   public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
-    return null;
+    List<Terminal[]> T1 = (List<Terminal[]>) ast.E1.visit(this, o);
+    List<Terminal[]> T2 = (List<Terminal[]>) ast.E2.visit(this, o);
+
+    T1.addAll(T2);
+    return T1;
   }
 
   @Override
   public Object visitElseCase(ElseCase ast, Object o){
-    return null;
+    idTable.openScope();
+    ast.C.visit(this, null);
+    idTable.closeScope();
+    return new ArrayList<Terminal[]>();
   }
 
   @Override
   public Object visitCase(Case ast, Object o){
-    return null;
+    List<Terminal[]> terminals = (List<Terminal[]>) ast.E.visit(this, o);
+    ast.C.visit(this, null);
+    return terminals;
   }
 
   @Override
   public Object visitSequentialCases(SequentialCases ast, Object o){
-    return null;
+    List<Terminal[]> T1 = (List<Terminal[]>) ast.C1.visit(this, o);
+    List<Terminal[]> T2 = (List<Terminal[]>) ast.C2.visit(this, o);
+
+    T1.addAll(T2);
+    return T1;
   }
 
   @Override
   public Object visitChooseCommand(ChooseCommand ast, Object o){
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+    Set<Integer> ranges = new HashSet<>();
+    List<Terminal[]> casesLiterals;
+
+    if (! (eType.equals(StdEnvironment.integerType) || eType.equals(StdEnvironment.charType)) ){
+        reporter.reportError("Integer or Char expression expected here.", "", ast.E.position);
+        eType = StdEnvironment.anyType;
+    }
+
+    casesLiterals = (List<Terminal[]>) ast.C.visit(this, eType);
+    List<Integer> singleLimits = new ArrayList<>();
+    List<int[]> rangeLimits = new  ArrayList<>();
+    int count = 0;
+    for (Terminal[] currentLimits : casesLiterals){
+      Set currentRange;
+      String lMin = currentLimits[0].spelling;
+      String lMax = currentLimits.length == 1? lMin: currentLimits[1].spelling;
+      
+      TypeDenoter lType = (TypeDenoter) currentLimits[0].visit(this, null);
+
+      int [] limits;
+      if(lType.equals(StdEnvironment.integerType)){
+        limits = new int[]{Integer.parseInt(lMin), Integer.parseInt(lMax)};
+        if(Integer.parseInt(lMin) != Integer.parseInt(lMax)){
+          rangeLimits.add(limits);
+        }else{
+          if(count > 0){
+            singleLimits.add(Integer.parseInt(currentLimits[0].spelling));
+          }
+        }
+      }else{
+        limits = new int[]{lMin.charAt(1),  lMax.charAt(1)};
+      }
+      if ((limits[0] < limits[1]))
+        limits = new int[]{limits[1], limits[0]};
+
+      currentRange = IntStream.rangeClosed(limits[0], limits[1]).boxed().collect(Collectors.toSet());
+
+
+      for(int limit : singleLimits){
+        for(int[] rangeLimit : rangeLimits){
+          if( limit == rangeLimit[0] || 
+              limit == rangeLimit[1] ||
+              (limit > rangeLimit[1] && limit < rangeLimit[0])){
+                reporter.reportError("The range "+ limit + " is already in use" ,"", currentLimits[0].position);
+          }
+        }
+      }
+      if ( currentRange.removeAll(ranges) )
+        reporter.reportError("The range "+ currentLimits[0].spelling + " is already in use" ,"", currentLimits[0].position);
+
+      ranges.addAll(currentRange);
+      count += 1;
+    }
+
     return null;
   }
 

@@ -832,46 +832,60 @@ public class TableVisitor implements Visitor {
     /////////////////////////
     @Override
     public Object visitCaseLiteralInteger(CaseLiteralInteger ast, Object o) {
+      ast.I.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitCaseLiteralChar(CaseLiteralCharacter ast, Object o) {
+      ast.C.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitCaseRange(CaseRange ast, Object o) {
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+      ast.E.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitSequentialCaseLiterals(SequentialCaseLiterals ast, Object o){
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitElseCase(ElseCase ast, Object o){
+      ast.C.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitCase(Case ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitSequentialCases(SequentialCases ast, Object o){
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
       return null;
     }
 
     @Override
     public Object visitChooseCommand(ChooseCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
       return null;
     }
 

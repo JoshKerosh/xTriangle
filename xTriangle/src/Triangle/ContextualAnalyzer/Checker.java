@@ -189,7 +189,6 @@ public final class Checker implements Visitor {
   }
   
   // (extended) // loop commands
-  
   public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
       
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
@@ -238,7 +237,6 @@ public final class Checker implements Visitor {
         TypeDenoter idType = (TypeDenoter) ast.D.visit(this, null);
         if (! idType.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expected here", "", ast.E2.position);
-
         idTable.enter ("variableControl", ast.D);//meter el id a la tabla
         ast.C.visit(this, null);
     idTable.closeScope();
@@ -512,8 +510,7 @@ public final class Checker implements Visitor {
     if (ast.duplicated)
       reporter.reportError ("identifier \"%\" already declared",
                             ast.I.spelling, ast.position);
-      
-      return null;
+      return ast.T;
     }
   // Array Aggregates
 
@@ -881,7 +878,7 @@ public final class Checker implements Visitor {
         ast.variable = true; 
       }else if (binding instanceof ControlVarDeclaration) { //Joshua Jimenez ControlVarDeclaration agregado
         ast.type = StdEnvironment.integerType;
-        ast.variable = false;
+        ast.variable = true;
       } 
       else
         reporter.reportError ("\"%\" is not a const or var identifier",

@@ -18,12 +18,16 @@ import Triangle.AbstractSyntaxTrees.Declaration;
 
 public class IdEntry {
 
+  protected String idP;
   protected String id;
   protected Declaration attr;
   protected int level;
   protected IdEntry previous;
 
-  IdEntry (String id, Declaration attr, int level, IdEntry previous) {
+  //María José Cortés, se cambió el constructor para poder ingresar el identificador
+  //del paquete.
+  IdEntry (String idP, String id, Declaration attr, int level, IdEntry previous) {
+    this.idP = idP;
     this.id = id;
     this.attr = attr;
     this.level = level;

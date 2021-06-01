@@ -66,7 +66,7 @@ public final class IdentificationTable {
   // duplicated is set to to true iff there is already an entry for the
   // same identifier at the current level.
 
-  public void enter (String id, Declaration attr) {
+  public void enter (String idP, String id, Declaration attr) {
 
     IdEntry entry = this.latest;
     boolean present = false, searching = true;
@@ -84,9 +84,10 @@ public final class IdentificationTable {
 
     attr.duplicated = present;
     // Add new entry ...
-    entry = new IdEntry(id, attr, this.level, this.latest);
+    entry = new IdEntry(idP, id, attr, this.level, this.latest);
     this.latest = entry;
   }
+
 
   // Finds an entry for the given identifier in the identification table,
   // if any. If there are several entries for that identifier, finds the
@@ -116,6 +117,41 @@ public final class IdentificationTable {
     }
 
     return attr;
+  }
+
+  //María José Cortés
+  //Retrieve para el package
+  public Declaration retrieve (String pId, String id) {
+    IdEntry entry;
+    Declaration attr = null;
+    boolean present = false, searching = true;
+
+    entry = this.latest;
+    while(searching){
+      if(entry == null)
+        searching = false;
+      else if(entry.idP.equals(pId)){
+        while(entry.idP.equals(pId)){
+          if (entry == null){
+            searching = false;
+            break;
+          }
+          else if (entry.id.equals(id)){
+            present = true;
+            searching = false;
+            attr = entry.attr;
+            break;
+          }else {
+            entry = entry.previous;
+          }
+        }
+        searching = false;
+      } else 
+      entry = entry.previous;
+    }
+
+    return attr;
+    
   }
 
   /////////////////////

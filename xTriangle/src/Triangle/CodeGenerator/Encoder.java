@@ -1065,13 +1065,22 @@ public final class Encoder implements Visitor {
   //////////////////////////
   @Override 
   public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int extraSize1 = ((Integer) ast.PF1.visit(this, frame)).intValue();
+    Frame frame1 = new Frame(frame, extraSize1);
+    int extraSize2 = ((Integer) ast.PF2.visit(this, frame1)).intValue();
+    return new Integer(extraSize1 + extraSize2);
   }  
 
   @Override
   public Object visitSequentialProcFuncsRec(SequentialProcFuncs ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int extraSize1 = ((Integer) ast.PF1.visitRec(this, frame)).intValue();
+    Frame frame1 = new Frame(frame, extraSize1);
+    int extraSize2 = ((Integer) ast.PF2.visitRec(this, frame1)).intValue();
+    return new Integer(extraSize1 + extraSize2);
   }
+
   //////////////////////////
   //
   //RecursiveProc
@@ -1079,65 +1088,158 @@ public final class Encoder implements Visitor {
   //////////////////////////
   @Override
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine (Machine.closureSize, frame.level,
+            nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines so deeply");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      ast.C.visit(this, frame2);
+    }
+    emit(Machine.RETURNop, 0, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
 
   @Override
   public Object visitRecursiveProcRec(RecursiveProc ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine (Machine.closureSize, frame.level,
+            nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines so deeply");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      ast.C.visit(this, frame2);
+    }
+    emit(Machine.RETURNop, 0, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
   //////////////////////////
   //
-  //Marcos Méndez 2021-04-11
+  //Marcos Méndez 2021-06-20
   //RecursiveFunc
   //
   //////////////////////////
 
   @Override
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0, valSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine(Machine.closureSize, frame.level, nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines more than 7 deep");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      valSize = ((Integer) ast.E.visit(this, frame2)).intValue();
+    }
+    emit(Machine.RETURNop, valSize, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
 
   @Override
   public Object visitRecursiveFuncRec(RecursiveFunc ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0, valSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine(Machine.closureSize, frame.level, nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines more than 7 deep");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      valSize = ((Integer) ast.E.visit(this, frame2)).intValue();
+    }
+    emit(Machine.RETURNop, valSize, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
   //////////////////////////
   //
-  //Marcos Méndez 2021-04-11
+  //Marcos Méndez 2021-06-20
   //SequentialProcFuncs
   //
   //////////////////////////
   @Override
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int extraSize1 = (Integer) ast.PF.visit(this, frame);
+    nextInstrAddr = jumpAddr;
+    extraSize1 = (Integer) ast.PF.visitRec(this, frame);
+    return new Integer(extraSize1);
   }
 
   //////////////////////////
   //
-  //Marcos Méndez 2021-04-11
+  //Marcos Méndez 2021-06-20
   //PrivateDeclaration
   //
   //////////////////////////
   @Override
   public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int extraSize1, extraSize2;
+
+    extraSize1 = ((Integer) ast.D1.visit(this, frame)).intValue();
+    Frame frame1 = new Frame (frame, extraSize1);
+    extraSize2 = ((Integer) ast.D2.visit(this, frame1)).intValue();
+    return new Integer(extraSize1 + extraSize2);
   }
 
   //////////////////////////
   //
-  //Marcos Méndez 2021-04-11
+  //Marcos Méndez 2021-06-20
   //AssignVarDeclaration
   //
   //////////////////////////
   @Override
   public Object visitAssignVarDeclaration(AssignVarDeclaration ast, Object o) {
-    return null;
+    Frame frame = (Frame) o;
+    int extraSize = 0;
+
+    extraSize = (Integer) ast.E.visit(this, frame);
+
+    emit(Machine.PUSHop, 0, 0, extraSize);
+    ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
+    writeTableDetails(ast);
+    Integer valSize = (Integer) ast.E.visit(this, frame);
+    ObjectAddress address = ((KnownAddress) ast.entity).address;
+    emit(Machine.STOREop, valSize, displayRegister(frame.level,
+            address.level), address.displacement);
+    return new Integer(extraSize);
   }
 
   //////////////////////////
   //
-  //Marcos Méndez 2021-04-20
+  //Marcos Méndez 2021-06-20
   //Cases(Extra)
   //
   /////////////////////////

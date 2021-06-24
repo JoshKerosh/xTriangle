@@ -415,7 +415,14 @@ public final class Encoder implements Visitor {
     //extended //Josh
     @Override
     public Object visitControlVarDeclaration(ControlVarDeclaration ast, Object o) {
-        return null;
+      Frame frame = (Frame) o;
+      int extraSize;
+
+      extraSize = ((Integer) ast.T.visit(this, null)).intValue();
+      emit(Machine.PUSHop, 0, 0, extraSize);
+      ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
+      writeTableDetails(ast);
+      return new Integer(extraSize);
     }
 
   // Array Aggregates

@@ -169,31 +169,85 @@ public final class Encoder implements Visitor {
   
 // -- Nuevos comandos Loop
   public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o){
-      return null;
+        Frame frame = (Frame) o;  
+        int loopAddr;
+      
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
+      
+        return null;
   }
   
   public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o){
-      return null;
+        Frame frame = (Frame) o;
+        int loopAddr;
+
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+
+        return null;
   }
   
   public Object visitLoopForDoCommand(LoopForDoCommand ast, Object o){
-      return null;
+        /*
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+
+        ast.D.visit(this, frame);
+
+        //jumpAddr = nextInstrAddr;
+        //emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        //patch(jumpAddr, nextInstrAddr);
+        ast.E2.visit(this, frame);
+        //emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        */
+        return null;
   }
   
   public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
+      Frame frame = (Frame) o;
       return null;
   }
   
   public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+      Frame frame = (Frame) o;
       return null;
   }
   
   public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o){
-      return null;
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
+
+        return null;
   }
   
   public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o){
-      return null;
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+
+    return null;
   }
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {
     ast.C1.visit(this, o);

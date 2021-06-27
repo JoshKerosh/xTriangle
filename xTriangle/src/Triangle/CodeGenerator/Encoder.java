@@ -222,15 +222,71 @@ public final class Encoder implements Visitor {
   }
   
   public Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o){
-      Frame frame = (Frame) o;
-      return null;
+        int jumpAddr, loopAddr;
+        Frame frame = (Frame) o;
+
+        ast.E2.visit(this, frame); // evaluate E2
+        ast.E1.visit(this, frame); // evaluate E1
+
+        //JUMP to evalcond
+        jumpAddr = nextInstrAddr; 
+        emit(Machine.JUMPop, 0,Machine.CBr,0);
+        loopAddr = nextInstrAddr;
+
+        //until
+        Frame frame2 = frame;
+        int loopAddr2;
+      
+        loopAddr2 = nextInstrAddr;
+        ast.C.visit(this, frame2);
+        ast.E3.visit(this, frame2);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr2);
+
+        //Evalcond
+        int evalcond = nextInstrAddr;
+        patch(jumpAddr,evalcond);
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+
+        //Exit
+        emit(Machine.POPop, 0, 0, 2);
+        return null;
   }
   
   public Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o){
+        int jumpAddr, loopAddr;
+        Frame frame = (Frame) o;
 
-        Frame frame =  (Frame) o;
-        int jumpAddr,loopAddr,exit;
+        ast.E2.visit(this, frame); // evaluate E2
+        ast.E1.visit(this, frame); // evaluate E1
 
+        //JUMP to evalcond
+        jumpAddr = nextInstrAddr; 
+        emit(Machine.JUMPop, 0,Machine.CBr,0);
+        loopAddr = nextInstrAddr;
+
+        
+        
+        //loop-while
+        int loopAddr2;
+      
+        loopAddr2 = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E3.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr2);
+
+        
+        
+        //Evalcond
+        int evalcond = nextInstrAddr;
+        patch(jumpAddr,evalcond);
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+
+        //Exit
+        emit(Machine.POPop, 0, 0, 2);
         return null;
 
   }

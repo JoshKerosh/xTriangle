@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LetCommand>
+<AssignVarDeclaration>
+<IntegerLiteral value="k"/>
+<IntegerExpression>
+<IntegerLiteral value="10"/>
+</IntegerExpression>
+</AssignVarDeclaration>
+<LoopForDoCommand>
+<ControlVarDeclaration>
+<IntegerLiteral value="i"/>
+<IntTypeDenoter/>
+</ControlVarDeclaration>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+<VarNameExpression>
+<SimpleVarName>
+<IntegerLiteral value="k"/>
+</SimpleVarName>
+</VarNameExpression>
+<SequentialCommand>
+<AssignCommand>
+<SimpleVarName>
+<IntegerLiteral value="k"/>
+</SimpleVarName>
+<BinaryExpression>
+<VarNameExpression>
+<SimpleVarName>
+<IntegerLiteral value="k"/>
+</SimpleVarName>
+</VarNameExpression>
+<Operator value="+"/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</BinaryExpression>
+</AssignCommand>
+<CallCommand>
+<IntegerLiteral value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+</LoopForDoCommand>
+</LetCommand>
+</Program>

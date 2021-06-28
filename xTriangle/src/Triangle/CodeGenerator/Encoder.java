@@ -139,7 +139,8 @@ public final class Encoder implements Visitor {
   }
 
   public Object visitEmptyCommand(EmptyCommand ast, Object o) {
-    return null;
+        emit(Machine.HALTop, 0, 0, 0);
+        return null;
   }
 
   public Object visitIfCommand(IfCommand ast, Object o) {

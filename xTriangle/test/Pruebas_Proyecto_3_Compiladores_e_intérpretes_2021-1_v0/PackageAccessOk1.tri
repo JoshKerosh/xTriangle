@@ -1,0 +1,14 @@
+package myP ~ 
+	var a: Integer
+end;
+
+let
+	var b: Integer
+in
+      myP $ a := 100 ;
+	b := myP $ a;
+	putint(b + 1) ! debe imprimir 101
+
+end
+
+!OK 
